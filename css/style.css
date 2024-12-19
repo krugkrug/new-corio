@@ -1,0 +1,639 @@
+
+
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all .3s ease;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        html {
+            scroll-padding-top: 100px;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fff;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f0a556;
+        }
+
+
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            margin: auto;
+            left: 0;
+            right: 0;
+            padding: 0 25px;
+            background-color: transparent;
+        }
+
+
+
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu li a {
+            font-weight: 500;
+            color: #fff;
+            transition: color 0.3s;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #fff;
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s;
+        }
+
+        .nav-menu li a:hover::after,
+        .nav-menu li a.active::after {
+            width: 100%;
+        }
+
+        .nav-toggle {
+            display: none;
+        }
+
+        .nav-toggle-label {
+            display: none;
+            cursor: pointer;
+            width: 30px;
+            height: 25px;
+            position: relative;
+            z-index: 1100;
+        }
+
+        .nav-toggle-label span,
+        .nav-toggle-label span::before,
+        .nav-toggle-label span::after {
+            display: block;
+            background: #fff;
+            height: 3px;
+            width: 100%;
+            border-radius: 2px;
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+
+        .nav-toggle-label span {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-toggle-label span::before {
+            content: '';
+            top: -10px;
+        }
+
+        .nav-toggle-label span::after {
+            content: '';
+            top: 10px;
+        }
+
+        /* Toggle Cross */
+        .nav-toggle:checked+.nav-toggle-label span {
+            background: transparent;
+        }
+
+        .nav-toggle:checked+.nav-toggle-label span::before {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .nav-toggle:checked+.nav-toggle-label span::after {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+
+
+        /* Header Section */
+        header {
+            padding: 300px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            color: white;
+            text-align: center;
+            background-color: #001e39;
+            position: relative;
+        }
+
+        header .content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            line-height: 1.2;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        header .btn {
+            background: #fff;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 25px;
+            transition: background 0.3s, transform 0.3s;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        header .btn:hover {
+            background: #f0a556;
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 0px 20px;
+        }
+
+        section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            line-height: 1.1;
+            color: #001e39;
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: #001e39;
+            display: block;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        #contacto,
+        #juntas,
+        #eventos {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        #contacto img {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        #contacto p {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        #contacto p a {
+            color: #001e39;
+        }
+
+        #contacto p a:hover {
+            color: #001e39;
+        }
+
+        #contacto p strong {
+            color: #001e39;
+        }
+
+        #contacto .newsletter {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        #juntas .junta,
+        #eventos .evento {
+            margin-bottom: 30px;
+        }
+
+        #juntas h3,
+        #eventos h3 {
+            color: #001e39;
+            margin-bottom: 10px;
+        }
+
+        #juntas p,
+        #eventos p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        #juntas ol {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #juntas ol li {
+            margin-bottom: 7px;
+            position: relative;
+            margin-left: 1.5em;
+        }
+
+        #juntas ol li::before {
+            content: "\f058";
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            
+
+            font-weight: 900;
+            position: absolute;
+            left: -1.5em;
+            top: 0;
+        }
+
+        .documents,
+        .resultado {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .documents .btn,
+        .resultado .btn {
+            background: #fff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            text-align: center;
+            flex: 1 1 230px;
+        }
+
+        .documents .btn:hover,
+        .resultado .btn:hover {
+            background: #001e39;
+        }
+
+        .btn {
+            display: inline-block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            background-color: #001e39;
+            padding: 20px;
+            color: #fff;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Responsive Enhancements */
+        @media (max-width: 992px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: absolute;
+                top: 55px;
+                left: 0;
+                right: 0;
+                padding-left: 30px;
+                background: #001e39;
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+
+            .nav-menu li {
+                margin: 10px 0;
+            }
+
+            .nav-toggle-label {
+                display: block;
+            }
+
+            .nav-toggle:checked~.nav-menu {
+                max-height: 500px;
+            }
+
+            header {
+                padding: 160px 0 100px 0;
+            }
+
+            nav {
+                background-color: #001e39;
+            }
+
+            #contacto,
+            #juntas,
+            #eventos {
+                padding: 40px 12px;
+                width: 90%;
+            }
+        }
+
+        @media (min-width:768px) {
+            nav.scrolled {
+                background-color: #001e39;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-menu li {
+                margin: 10px 0;
+            }
+
+            .documents .btn,
+            .resultado .btn {
+                flex: 1 1 100%;
+            }
+        }
+
+
+/* Estilo para la tabla */
+#tabla-bonita {
+    width: 100%; /* La tabla ocupa el 100% del ancho disponible */
+    margin: 0 auto; /* Centra la tabla en la página */
+    border-collapse: collapse; /* Elimina espacios entre celdas */
+    background-color: transparent; /* Fondo transparente */
+    color: white; /* Texto blanco */
+    text-align: center; /* Centra el texto horizontalmente */
+    table-layout: fixed; /* Distribuye las columnas de forma uniforme */
+}
+#tabla-bonita h3 {
+            font-family: 'Outfit', sans-serif;
+font-size:1.5em;
+
+}
+#tabla-bonita p {
+          
+padding-top:30px;
+}
+
+/* Estilo para la tabla */
+#tabla-bonita {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: transparent;
+    color: white;
+    text-align: center;
+    table-layout: fixed;
+}
+
+/* Estilo general para las celdas y encabezados */
+#tabla-bonita th, 
+#tabla-bonita td {
+    border: 1px solid white; /* Bordes blancos */
+    padding: 20px; /* Espacio interno */
+    text-align: left; /* Alineación del texto a la izquierda */
+    vertical-align: top; /* Alineación vertical arriba */
+    word-wrap: break-word; /* Ajusta el texto largo dentro de la celda */
+    margin: 30px !important; /* Espacio alrededor */
+}
+
+/* Estilo para la celda con id="inicio" */
+#inicio {
+    border: 0!important; /* Elimina todos los bordes */
+    border-right: 1px solid white; /* Añade solo el borde derecho */
+}
+
+/* Imágenes dentro de las celdas */
+#tabla-bonita .cell-image {
+    display: block; /* Evita espacios adicionales debajo de la imagen */
+    margin: 0 auto 5px; /* Centra la imagen horizontalmente y añade margen inferior */
+    width: 80px; /* Ancho de la imagen */
+    height: auto; /* Mantiene la proporción */
+}
+
+/* Estilo general del body */
+body {
+    font-family: 'Outfit', sans-serif;
+    margin: 20px;
+    background-color: #001e39; /* Fondo oscuro */
+    color: white; /* Texto en blanco */
+}
+
+
+
+        /* Navbar Styling */
+        nav {
+            background-color: #001e39;
+            padding: 10px 20px;
+        }
+
+        .logo img {
+            width: 300px;
+            height: auto;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .nav-menu li {
+            margin: 0 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        .nav-toggle-label span {
+            display: block;
+            background-color: white;
+            height: 4px;
+            width: 25px;
+            margin: 5px auto;
+        }
+
+        /* Header Section */
+        header {
+            position: relative;
+            text-align: center;
+            color: white;
+            padding: 100px 20px;
+            background-color: #001e39;
+        }
+
+        header h1 {
+            font-size: 3em;
+        }
+
+        /* Quienes Somos Section */
+        #quienes_somos {
+            padding: 50px 0;
+            text-align: center;
+        }
+        /* Valores Section */
+        #valores {
+            padding: 50px 0;
+            text-align: center;
+        }
+ /* Target Section */
+        #target {
+            padding: 50px 0;
+            text-align: center;
+        }
+ /* Proyecto Section */
+        #proyecto {
+            padding: 50px 0;
+            text-align: center;
+        }
+ /* Equipo Section */
+        #equipo {
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        /* Contenedor de la tabla */
+        .tabla-contenedor {
+            background-color: white; /* Fondo blanco */
+            padding: 0 50px; /* Espacio de 50px a ambos lados */
+            width: 100%; /* Asegura que ocupe todo el ancho de la pantalla */
+        }
+
+        /* Footer */
+        footer {
+            background-color: #001e39;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+                display: none;
+            }
+
+            .nav-toggle:checked + .nav-toggle-label + .nav-menu {
+                display: flex;
+            }
+
+            .logo img {
+                width: 120px;
+            }
+
+            .tabla-contenedor {
+                padding: 0 20px; /* Menos espacio en móviles */
+            }
+        }
+
