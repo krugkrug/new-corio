@@ -1,639 +1,606 @@
-
-
-
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: all .3s ease;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            line-height: 1.6;
-            
-            background: #ffffff;
-            scroll-behavior: smooth;
-        }
-
-        html {
-            scroll-padding-top: 100px;
-            scroll-behavior: smooth;
-        }
-
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #fff;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #f0a556;
-        }
-
-
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-
-
-        /* Navbar */
-        nav {
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            margin: auto;
-            left: 0;
-            right: 0;
-            padding: 0 25px;
-            background-color: transparent;
-        }
-
-
-
-        nav .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-        }
-
-        nav .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #fff;
-            text-transform: uppercase;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-menu li {
-            margin-left: 30px;
-        }
-
-        .nav-menu li a {
-            font-weight: 500;
-            color: #fff;
-            transition: color 0.3s;
-            padding: 5px 0;
-            position: relative;
-        }
-
-        .nav-menu li a::after {
-            content: '';
-            position: absolute;
-            width: 0%;
-            height: 2px;
-            background: #fff;
-            left: 0;
-            bottom: -5px;
-            transition: width 0.3s;
-        }
-
-        .nav-menu li a:hover::after,
-        .nav-menu li a.active::after {
-            width: 100%;
-        }
-
-        .nav-toggle {
-            display: none;
-        }
-
-        .nav-toggle-label {
-            display: none;
-            cursor: pointer;
-            width: 30px;
-            height: 25px;
-            position: relative;
-            z-index: 1100;
-        }
-
-        .nav-toggle-label span,
-        .nav-toggle-label span::before,
-        .nav-toggle-label span::after {
-            display: block;
-            background: #fff;
-            height: 3px;
-            width: 100%;
-            border-radius: 2px;
-            position: absolute;
-            transition: all 0.3s ease;
-        }
-
-        .nav-toggle-label span {
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .nav-toggle-label span::before {
-            content: '';
-            top: -10px;
-        }
-
-        .nav-toggle-label span::after {
-            content: '';
-            top: 10px;
-        }
-
-        /* Toggle Cross */
-        .nav-toggle:checked+.nav-toggle-label span {
-            background: transparent;
-        }
-
-        .nav-toggle:checked+.nav-toggle-label span::before {
-            transform: rotate(45deg) translate(9px, 9px);
-        }
-
-        .nav-toggle:checked+.nav-toggle-label span::after {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-
-
-        /* Header Section */
-        header {
-            padding: 300px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            color: white;
-            text-align: center;
-            background-color: #001e39;
-            position: relative;
-        }
-
-        header .content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-        }
-
-        header h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #ffffff;
-            line-height: 1.2;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        header .btn {
-            background: #fff;
-            color: #fff;
-            padding: 12px 25px;
-            border-radius: 25px;
-            transition: background 0.3s, transform 0.3s;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        header .btn:hover {
-            background: #f0a556;
-            transform: translateY(-3px);
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Sections */
-        section {
-            padding: 0px 20px;
-        }
-
-        section h2 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
-            line-height: 1.1;
-            color: #001e39;
-            position: relative;
-        }
-
-        section h2::after {
-            content: '';
-            width: 60px;
-            height: 4px;
-            background: #001e39;
-            display: block;
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
-        #contacto,
-        #juntas,
-        #eventos {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            margin-bottom: 40px;
-            width: 90%;
-            max-width: 1200px;
-            margin: 50px auto;
-        }
-
-        #contacto img {
-            width: 150px;
-            margin-bottom: 20px;
-        }
-
-        #contacto p {
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-
-        #contacto p a {
-            color: #001e39;
-        }
-
-        #contacto p a:hover {
-            color: #001e39;
-        }
-
-        #contacto p strong {
-            color: #001e39;
-        }
-
-        #contacto .newsletter {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        #juntas .junta,
-        #eventos .evento {
-            margin-bottom: 30px;
-        }
-
-        #juntas h3,
-        #eventos h3 {
-            color: #001e39;
-            margin-bottom: 10px;
-        }
-
-        #juntas p,
-        #eventos p {
-            margin-bottom: 10px;
-            color: #555;
-        }
-
-        #juntas ol {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        #juntas ol li {
-            margin-bottom: 7px;
-            position: relative;
-            margin-left: 1.5em;
-        }
-
-        #juntas ol li::before {
-            content: "\f058";
-            color: #fff;
-            font-family: 'Outfit', sans-serif;
-            
-
-            font-weight: 900;
-            position: absolute;
-            left: -1.5em;
-            top: 0;
-        }
-
-        .documents,
-        .resultado {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .documents .btn,
-        .resultado .btn {
-            background: #fff;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
-            text-align: center;
-            flex: 1 1 230px;
-        }
-
-        .documents .btn:hover,
-        .resultado .btn:hover {
-            background: #001e39;
-        }
-
-        .btn {
-            display: inline-block;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            background-color: #001e39;
-            padding: 20px;
-            color: #fff;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        /* Responsive Enhancements */
-        @media (max-width: 992px) {
-            header h1 {
-                font-size: 2.5rem;
-            }
-
-            header p {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-menu {
-                position: absolute;
-                top: 55px;
-                left: 0;
-                right: 0;
-                padding-left: 30px;
-                background: #001e39;
-                flex-direction: column;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease-in-out;
-            }
-
-            .nav-menu li {
-                margin: 10px 0;
-            }
-
-            .nav-toggle-label {
-                display: block;
-            }
-
-            .nav-toggle:checked~.nav-menu {
-                max-height: 500px;
-            }
-
-            header {
-                padding: 160px 0 100px 0;
-            }
-
-            nav {
-                background-color: #001e39;
-            }
-
-            #contacto,
-            #juntas,
-            #eventos {
-                padding: 40px 12px;
-                width: 90%;
-            }
-        }
-
-        @media (min-width:768px) {
-            nav.scrolled {
-                background-color: #001e39;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .nav-menu li {
-                margin: 10px 0;
-            }
-
-            .documents .btn,
-            .resultado .btn {
-                flex: 1 1 100%;
-            }
-        }
-
-
-/* Estilo para la tabla */
-#tabla-bonita {
-    width: 100%; /* La tabla ocupa el 100% del ancho disponible */
-    margin: 0 auto; /* Centra la tabla en la página */
-    border-collapse: collapse; /* Elimina espacios entre celdas */
-    background-color: transparent; /* Fondo transparente */
-    color: white; /* Texto blanco */
-    text-align: center; /* Centra el texto horizontalmente */
-    table-layout: fixed; /* Distribuye las columnas de forma uniforme */
-}
-#tabla-bonita h3 {
-            font-family: 'Outfit', sans-serif;
-font-size:1.5em;
-
-}
-#tabla-bonita p {
-          
-padding-top:30px;
+/* Variables CSS */
+:root {
+    --primary-color: #001e39;
+    --secondary-color: #ffffff;
+    --font-family: 'Outfit', sans-serif;
+    --white: #ffffff;
+    --black: #000000;
+    --footer-bg-color: #000000; /* Fondo negro para el footer */
+    --footer-text-color: #001e39; /* Texto azul para el footer */
 }
 
-/* Estilo para la tabla */
-#tabla-bonita {
-    width: 100%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    background-color: transparent;
-    color: white;
-    text-align: center;
-    table-layout: fixed;
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
-/* Estilo general para las celdas y encabezados */
-#tabla-bonita th, 
-#tabla-bonita td {
-    border: 1px solid white; /* Bordes blancos */
-    padding: 20px; /* Espacio interno */
-    text-align: left; /* Alineación del texto a la izquierda */
-    vertical-align: top; /* Alineación vertical arriba */
-    word-wrap: break-word; /* Ajusta el texto largo dentro de la celda */
-    margin: 30px !important; /* Espacio alrededor */
-}
-
-/* Estilo para la celda con id="inicio" */
-#inicio {
-    border: 0!important; /* Elimina todos los bordes */
-    border-right: 1px solid white; /* Añade solo el borde derecho */
-}
-
-/* Imágenes dentro de las celdas */
-#tabla-bonita .cell-image {
-    display: block; /* Evita espacios adicionales debajo de la imagen */
-    margin: 0 auto 5px; /* Centra la imagen horizontalmente y añade margen inferior */
-    width: 80px; /* Ancho de la imagen */
-    height: auto; /* Mantiene la proporción */
-}
-
-/* Estilo general del body */
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-family);
+    line-height: 1.6;
+    background: var(--primary-color);
+    color: var(--white);
+    scroll-behavior: smooth;
     margin: 20px;
-    background-color: #001e39; /* Fondo oscuro */
-    color: white; /* Texto en blanco */
 }
 
+html {
+    scroll-padding-top: 100px;
+}
 
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
 
-        /* Navbar Styling */
-        nav {
-            background-color: #001e39;
-            padding: 10px 20px;
-        }
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
 
-        .logo img {
-            width: 300px;
-            height: auto;
-        }
+::-webkit-scrollbar-thumb {
+    background: var(--white);
+}
 
-        .nav-menu {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            justify-content: flex-end;
-        }
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
 
-        .nav-menu li {
-            margin: 0 15px;
-        }
+/* Links */
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.1em;
-        }
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px 25px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
 
-        .nav-toggle-label span {
-            display: block;
-            background-color: white;
-            height: 4px;
-            width: 25px;
-            margin: 5px auto;
-        }
+nav.scrolled {
+    background-color: var(--primary-color);
+}
 
-        /* Header Section */
-        header {
-            position: relative;
-            text-align: center;
-            color: white;
-            padding: 100px 20px;
-            background-color: #001e39;
-        }
+nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-        header h1 {
-            font-size: 3em;
-        }
+.logo img {
+    width: 300px;
+    height: auto;
+}
 
-        /* Quienes Somos Section */
-        #quienes_somos {
-            padding: 50px 0;
-            text-align: center;
-        }
-        /* Valores Section */
-        #valores {
-            padding: 50px 0;
-            text-align: center;
-        }
- /* Target Section */
-        #target {
-            padding: 50px 0;
-            text-align: center;
-        }
- /* Proyecto Section */
-        #proyecto {
-            padding: 50px 0;
-            text-align: center;
-        }
- /* Equipo Section */
-        #equipo {
-            padding: 50px 0;
-            text-align: center;
-        }
+.nav-menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: flex-end;
+}
 
-        /* Contenedor de la tabla */
-        .tabla-contenedor {
-            background-color: white; /* Fondo blanco */
-            padding: 0 50px; /* Espacio de 50px a ambos lados */
-            width: 100%; /* Asegura que ocupe todo el ancho de la pantalla */
-        }
+.nav-menu li {
+    margin: 0 15px;
+}
 
-        /* Footer */
-        footer {
-            background-color: #001e39;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
+.nav-menu a {
+    color: var(--white);
+    font-size: 1.1em;
+    position: relative;
+    padding: 5px 0;
+    font-weight: 500;
+}
 
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            .nav-menu {
-                flex-direction: column;
-                align-items: center;
-                display: none;
-            }
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: var(--white);
+    bottom: -5px;
+    left: 0;
+    transition: width 0.3s;
+}
 
-            .nav-toggle:checked + .nav-toggle-label + .nav-menu {
-                display: flex;
-            }
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+    width: 100%;
+}
 
-            .logo img {
-                width: 120px;
-            }
+.nav-toggle {
+    display: none;
+}
 
-            .tabla-contenedor {
-                padding: 0 20px; /* Menos espacio en móviles */
-            }
-        }
+.nav-toggle-label {
+    display: none;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    position: relative;
+    z-index: 1100;
+}
 
+.nav-toggle-label span {
+    display: block;
+    background: var(--white);
+    height: 3px;
+    width: 100%;
+    border-radius: 2px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nav-toggle:checked + .nav-toggle-label span {
+    background: transparent;
+}
+
+/* Ajustes en el header para evitar que el nav se oculte detrás de él */
+header {
+    padding: 300px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--primary-color);
+    position: relative;
+    margin-top: 60px;
+}
+
+header .content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--white);
+    line-height: 1.2;
+    animation: fadeInDown 1s ease-out;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    animation: fadeInUp 1s ease-out;
+}
+
+header .btn {
+    background: var(--white);
+    color: var(--primary-color);
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    display: inline-block;
+    transition: background 0.3s, transform 0.3s;
+}
+
+header .btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-3px);
+}
+
+/* Evitar que el contenido se solape con el navbar */
+body {
+    padding-top: 80px;
+}
+
+/* Sección de "Quiénes somos" o cualquier otra sección */
+section {
+    padding: 50px 20px;
+    text-align: center;
+    margin: 50px 0; /* Espacio entre secciones igual en la parte superior e inferior */
+}
+
+section:nth-of-type(odd) {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+section:nth-of-type(even) {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Sección Coriolis */
+#Coriolis, #Coriolis p {
+    color: var(--white)!important;
+    color:white!important;/* Texto en blanco */
+}
+
+/* Keyframes */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sections */
+section h2 {
+    font-size: 2.5rem;
+    color: inherit;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+section h2::after {
+    content: '';
+    width: 60px;
+    height: 4px;
+    background: currentColor;
+    margin: 10px auto 0;
+    display: block;
+    border-radius: 2px;
+}
+
+/* Estilo para todas las tablas */
+table#tabla-bonita,
+#tabla-datos table,
+#proyecto-tabla,
+#datos-alf {
+    width: calc(100% - 300px); /* Ancho de la página menos 300px */
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin-bottom: 50px; /* Margen en la parte inferior */
+}
+
+#tabla-bonita td,
+#tabla-datos table td,
+#proyecto-tabla td,
+#datos-alf td {
+    padding: 15px;
+    text-align: center;
+    border: none;
+    margin-bottom: 30px;
+}
+
+#tabla-bonita th,
+#tabla-datos table th,
+#proyecto-tabla th,
+#datos-alf th {
+    background-color: #002a4d;
+    font-size: 1.2rem;
+    color: var(--white);
+    padding: 15px;
+    border: none;
+}
+
+#tabla-bonita h2,
+#tabla-datos table h2,
+#proyecto-tabla h2,
+#datos-alf h2 {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+#tabla-bonita img.cell-image,
+#tabla-datos table img.cell-image,
+#proyecto-tabla img.cell-image,
+#datos-alf img.cell-image {
+    width: auto; /* Mantiene la proporción */
+    height: 100px; /* Ajustado a 100px de alto */
+    margin-bottom: 10px;
+}
+
+#tabla-bonita h3::after,
+#tabla-datos table h3::after,
+#proyecto-tabla h3::after,
+#datos-alf h3::after,
+#tabla-bonita h2::after,
+#tabla-datos table h2::after,
+#proyecto-tabla h2::after,
+#datos-alf h2::after {
+    content: none !important;
+}
+
+/* Sobrescribir cualquier estilo conflictivo */
+#tabla-bonita, #tabla-bonita *,
+#tabla-datos table, #tabla-datos table *,
+#proyecto-tabla, #proyecto-tabla *,
+#datos-alf, #datos-alf * {
+    background-color: transparent !important;
+    color: inherit !important;
+    border: none !important;
+}
+
+/* Footer */
+footer {
+    background-color: var(--footer-bg-color); /* Fondo negro */
+    color: var(--footer-text-color); /* Texto azul */
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: var(--footer-text-color);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+/* home */
+#home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    background-color: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.content-container {
+    width: 80%;
+    padding: 20px;
+    margin: auto;
+}
+
+.content-container p {
+    margin-bottom: 30px;
+}
+
+.content-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    line-height: 1.2;
+    color: var(--white) !important;
+}
+
+#home h1 {
+    color: var(--white) !important;
+    font-weight: bold;
+    font-size: 3em;
+}
+
+/* Contenedor de la sección tabla-datos */
+#tabla-datos {
+    padding: 50px 20px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.tabla-container {
+    width: 100%;
+    max-width: 1200px;
+    overflow-x: auto;
+    margin: 0 auto;
+}
+
+.tabla-container h3 {
+    border-bottom: none;
+    margin-bottom: 10px;
+}
+
+/* Sección de equipo */
+#equipo {
+    background-color: var(--primary-color); /* Fondo azul */
+    color: var(--white); /* Texto blanco */
+    text-align: center;
+    padding: 50px 20px;
+}
+
+#equipo p {
+    color: var(--white);
+}
+
+#equipo .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#equipo .profile {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px; /* Ancho máximo */
+    margin: 0 auto; /* Centrado horizontal */
+}
+
+#equipo .profile table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+#equipo .linkedin-badge {
+    width: auto; /* Ajusta el tamaño de la pastilla LinkedIn */
+    vertical-align: top; /* Alinea la badge con la parte superior de la celda */
+}
+
+#equipo .profile-details {
+    width: 100%; /* La segunda columna debe ocupar el resto del ancho */
+}
+
+#equipo .profile-details table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+#equipo .profile-details table td {
+    padding: 10px;
+    vertical-align: top;
+}
+
+#equipo .profile-details table td img.logo {
+    width: 100px;
+    height: auto;
+    margin: 0;
+}
+
+#linked td {
+    text-align: right !important;
+}
+
+#equipo table, #equipo table td, #equipo table th {
+    border: none;
+    padding: 0;
+}
+
+#equipo .profile table {
+    border: none;
+}
+
+#equipo .profile table td {
+    padding: 0;
+}
+
+#equipo .industries {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 1200px;
+    text-align: left;
+}
+
+#equipo .industries table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+#equipo .industries table td {
+    padding: 10px;
+    color: var(--white);
+}
+
+/* Estilo para "¿Qué valores nos guían?" en negrita */
+#valores h1 {
+    font-weight: bold;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    nav .container {
+        flex-direction: column;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-menu li {
+        margin: 10px 0;
+    }
+
+    header {
+        padding: 150px 20px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    header .btn {
+        padding: 10px 20px;
+    }
+
+    section {
+        padding: 30px 20px;
+    }
+
+    section h2 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    table#tabla-bonita,
+    #tabla-datos table,
+    #proyecto-tabla,
+    #datos-alf {
+        width: 100%; /* Full width on small screens */
+    }
+
+    table#tabla-bonita td,
+    #tabla-datos table td,
+    #proyecto-tabla td,
+    #datos-alf td {
+        padding: 10px;
+    }
+
+    table#tabla-bonita th,
+    #tabla-datos table th,
+    #proyecto-tabla th,
+    #datos-alf th {
+        padding: 10px;
+    }
+
+    #tabla-bonita img.cell-image,
+    #tabla-datos table img.cell-image,
+    #proyecto-tabla img.cell-image,
+    #datos-alf img.cell-image {
+        height: 80px; /* Adjusted height for small screens */
+    }
+
+    .content-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .content-container h1 {
+        font-size: 2rem;
+    }
+
+    #home h1 {
+        font-size: 2.5em;
+    }
+
+    .profile-details table td img.logo {
+        width: 80px;
+    }
+
+    .industries table td {
+        padding: 5px;
+    }
+}
