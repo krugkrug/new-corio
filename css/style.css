@@ -209,7 +209,7 @@ h1 {
 /* Section Styles */
 section {
     padding: 50px 20px;
-
+    text-align: center;
     margin: 50px 0;
 }
 
@@ -281,17 +281,23 @@ section:nth-of-type(even) {
     margin-bottom: 20px;
     position: relative;
     z-index: 1;
+    text-align: left;
 }
 
 .blue-box {
-    background-color: #b0c4de; /* Azul grisáceo */
+    background-color: var(--bg-blue-gray); /* Azul grisáceo */
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
     left: -30px; /* Sobresale por el costado izquierdo */
     z-index: 2;
 }
 
 .dark-blue-box {
-    background-color: #002a4d; /* Azul oscuro */
+    background-color: var(--bg-dark-blue); /* Azul oscuro */
     color: var(--white);
+    padding: 20px;
+    position: relative;
     z-index: 3;
 }
 
@@ -299,7 +305,6 @@ section:nth-of-type(even) {
     position: absolute;
     right: 0;
     top: 0;
-    bottom: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -317,7 +322,8 @@ section:nth-of-type(even) {
         align-items: flex-start;
     }
 
-    .coriolis-header h1, .coriolis-header h2 {
+    .coriolis-header h1,
+    .coriolis-header h2 {
         text-align: left;
     }
 
@@ -326,7 +332,7 @@ section:nth-of-type(even) {
         margin-top: 10px;
     }
 
-    .coriolis-box {
+    .blue-box {
         left: 0;
     }
 
@@ -454,6 +460,10 @@ table#tabla-bonita,
     background-color: transparent !important;
     color: inherit !important;
     border: none !important;
+}
+
+#tabla-bonita h1 {
+    text-align: left;
 }
 
 /* Footer */
@@ -706,11 +716,29 @@ html {
 
     #tabla-bonita img.cell-image,
     #tabla-datos table img.cell-image,
-    #proyecto-tabla img.cell
-
-
-    /*inicio*/
-
-    #tabla-bonita h1 {
-   text-align: left;!important;
+    #proyecto-tabla img.cell-image,
+    #datos-alf img.cell-image {
+        height: 80px;
     }
+
+    .content-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .content-container h1 {
+        font-size: 2rem;
+    }
+
+    #home h1 {
+        font-size: 2.5em;
+    }
+
+    .profile-details table td img.logo {
+        width: 80px;
+    }
+
+    .industries table td {
+        padding: 5px;
+    }
+}
