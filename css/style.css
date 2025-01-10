@@ -711,6 +711,6 @@ html {
 
     /*inicio*/
 
-    h1 #inicio{
-    text-align:left!important;
+    #inicio h1 {
+   text-align: left;!important;
     }
