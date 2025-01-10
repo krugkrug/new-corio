@@ -217,15 +217,25 @@ section:nth-of-type(even) {
     padding: 20px;
     margin: 20px 0;
     border-radius: 8px;
-    color: var(--white);
+    color: var(--primary-color);
+    position: relative;
+}
+
+.coriolis-box.white-box {
+    background-color: var(--white);
+    width: 90%;
+    margin-left: 5%;
+}
+
+.coriolis-box.light-blue-box {
+    background-color: #d3e0ea; /* Azul grisáceo */
+    width: 95%;
+    margin-left: 2.5%;
 }
 
 .coriolis-box.blue-box {
     background-color: #007bff; /* Azul */
-}
-
-.coriolis-box.dark-blue-box {
-    background-color: #0056b3; /* Azul oscuro */
+    width: 100%;
 }
 
 .coriolis-container {
@@ -238,6 +248,7 @@ section:nth-of-type(even) {
 .coriolis-header {
     text-align: center;
     margin-bottom: 30px;
+    position: relative;
 }
 
 .coriolis-header h1,
@@ -246,27 +257,45 @@ section:nth-of-type(even) {
 }
 
 .coriolis-logo {
-    width: 150px;
-    height: auto;
-    margin: 20px 0;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
 }
 
 .coriolis-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
 }
 
 .coriolis-planet {
-    margin-top: 20px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 300px;
+    z-index: 1;
 }
 
 .coriolis-planet img {
-    width: 200px;
-    height: auto;
-    margin-bottom: 20px;
+    max-height: 300px;
+    width: auto;
+    display: block;
+}
+
+/* Asegurar que el contenido no se superponga con la imagen */
+.coriolis-box p {
+    position: relative;
+    z-index: 2;
+}
+
+/* Ajustes adicionales para asegurar que la imagen no tape el texto */
+.coriolis-content {
+    margin-top: 200px; /* Ajustar según sea necesario */
 }
 /* Keyframes */
 @keyframes fadeInDown {
