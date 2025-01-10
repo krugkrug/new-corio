@@ -707,3 +707,10 @@ html {
     #tabla-bonita img.cell-image,
     #tabla-datos table img.cell-image,
     #proyecto-tabla img.cell
+
+
+    /*inicio*/
+
+    #inicio h1{
+    text-align:left
+    }
