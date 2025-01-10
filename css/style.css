@@ -25,11 +25,12 @@ body {
     background: var(--primary-color);
     color: var(--white);
     scroll-behavior: smooth;
-    margin: 20px;
+    margin: 0; /* Remove margin */
+    padding-top: 60px; /* Add padding for navbar */
 }
 
 html {
-    scroll-padding-top: 100px;
+    scroll-padding-top: 60px; /* Adjusted for fixed navbar */
 }
 
 /* Scrollbar */
@@ -146,14 +147,13 @@ nav .container {
 
 /* Header */
 header {
-    padding: 300px 20px;
+    padding: 100px 20px 20px; /* Reduced top padding */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     background-color: var(--primary-color);
     position: relative;
-    margin-top: 60px;
 }
 
 header .content {
@@ -189,11 +189,6 @@ header .btn {
 header .btn:hover {
     background: var(--secondary-color);
     transform: translateY(-3px);
-}
-
-/* Avoid content overlap with navbar */
-body {
-    padding-top: 80px;
 }
 
 /* Unified h1 Style */
@@ -236,27 +231,28 @@ section:nth-of-type(even) {
     width: 100%;
     max-width: 1200px;
     position: relative;
+    text-align: left!important;
 }
 
 .coriolis-header {
     background-color: var(--white);
     padding: 20px;
     display: flex;
+    color: black;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 30px;
-    text-align: left;
+      text-align: left!important;
 }
 
-.coriolis-header h1,
-.coriolis-header h2 {
+.coriolis-header h1, .coriolis-header h2 {
     margin: 0;
-    text-align: left;
+
 }
 
 .coriolis-header h1 {
     font-size: 2rem;
-    color: black;
+    color:black;
 }
 
 .coriolis-header h2 {
@@ -285,6 +281,9 @@ section:nth-of-type(even) {
 
 .blue-box {
     background-color: var(--bg-blue-gray); /* Azul grisáceo */
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
     left: -30px; /* Sobresale por el costado izquierdo */
     z-index: 2;
 }
@@ -292,6 +291,8 @@ section:nth-of-type(even) {
 .dark-blue-box {
     background-color: var(--bg-dark-blue); /* Azul oscuro */
     color: var(--white);
+    padding: 20px;
+    position: relative;
     z-index: 3;
 }
 
@@ -327,39 +328,7 @@ section:nth-of-type(even) {
         margin-top: 10px;
     }
 
-    .coriolis-box {
-        left: 0;
-    }
-
-    .coriolis-planet {
-        position: static;
-        margin-top: 20px;
-    }
-
-    .coriolis-planet img {
-        width: 100%;
-        max-width: 500px;
-        height: auto;
-    }
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .coriolis-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .coriolis-header h1, .coriolis-header h2 {
-        text-align: left;
-    }
-
-    .coriolis-logo {
-        align-self: flex-end;
-        margin-top: 10px;
-    }
-
-    .coriolis-box {
+    .blue-box {
         left: 0;
     }
 
@@ -487,6 +456,10 @@ table#tabla-bonita,
     background-color: transparent !important;
     color: inherit !important;
     border: none !important;
+}
+
+#tabla-bonita h1 {
+    text-align: left;
 }
 
 /* Footer */
@@ -739,11 +712,29 @@ html {
 
     #tabla-bonita img.cell-image,
     #tabla-datos table img.cell-image,
-    #proyecto-tabla img.cell
-
-
-    /*inicio*/
-
-    #tabla-bonita h1 {
-   text-align: left;!important;
+    #proyecto-tabla img.cell-image,
+    #datos-alf img.cell-image {
+        height: 80px;
     }
+
+    .content-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .content-container h1 {
+        font-size: 2rem;
+    }
+
+    #home h1 {
+        font-size: 2.5em;
+    }
+
+    .profile-details table td img.logo {
+        width: 80px;
+    }
+
+    .industries table td {
+        padding: 5px;
+    }
+}
