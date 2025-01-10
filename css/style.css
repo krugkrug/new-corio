@@ -10,6 +10,9 @@
 }
 
 /* Global Styles */
+.bold {
+    font-weight: bold;
+}
 * {
     margin: 0;
     padding: 0;
@@ -60,7 +63,7 @@ nav {
     width: 100%;
     z-index: 1000;
     padding: 10px 25px;
-    background-color: transparent;
+    background-color: var(--primary-color); /* Fondo siempre visible */
     transition: background-color 0.3s ease;
 }
 
@@ -144,14 +147,12 @@ nav .container {
 
 /* Ajustes en el header para evitar que el nav se oculte detrás de él */
 header {
-    padding: 300px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     background-color: var(--primary-color);
     position: relative;
-    margin-top: 60px;
 }
 
 header .content {
@@ -196,9 +197,7 @@ body {
 
 /* Sección de "Quiénes somos" o cualquier otra sección */
 section {
-    padding: 50px 20px;
     text-align: center;
-    margin: 50px 0; /* Espacio entre secciones igual en la parte superior e inferior */
 }
 
 section:nth-of-type(odd) {
@@ -213,40 +212,70 @@ section:nth-of-type(even) {
 
 /* Sección Coriolis */
 /* Estilos para las cajas de colores en la sección Coriolis */
+#coriolis-section{
+width:100%;
+background:red;
+
+}
+
 .coriolis-box {
     padding: 20px;
     margin: 20px 0;
     border-radius: 8px;
     color: var(--primary-color);
     position: relative;
-}
+ font-weight: lighter;}
 
 .coriolis-box.white-box {
     background-color: var(--white);
-    width: 90%;
-    margin-left: 5%;
+    margin-left: 5%; /* Corrige el error tipográfico aquí */
+    text-align: left;
+    overflow:hidden;
+    font-size:18px;
 }
 
 .coriolis-box.light-blue-box {
-    background-color: #d3e0ea; /* Azul grisáceo */
-    width: 95%;
-    margin-left: 2.5%;
+    background-color: #455668; /* Azul grisáceo */
+
+
 }
 
 .coriolis-box.blue-box {
-    background-color: #007bff; /* Azul */
+    background-color: #455668; /* Azul */
     width: 100%;
+     margin:0;
+}
+.dark-blue-box{
+    background-color: #071e37; /* Azul */
+    width: 100%;
+     margin:0;
+     padding-right:30%;
+
+}
+.coriolis-box.blue-box,
+.coriolis-box.light-blue-box,
+.dark-blue-box{
+ margin-left:-30px;
+ width:100%;
+ float:left;
+ margin-top:0;
+ margin-bottom:0;
+ padding:30px;
+ padding-right:50%;
+ color:white;
+ order-radius: 0px;
+
 }
 
 .coriolis-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    background-color:white;
+    position: relative; /* Necesario para el posicionamiento absoluto del hijo */
 }
 
 .coriolis-header {
-    text-align: center;
+width:100%;
     margin-bottom: 30px;
     position: relative;
 }
@@ -254,11 +283,21 @@ section:nth-of-type(even) {
 .coriolis-header h1,
 .coriolis-header h2 {
     margin-bottom: 10px;
+    text-align:left!important;
+    padding-left:30px;
+}
+.coriolis-header h1{
+
+font-size:60px;
+}
+.coriolis-header h2 {
+    font-size:25px;
+    font-weight:normal;
+
 }
 
 .coriolis-logo {
     width: 80px;
-    height: 80px;
     position: absolute;
     top: 0;
     right: 0;
@@ -266,6 +305,7 @@ section:nth-of-type(even) {
 }
 
 .coriolis-content {
+width:100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -273,30 +313,31 @@ section:nth-of-type(even) {
 }
 
 .coriolis-planet {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-height: 300px;
-    z-index: 1;
-}
+height: 500px;
+overflow:hidden;
+ position: absolute;
+    bottom: 0; /* Ajusta la posición según lo necesites */
+    left: 55%;
+    z-index: 2; /* Este div estará en la parte superior */
+   }
 
 .coriolis-planet img {
-    max-height: 300px;
-    width: auto;
-    display: block;
+    max-height: 800px;
+
 }
 
 /* Asegurar que el contenido no se superponga con la imagen */
 .coriolis-box p {
     position: relative;
     z-index: 2;
+    float:left;
 }
 
 /* Ajustes adicionales para asegurar que la imagen no tape el texto */
 .coriolis-content {
     margin-top: 200px; /* Ajustar según sea necesario */
 }
+
 /* Keyframes */
 @keyframes fadeInDown {
     from {
@@ -328,15 +369,7 @@ section h2 {
     position: relative;
 }
 
-section h2::after {
-    content: '';
-    width: 60px;
-    height: 4px;
-    background: currentColor;
-    margin: 10px auto 0;
-    display: block;
-    border-radius: 2px;
-}
+
 
 /* Estilo para todas las tablas */
 table#tabla-bonita,
@@ -360,6 +393,9 @@ table#tabla-bonita,
     text-align: center;
     border: none;
     margin-bottom: 30px;
+vertical-align: top;
+padding-bottom:50px;
+
 }
 
 #tabla-bonita th,
@@ -440,7 +476,7 @@ footer p {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50vh;
+    height: 300px; /* Ajustar el alto de la primera sección */
     background-color: var(--primary-color);
     color: var(--white);
     text-align: center;
