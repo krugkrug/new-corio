@@ -222,7 +222,6 @@ section:nth-of-type(even) {
     background-color: var(--primary-color);
     color: var(--white);
 }
-
 /* General Styles */
 .coriolis-section {
     display: flex;
@@ -285,6 +284,9 @@ section:nth-of-type(even) {
 
 .blue-box {
     background-color: var(--bg-blue-gray); /* Azul grisáceo */
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
     left: -30px; /* Sobresale por el costado izquierdo */
     z-index: 2;
 }
@@ -292,6 +294,8 @@ section:nth-of-type(even) {
 .dark-blue-box {
     background-color: var(--bg-dark-blue); /* Azul oscuro */
     color: var(--white);
+    padding: 20px;
+    position: relative;
     z-index: 3;
 }
 
@@ -327,7 +331,7 @@ section:nth-of-type(even) {
         margin-top: 10px;
     }
 
-    .coriolis-box {
+    .blue-box {
         left: 0;
     }
 
@@ -342,39 +346,6 @@ section:nth-of-type(even) {
         height: auto;
     }
 }
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .coriolis-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .coriolis-header h1, .coriolis-header h2 {
-        text-align: left;
-    }
-
-    .coriolis-logo {
-        align-self: flex-end;
-        margin-top: 10px;
-    }
-
-    .coriolis-box {
-        left: 0;
-    }
-
-    .coriolis-planet {
-        position: static;
-        margin-top: 20px;
-    }
-
-    .coriolis-planet img {
-        width: 100%;
-        max-width: 500px;
-        height: auto;
-    }
-}
-
 /* Keyframes */
 @keyframes fadeInDown {
     from {
