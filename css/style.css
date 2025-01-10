@@ -5,8 +5,10 @@
     --font-family: 'Outfit', sans-serif;
     --white: #ffffff;
     --black: #000000;
-    --footer-bg-color: #000000; /* Fondo negro para el footer */
-    --footer-text-color: #001e39; /* Texto azul para el footer */
+    --footer-bg-color: #000000;
+    --footer-text-color: #001e39;
+    --bg-blue-gray: #a8b0c0; /* Azul grisáceo */
+    --bg-dark-blue: #002a4d; /* Azul oscuro */
 }
 
 /* Global Styles */
@@ -23,11 +25,12 @@ body {
     background: var(--primary-color);
     color: var(--white);
     scroll-behavior: smooth;
-    margin: 20px;
+    margin: 0; /* Remove margin */
+    padding-top: 60px; /* Add padding for navbar */
 }
 
 html {
-    scroll-padding-top: 100px;
+    scroll-padding-top: 60px; /* Adjusted for fixed navbar */
 }
 
 /* Scrollbar */
@@ -142,16 +145,15 @@ nav .container {
     background: transparent;
 }
 
-/* Ajustes en el header para evitar que el nav se oculte detrás de él */
+/* Header */
 header {
-    padding: 300px 20px;
+    padding: 100px 20px 20px; /* Reduced top padding */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     background-color: var(--primary-color);
     position: relative;
-    margin-top: 60px;
 }
 
 header .content {
@@ -176,7 +178,7 @@ header p {
 
 header .btn {
     background: var(--white);
-    color: var(--primary-color);
+    color: var (--primary-color);
     padding: 12px 25px;
     border-radius: 25px;
     font-weight: bold;
@@ -185,20 +187,25 @@ header .btn {
 }
 
 header .btn:hover {
-    background: var(--secondary-color);
+    background: var (--secondary-color);
     transform: translateY(-3px);
 }
 
-/* Evitar que el contenido se solape con el navbar */
-body {
-    padding-top: 80px;
+/* Unified h1 Style */
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var (--white);
+    line-height: 1.2;
+    font-weight: bold;
+    animation: fadeInDown 1s ease-out;
 }
 
-/* Sección de "Quiénes somos" o cualquier otra sección */
+/* Section Styles */
 section {
     padding: 50px 20px;
     text-align: center;
-    margin: 50px 0; /* Espacio entre secciones igual en la parte superior e inferior */
+    margin: 50px 0;
 }
 
 section:nth-of-type(odd) {
@@ -211,10 +218,124 @@ section:nth-of-type(even) {
     color: var(--white);
 }
 
-/* Sección Coriolis */
-#Coriolis, #Coriolis p {
-    color: var(--white)!important;
-    color:white!important;/* Texto en blanco */
+/* General Styles */
+.coriolis-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    background-color: var(--primary-color);
+}
+
+.coriolis-container {
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+}
+
+.coriolis-header {
+    background-color: var(--white);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.coriolis-header h1,
+.coriolis-header h2 {
+    margin: 0;
+    text-align: left;
+}
+
+.coriolis-header h1 {
+    font-size: 2rem;
+    color: black;
+}
+
+.coriolis-header h2 {
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
+.coriolis-logo {
+    width: 100px;
+    height: auto;
+}
+
+.coriolis-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.coriolis-box {
+    background-color: var(--white);
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    text-align: left;
+}
+
+.blue-box {
+    background-color: var(--bg-blue-gray); /* Azul grisáceo */
+    left: -30px; /* Sobresale por el costado izquierdo */
+    z-index: 2;
+}
+
+.dark-blue-box {
+    background-color: var(--bg-dark-blue); /* Azul oscuro */
+    color: var(--white);
+    z-index: 3;
+}
+
+.coriolis-planet {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coriolis-planet img {
+    width: 500px;
+    height: auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .coriolis-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .coriolis-header h1,
+    .coriolis-header h2 {
+        text-align: left;
+    }
+
+    .coriolis-logo {
+        align-self: flex-end;
+        margin-top: 10px;
+    }
+
+    .blue-box {
+        left: 0;
+    }
+
+    .coriolis-planet {
+        position: static;
+        margin-top: 20px;
+    }
+
+    .coriolis-planet img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+    }
 }
 
 /* Keyframes */
@@ -263,13 +384,13 @@ table#tabla-bonita,
 #tabla-datos table,
 #proyecto-tabla,
 #datos-alf {
-    width: calc(100% - 300px); /* Ancho de la página menos 300px */
+    width: calc(100% - 300px);
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     table-layout: fixed;
     border-collapse: collapse;
-    margin-bottom: 50px; /* Margen en la parte inferior */
+    margin-bottom: 50px;
 }
 
 #tabla-bonita td,
@@ -305,8 +426,8 @@ table#tabla-bonita,
 #tabla-datos table img.cell-image,
 #proyecto-tabla img.cell-image,
 #datos-alf img.cell-image {
-    width: auto; /* Mantiene la proporción */
-    height: 100px; /* Ajustado a 100px de alto */
+    width: auto;
+    height: 100px;
     margin-bottom: 10px;
 }
 
@@ -331,10 +452,14 @@ table#tabla-bonita,
     border: none !important;
 }
 
+#tabla-bonita h1 {
+    text-align: left;
+}
+
 /* Footer */
 footer {
-    background-color: var(--footer-bg-color); /* Fondo negro */
-    color: var(--footer-text-color); /* Texto azul */
+    background-color: var(--footer-bg-color);
+    color: var(--footer-text-color);
     text-align: center;
     padding: 20px 0;
     position: relative;
@@ -362,7 +487,7 @@ footer p {
     align-items: center;
     height: 50vh;
     background-color: var(--primary-color);
-    color: var(--white);
+    color: var (--white);
     text-align: center;
     margin-bottom: 50px;
 }
@@ -385,9 +510,13 @@ footer p {
 }
 
 #home h1 {
+    font-size: 3rem;
     color: var(--white) !important;
+}
+
+#valores h1 {
     font-weight: bold;
-    font-size: 3em;
+    font-size: 3rem;
 }
 
 /* Contenedor de la sección tabla-datos */
@@ -414,8 +543,8 @@ footer p {
 
 /* Sección de equipo */
 #equipo {
-    background-color: var(--primary-color); /* Fondo azul */
-    color: var(--white); /* Texto blanco */
+    background-color: var(--primary-color);
+    color: var(--white);
     text-align: center;
     padding: 50px 20px;
 }
@@ -432,11 +561,11 @@ footer p {
 
 #equipo .profile {
     display: flex;
-    justify-content: center; /* Centrar horizontalmente */
+    justify-content: center;
     align-items: flex-start;
     width: 100%;
-    max-width: 1200px; /* Ancho máximo */
-    margin: 0 auto; /* Centrado horizontal */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 #equipo .profile table {
@@ -446,12 +575,12 @@ footer p {
 }
 
 #equipo .linkedin-badge {
-    width: auto; /* Ajusta el tamaño de la pastilla LinkedIn */
-    vertical-align: top; /* Alinea la badge con la parte superior de la celda */
+    width: auto;
+    vertical-align: top;
 }
 
 #equipo .profile-details {
-    width: 100%; /* La segunda columna debe ocupar el resto del ancho */
+    width: 100%;
 }
 
 #equipo .profile-details table {
@@ -506,7 +635,6 @@ footer p {
     color: var(--white);
 }
 
-/* Estilo para "¿Qué valores nos guían?" en negrita */
 #valores h1 {
     font-weight: bold;
 }
@@ -559,7 +687,7 @@ html {
     #tabla-datos table,
     #proyecto-tabla,
     #datos-alf {
-        width: 100%; /* Full width on small screens */
+        width: 100%;
     }
 
     table#tabla-bonita td,
@@ -580,7 +708,7 @@ html {
     #tabla-datos table img.cell-image,
     #proyecto-tabla img.cell-image,
     #datos-alf img.cell-image {
-        height: 80px; /* Adjusted height for small screens */
+        height: 80px;
     }
 
     .content-container {
