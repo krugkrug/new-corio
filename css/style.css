@@ -712,5 +712,5 @@ html {
     /*inicio*/
 
     #inicio h1{
-    text-align:left
+    text-align:left!important;
     }
