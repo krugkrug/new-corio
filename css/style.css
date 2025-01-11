@@ -68,7 +68,7 @@ nav {
 }
 
 nav.scrolled {
-    background-color: var(--primary-color);
+    background-color: var(--footer-bg-color); /* Cambia el color al azul más pronto */
 }
 
 nav .container {
@@ -219,7 +219,9 @@ width:100%;
 background:red;
 
 }
-
+#coriolis-section .coriolis-box {
+    color: var(--white); /* Cambiar el color del texto a blanco */
+}
 .coriolis-box {
     padding: 20px;
     margin: 20px 0;
@@ -299,12 +301,12 @@ font-size:60px;
 }
 
 .coriolis-logo {
-    width: 80px;
+ width: 80px;
     position: absolute;
-    top: 0;
+    top: -20px; /* Mover 20px más arriba */
     right: 0;
     margin: 10px;
-    z-index:2000;
+    z-index: 2000;
 }
 
 .coriolis-content {
@@ -726,4 +728,15 @@ html {
     .industries table td {
         padding: 5px;
     }
+}
+
+.proyecto-columna {
+    opacity: 0; /* Comenzar oculto */
+    transform: translateY(20px); /* Mover hacia abajo */
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.proyecto-columna.visible {
+    opacity: 1; /* Hacer visible */
+    transform: translateY(0); /* Mover a posición original */
 }
