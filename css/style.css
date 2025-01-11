@@ -69,7 +69,8 @@ nav {
 
 nav.scrolled {
     background-color: var(--footer-bg-color); /* Cambia el color al azul más pronto */
-color:red;}
+color:red!important;
+}
 
 nav .container {
     display: flex;
