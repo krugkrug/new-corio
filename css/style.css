@@ -106,7 +106,7 @@ nav .container {
     position: absolute;
     width: 0;
     height: 2px;
-    background: var(--white);
+   /* background: var(--white);*/
     bottom: -5px;
     left: 0;
     transition: width 0.3s;
