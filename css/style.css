@@ -68,7 +68,7 @@ nav {
 }
 
 nav.scrolled {
-    background-color: var(--footer-bg-color); /* Cambia el color al azul más pronto */
+    background-color: var(  --primary-color); /* Cambia el color al azul más pronto */
 color:red!important;
 }
 
