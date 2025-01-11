@@ -55,7 +55,7 @@
 
             // Change navbar background after scrolling 100px
             window.addEventListener('scroll', () => {
-              if (window.scrollY > 100) {
+              if (window.scrollY >200) {
                     navbar.classList.add('scrolled');
                 } else {
                     navbar.classList.remove('scrolled');
