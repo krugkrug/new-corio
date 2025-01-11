@@ -319,7 +319,7 @@ overflow:hidden;
  position: absolute;
     bottom: 0; /* Ajusta la posición según lo necesites */
     left: 55%;
-    z-index: 2; /* Este div estará en la parte superior */
+    z-index: 800; /* Este div estará en la parte superior */
    }
 
 .coriolis-planet img {
