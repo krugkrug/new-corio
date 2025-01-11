@@ -68,7 +68,7 @@ nav {
 }
 
 nav.scrolled {
-    background-color: var(  --primary-color); /* Cambia el color al azul más pronto */
+    background-color: var(--primary-color); /* Cambia el color al azul más pronto */
 color:red!important;
 }
 
@@ -202,6 +202,8 @@ section {
     margin-bottom:80px;
     padding-top:40px;
 }
+.coriolis section{
+color:red;}
 
 section:nth-of-type(odd) {
     background-color: var(--secondary-color);
@@ -225,7 +227,7 @@ background:red;
 }
 .coriolis-box {
     padding: 20px;
-    margin: 20px 0;
+
     border-radius: 8px;
     color: var(--primary-color);
     position: relative;
