@@ -262,10 +262,14 @@ background:red;
  margin-bottom:0;
  padding:30px;
  padding-right:50%;
- color:white!important;
+
  order-radius: 0px;
 
 }
+.coriolis-box.blue-box p,
+.coriolis-box.light-blue-box p,
+.dark-blue-box p{
+color:white!important;}
 
 .coriolis-container {
     display: flex;
