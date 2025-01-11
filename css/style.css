@@ -262,7 +262,7 @@ background:red;
  margin-bottom:0;
  padding:30px;
  padding-right:50%;
- color:white;
+ color:white!important;
  order-radius: 0px;
 
 }
