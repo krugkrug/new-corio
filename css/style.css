@@ -266,9 +266,7 @@ background:red;
  order-radius: 0px;
 
 }
-.coriolis-box p,
-.coriolis-box.light-blue-box p,
-.dark-blue-box p{
+p .coriolis-box {
 color:white!important;}
 
 .coriolis-container {
