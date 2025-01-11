@@ -506,6 +506,9 @@ footer p {
     font-weight: bold;
     font-size: 3em;
 }
+#home{
+margin-top:20px;
+}
 
 /* Contenedor de la sección tabla-datos */
 #tabla-datos {
@@ -664,7 +667,7 @@ html {
     }
 
     section {
-        padding: 30px 20px;
+        padding: 30px 30px;
     }
 
     section h2 {
