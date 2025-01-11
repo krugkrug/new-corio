@@ -302,6 +302,7 @@ font-size:60px;
     top: 0;
     right: 0;
     margin: 10px;
+    z-index:900;
 }
 
 .coriolis-content {
