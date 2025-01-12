@@ -53,26 +53,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Cambiar el fondo del navbar después de desplazarse 300px
- document.addEventListener('DOMContentLoaded', () => {
-    const proyectoColumnas = document.querySelectorAll('#proyecto-tabla td');
+document.addEventListener('DOMContentLoaded', () => {
+    const headers = document.querySelectorAll('#Datos .header'); // Selecciona los encabezados de las columnas
 
-    proyectoColumnas.forEach(columna => {
-        // Inicialmente ocultar el contenido de las columnas
-        columna.style.opacity = '0';
-        columna.style.transform = 'translateY(20px)'; // Mover hacia abajo
-
-        // Agregar un evento de clic en el encabezado de la columna
-        const header = columna.previousElementSibling; // Obtener el encabezado correspondiente
+    headers.forEach(header => {
         header.addEventListener('click', () => {
-            if (columna.style.opacity === '0') {
-                columna.style.opacity = '1'; // Hacer visible
-                columna.style.transform = 'translateY(0)'; // Volver a la posición original
-                columna.style.transition = 'opacity 0.5s ease, transform 0.5s ease'; // Agregar transición
+            const targetClass = header.getAttribute('data-target'); // Obtiene el nombre de la clase objetivo
+            const targetColumn = document.querySelector(`.${targetClass}`); // Selecciona la columna objetivo
+
+            // Alternar la visibilidad
+            if (targetColumn.style.opacity === '0') {
+                targetColumn.style.opacity = '1'; // Hacer visible
+                targetColumn.style.transform = 'translateY(0)'; // Volver a la posición original
             } else {
-                columna.style.opacity = '0'; // Ocultar
-                columna.style.transform = 'translateY(20px)'; // Mover hacia abajo
+                targetColumn.style.opacity = '0'; // Ocultar
+                targetColumn.style.transform = 'translateY(20px)'; // Mover hacia abajo
             }
+
+            // Aplicar la transición
+            targetColumn.style.transition = 'opacity 0.5s ease, transform 0.5s ease'; // Agregar transición
         });
     });
 });
