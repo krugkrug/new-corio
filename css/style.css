@@ -743,3 +743,7 @@ html {
     opacity: 1; /* Hacer visible */
     transform: translateY(0); /* Mover a posición original */
 }
+
+.columna1, .columna2, .columna3 {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
