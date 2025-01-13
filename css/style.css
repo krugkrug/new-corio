@@ -35,7 +35,7 @@ html {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
+    /*width: 10px;*/
 }
 
 ::-webkit-scrollbar-track {
@@ -199,7 +199,6 @@ body {
 /* Sección de "Quiénes somos" o cualquier otra sección */
 section {
     text-align: center;
-    margin-bottom:80px;
     padding-top:40px;
 }
 .coriolis section{
@@ -390,7 +389,6 @@ table#tabla-bonita,
     margin-right: auto;
     table-layout: fixed;
     border-collapse: collapse;
-    margin-bottom: 50px; /* Margen en la parte inferior */
 }
 
 #tabla-bonita td,
@@ -402,7 +400,6 @@ table#tabla-bonita,
     border: none;
     margin-bottom: 30px;
 vertical-align: top;
-padding-bottom:50px;
 
 }
 
@@ -450,20 +447,24 @@ padding-bottom:50px;
 #tabla-datos table, #tabla-datos table *,
 #proyecto-tabla, #proyecto-tabla *,
 #datos-alf, #datos-alf * {
-    background-color: transparent !important;
+    background-color: transparent;
     color: inherit !important;
     border: none !important;
+    margin-bottom:20px;
+}
+.transparrr{
+    background-color: transparent!important;
 }
 
 /* Footer */
 footer {
     background-color: var(--footer-bg-color); /* Fondo negro */
-    color: var(--footer-text-color); /* Texto azul */
+    color: white!important; /* Texto azul */
     text-align: center;
     padding: 20px 0;
     position: relative;
     bottom: 0;
-    width: 100%;
+    width: 100%!important ;
 }
 
 footer a {
@@ -519,7 +520,6 @@ margin-top:20px;
 
 /* Contenedor de la sección tabla-datos */
 #tabla-datos {
-    padding: 50px 20px;
     margin: 0;
     display: flex;
     justify-content: center;
@@ -732,18 +732,19 @@ html {
         padding: 5px;
     }
 }
-
-.proyecto-columna {
-    opacity: 0; /* Comenzar oculto */
-    transform: translateY(20px); /* Mover hacia abajo */
+.hidden {
+    opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease;
+    height: 0; /* Opcional, si deseas ocultar el espacio también */
+    overflow: hidden; /* Para evitar que el contenido se muestre */
 }
 
-.proyecto-columna.visible {
-    opacity: 1; /* Hacer visible */
-    transform: translateY(0); /* Mover a posición original */
+.columna1.colorin {
+background-color:#778890!important;
 }
-
-.columna1, .columna2, .columna3 {
-    transition: opacity 0.5s ease, transform 0.5s ease;
+.columna2.colorin {
+background-color:#778899!important;
+}
+.columna3.colorin {
+background-color:#708090!important;
 }
