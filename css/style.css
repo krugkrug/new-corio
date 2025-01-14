@@ -168,13 +168,12 @@ header h1 {
     margin-bottom: 20px;
     color: var(--white);
     line-height: 1.2;
-    animation: fadeInDown 1s ease-out;
 }
 
 header p {
     font-size: 1.2rem;
     margin-bottom: 30px;
-    animation: fadeInUp 1s ease-out;
+/*    animation: fadeInUp 1s ease-out;*/
 }
 
 header .btn {
