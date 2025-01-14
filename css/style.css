@@ -144,6 +144,7 @@ nav .container {
 }
 
 .nav-toggle:checked + .nav-toggle-label span {
+   /* background: transparent; issa*/
 }
 
 /* Ajustes en el header para evitar que el nav se oculte detrás de él */
