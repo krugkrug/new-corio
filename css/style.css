@@ -493,12 +493,12 @@ footer p {
 /* home */
 #home {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     height: 300px; /* Ajustar el alto de la primera sección */
     background-color: var(--primary-color);
     color: var(--white);
-    text-align: center;
+    text-align: left;
     margin-bottom: 50px;
 }
 
