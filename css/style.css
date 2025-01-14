@@ -68,7 +68,7 @@ nav {
 }
 
 nav.scrolled {
-    background-color: var(--primary-color); /* Cambia el color al azul más pronto */
+    background-color: var(--primary-color)!important; /* Cambia el color al azul más pronto */
 color:red!important;
 }
 
@@ -111,7 +111,7 @@ nav .container {
     bottom: -5px;
     left: 0;
     transition: width 0.3s;
-    color:white;
+    color:white!important;
 }
 
 .nav-menu a:hover::after,
