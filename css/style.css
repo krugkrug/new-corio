@@ -492,8 +492,9 @@ footer p {
 /* home */
 #home {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
+    padding-left:90px;
     height: 300px; /* Ajustar el alto de la primera sección */
     background-color: var(--primary-color);
     color: var(--white);
