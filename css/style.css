@@ -458,7 +458,7 @@ vertical-align: top;
 
 /* Footer */
 footer {
-    background-color: var(--footer-bg-color); /* Fondo negro */
+    background-color:#grey;
     color: white!important; /* Texto azul */
     text-align: center;
     padding: 20px 0;
