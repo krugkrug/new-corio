@@ -63,7 +63,7 @@ nav {
     width: 100%;
     z-index: 1000;
     padding: 10px 25px;
-    background-color: var(--primary-color); /* Fondo siempre visible */
+    background-color: var(--primary-color)!important; /* Fondo siempre visible */
     transition: background-color 0.3s ease;
 }
 
@@ -144,7 +144,6 @@ nav .container {
 }
 
 .nav-toggle:checked + .nav-toggle-label span {
-    background: transparent;
 }
 
 /* Ajustes en el header para evitar que el nav se oculte detrás de él */
