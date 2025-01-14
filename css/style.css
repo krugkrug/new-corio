@@ -152,7 +152,7 @@ header {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     position: relative;
 }
 
@@ -225,8 +225,7 @@ background:red;
     color: var(--white); /* Cambiar el color del texto a blanco */
 }
 .coriolis-box {
-    padding: 20px;
-
+    padding: 0px;
     border-radius: 8px;
     color: var(--primary-color);
     position: relative;
@@ -234,7 +233,6 @@ background:red;
 
 .coriolis-box.white-box {
     background-color: var(--white);
-    margin-left: 5%; /* Corrige el error tipográfico aquí */
     text-align: left;
     overflow:hidden;
     font-size:18px;
@@ -242,8 +240,6 @@ background:red;
 
 .coriolis-box.light-blue-box {
     background-color: #455668; /* Azul grisáceo */
-
-
 }
 
 .coriolis-box.blue-box {
@@ -251,28 +247,36 @@ background:red;
     width: 100%;
      margin:0;
 }
-.dark-blue-box{
+.dark-blue-box, div .dark-blue-box{
     background-color: #071e37; /* Azul */
     width: 100%;
-     margin:0;
+    height:100%;
      padding-right:30%;
 
 }
+div .coriolis-header{
+width:50%;
+padding-left:80px;
+}
+
+
+.dark-blue-box{
+margin-bottom:0px;}
 .coriolis-box.blue-box,
 .coriolis-box.light-blue-box,
 .dark-blue-box{
- margin-left:-30px;
  width:100%;
  float:left;
  margin-top:0;
  margin-bottom:0;
- padding:30px;
- padding-right:50%;
  color:white!important;
  order-radius: 0px;
 
 }
+div .dark-blue-box {
 
+
+}
 .coriolis-container {
     display: flex;
     flex-direction: column;
@@ -290,7 +294,7 @@ width:100%;
 .coriolis-header h2 {
     margin-bottom: 10px;
     text-align:left!important;
-    padding-left:30px;
+
 }
 .coriolis-header h1{
 
@@ -458,13 +462,13 @@ vertical-align: top;
 
 /* Footer */
 footer {
+    background-color: var(--primary-color); /* Fondo negro */
     color: white!important; /* Texto azul */
     text-align: center;
     padding: 20px 0;
     position: relative;
     bottom: 0;
     width: 100%!important ;
-      background-color: var(--primary-color);
 }
 
 footer a {
@@ -596,6 +600,7 @@ margin-top:20px;
     width: 100px;
     height: auto;
     margin: 0;
+
 }
 
 #linked td {
@@ -747,4 +752,12 @@ background-color:#778899!important;
 }
 .columna3.colorin {
 background-color:#708090!important;
+}
+
+tr .logos{
+text-align: center;
+}
+
+#logos img {
+    display: inline-block;
 }
