@@ -111,6 +111,7 @@ nav .container {
     bottom: -5px;
     left: 0;
     transition: width 0.3s;
+    color:white;
 }
 
 .nav-menu a:hover::after,
