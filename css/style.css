@@ -20,6 +20,10 @@
     transition: all 0.3s ease;
 }
 
+ .no-space {
+    margin-bottom: 0;
+  }
+
 body {
     font-family: var(--font-family);
     line-height: 1.6;
@@ -398,6 +402,7 @@ table#tabla-bonita,
     margin-right: auto;
     table-layout: fixed;
     border-collapse: collapse;
+    
 }
 
 #tabla-bonita td,
@@ -780,8 +785,4 @@ text-align: center;
     display: inline-block;
 }
 
-<style>
-  .no-space {
-    margin-bottom: 0;
-  }
-</style>
+
