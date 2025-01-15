@@ -767,3 +767,9 @@ text-align: center;
 #logos img {
     display: inline-block;
 }
+
+<style>
+  .no-space {
+    margin-bottom: 0;
+  }
+</style>
