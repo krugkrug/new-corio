@@ -21,9 +21,9 @@
 }
 
  .highlight {
-    margin-bottom: 0;
+    margin-bottom: 0!important;
      font-size: 3rem;
-         font-weight: bold;
+     font-weight: bold;
 
   }
 
