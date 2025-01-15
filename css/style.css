@@ -358,6 +358,7 @@ overflow:hidden;
     margin-top: 200px; /* Ajustar según sea necesario */
 }
 
+/*
 /* Keyframes */
 @keyframes fadeInDown {
     from {
@@ -380,6 +381,7 @@ overflow:hidden;
         transform: translateY(0);
     }
 }
+*/
 
 /* Sections */
 section h2 {
