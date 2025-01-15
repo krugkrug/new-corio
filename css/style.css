@@ -580,6 +580,8 @@ margin-top:20px;
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
+       vertical-align: middle;
+
 }
 
 #equipo .linkedin-badge {
@@ -596,17 +598,22 @@ margin-top:20px;
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
+       vertical-align: middle;
+
 }
 
 #equipo .profile-details table td {
     padding: 10px;
-    vertical-align: top;
+    vertical-align: middle;
+    
 }
 
 #equipo .profile-details table td img.logo {
     width: 100px;
     height: auto;
     margin: 0;
+       vertical-align: middle;
+
 
 }
 
@@ -621,10 +628,14 @@ margin-top:20px;
 
 #equipo .profile table {
     border: none;
+       vertical-align: middle;
+
 }
 
 #equipo .profile table td {
     padding: 0;
+       vertical-align: middle;
+
 }
 
 #equipo .industries {
