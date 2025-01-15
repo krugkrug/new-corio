@@ -407,7 +407,7 @@ table#tabla-bonita,
     margin-right: auto;
     table-layout: fixed;
     border-collapse: collapse;
-    
+    padding: 10px;
     
 }
 
