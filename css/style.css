@@ -20,8 +20,11 @@
     transition: all 0.3s ease;
 }
 
- .no-space {
+ .highlight {
     margin-bottom: 0;
+     font-size: 3rem;
+         font-weight: bold;
+
   }
 
 body {
