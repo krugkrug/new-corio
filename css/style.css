@@ -589,6 +589,7 @@ margin-top:20px;
 
 #equipo .profile-details {
     width: 100%; /* La segunda columna debe ocupar el resto del ancho */
+   vertical-align: middle;
 }
 
 #equipo .profile-details table {
