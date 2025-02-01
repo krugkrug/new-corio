@@ -188,11 +188,12 @@ header .navbar-toggler {
   height: 20px;
   position: relative;
   transition: 0.5s ease-in-out;
-    margin-left: auto;
+  margin-left: auto;
   margin-top: auto; 
   margin-bottom: auto; 
   display:flex;
-    align-items: center;
+  align-items: center;
+ align-self: flex-start;
 
 }
 header .navbar-toggler,
