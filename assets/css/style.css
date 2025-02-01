@@ -289,7 +289,7 @@ header .navbar-toggler.collapsed .toggler-icon {
 }
 .splash .video-container .text-overlay {
   position: absolute;
-  top: 50%;
+  top: 75%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
