@@ -6,7 +6,7 @@
 
 body {
   font-family: "Raleway", serif;
-  margin-left: 20px; 
+
 }
 
 html {
@@ -551,6 +551,8 @@ header .navbar-toggler.collapsed .toggler-icon {
 .equipo .link-badge__bottom .button-wrapper .round-btn:hover {
   box-shadow: 0 0 0 1px white;
 }
+
+.aviso {  margin-left: 20px; }
 
 footer {
   padding: 30px 0;
