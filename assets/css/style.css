@@ -436,6 +436,11 @@ header .navbar-toggler.collapsed .toggler-icon {
   font-size: 16px;
 }
 
+.contacto {
+  padding: 50px 0;
+  text-align: center;
+}
+
 .equipo {
   background-color: var(--color-primary);
   padding: 50px 0;
