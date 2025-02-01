@@ -186,11 +186,14 @@ header .navbar-collapse {
 header .navbar-toggler {
   width: 20px;
   height: 20px;
-  margin-left: auto;
   position: relative;
   transition: 0.5s ease-in-out;
+    margin-left: auto;
   margin-top: auto; 
   margin-bottom: auto; 
+  display:flex;
+    align-items: center;
+
 }
 header .navbar-toggler,
 header .navbar-toggler:focus,
