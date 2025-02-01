@@ -28,9 +28,9 @@ document.getElementById("year").textContent = currentYear;
 //Typing js
 var options = {
   strings: [
-    "ontinuidad empresarial.",
-    "ontinuidad empresarial.",
-    "ontinuidad empresarial.",
+    "eguimos con tu legado.",
+    "eguimos con tu legado.",
+    "eguimos con tu legado.",
   ],
   typeSpeed: 50,
   backSpeed: 50,
