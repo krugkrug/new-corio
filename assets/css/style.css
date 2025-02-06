@@ -180,6 +180,9 @@ header .nav-item .nav-link:hover {
 header .nav-item .nav-link:hover::after {
   transform: scaleX(1);
 }
+header .nav-item .nav-link.active::after {
+    transform: scaleX(1);
+}
 header .navbar-collapse {
   flex-grow: unset;
 }
