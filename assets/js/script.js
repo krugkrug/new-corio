@@ -21,15 +21,31 @@ scrollToTopButton.addEventListener("click", () => {
 });
 
             // Ensuring the correct link is highlighted on load
-            window.addEventListener('load', () => {
-                const currentSection = document.querySelector('section:target') || sections[0];
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').substring(1) === currentSection.id) {
-                        link.classList.add('active');
-                    }
-                });
-            });
+document.addEventListener("DOMContentLoaded", function () {
+    let navLinks = document.querySelectorAll("header .nav-item .nav-link");
+
+    function setActiveLink() {
+        let currentScroll = window.scrollY;
+
+        navLinks.forEach(link => {
+            let section = document.querySelector(link.getAttribute("href"));
+            if (section) {
+                let sectionTop = section.offsetTop - 80; // Adjust for navbar height
+                let sectionBottom = sectionTop + section.offsetHeight;
+
+                if (currentScroll >= sectionTop && currentScroll < sectionBottom) {
+                    navLinks.forEach(l => l.classList.remove("active"));
+                    link.classList.add("active");
+                }
+            }
+        });
+    }
+
+    // Run on scroll
+    window.addEventListener("scroll", setActiveLink);
+    setActiveLink(); // Run initially
+});
+
 
 
 // Get the current year and update the span footer
