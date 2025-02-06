@@ -126,9 +126,10 @@ header .navbar {
   right: 0;
   top: 0;
   z-index: 9999999;
-   display: flex; 
+  display: flex; 
   align-items: center; 
   justify-content: space-between; 
+  padding-right:10px;
 }
 @media (min-width: 992px) {
   header .navbar-nav {
