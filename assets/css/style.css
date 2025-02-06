@@ -155,6 +155,7 @@ header .nav-item .nav-link {
   opacity: 1 !important;
   visibility: visible !important;
   z-index: 9999;
+ margin-left: auto;
 }
 @media (min-width: 992px) {
   header .nav-item .nav-link {
