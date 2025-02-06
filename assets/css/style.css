@@ -134,7 +134,6 @@ header .navbar {
 @media (min-width: 992px) {
   header .navbar-nav {
     gap: 25px;
-    justify-content:flex-end;
   }
 }
 header .navbar-brand img {
@@ -163,6 +162,8 @@ header .nav-item .nav-link {
   header .nav-item .nav-link {
     font-size: 20px;
     padding: 0 !important;
+    display:flex;
+    justify-content:flex-end;
   }
 }
 header .nav-item .nav-link::after {
