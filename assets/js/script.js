@@ -20,6 +20,18 @@ scrollToTopButton.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+            // Ensuring the correct link is highlighted on load
+            window.addEventListener('load', () => {
+                const currentSection = document.querySelector('section:target') || sections[0];
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === currentSection.id) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+
 // Get the current year and update the span footer
 const currentYear = new Date().getFullYear();
 document.getElementById("year").textContent = currentYear;
