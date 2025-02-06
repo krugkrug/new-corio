@@ -180,10 +180,10 @@ header .nav-item .nav-link:hover {
 header .nav-item .nav-link:hover::after {
   transform: scaleX(1);
 }
-header .navbar-nav .nav-item .nav-link.active {
+header .nav-item .nav-link.active {
     color: #ffffff !important;
 }
-header .navbar-nav .nav-item .nav-link.active::after {
+header .nav-item .nav-link.active::after {
     transform: scaleX(1) !important;
     background-color: #ffffff !important;
 }
