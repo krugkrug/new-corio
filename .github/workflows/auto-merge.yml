@@ -1,0 +1,42 @@
+name: Auto-merge a main
+
+# Fusiona automáticamente a la rama por defecto todo PR abierto por el dueño
+# del repo (o un colaborador). Combinado con la integración Git de Vercel,
+# cada PR pasa a producción sin intervención manual.
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    if: >-
+      github.event.pull_request.base.ref == github.event.repository.default_branch
+      && github.event.pull_request.draft == false
+      && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fusionar el PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          # GitHub tarda unos segundos en calcular la mergeability de un PR
+          # recién abierto, de ahí los reintentos. Se prueba cada método de
+          # merge porque cada repo permite unos u otros.
+          for intento in 1 2 3 4 5 6; do
+            for metodo in --merge --squash --rebase; do
+              if gh pr merge "$PR" --repo "$REPO" $metodo; then
+                echo "PR #$PR fusionado con $metodo."
+                exit 0
+              fi
+            done
+            echo "Aún no se puede fusionar (intento $intento/6); reintento en 10s..."
+            sleep 10
+          done
+          echo "::error::No se pudo fusionar el PR #$PR automáticamente; fusiónalo a mano."
+          exit 1
