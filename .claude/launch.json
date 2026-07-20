@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "krugkrug",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8793", "--directory", "C:/Users/alfre/Documents/GitHub/krugkrug"],
+      "port": 8793
+    }
+  ]
+}
