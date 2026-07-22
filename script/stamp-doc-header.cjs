@@ -1,15 +1,15 @@
 #!/usr/bin/env node
-// Sella la fecha de la cabecera de los documentos .md que la llevan.
+// Sella la fecha+hora del indicador de versión obligatorio (ver
+// meta/WEBAPP_GUARDRAILS_DEVOPS.md §1.2) en la cabecera de los .md que lo llevan.
 //
 // Busca, en cualquier parte del archivo, algo como:
-//   **Fecha:** 04/07/2026
-//   **Fecha:** 04/07/2026 18:32:07
-// y la sustituye por la fecha y hora ACTUALES (con segundos). Si el archivo
-// no tiene esa línea, no lo toca — así el hook puede correr sobre cualquier
-// .md staged sin arriesgarse a modificar los que no llevan este patrón.
+//   **Última actualización:** 2026-07-22 10:18 — corrige autorreferencia del liquidador
+// y sustituye solo la fecha+hora (YYYY-MM-DD HH:MM) por las ACTUALES. Si el
+// archivo no tiene esa línea, no lo toca — así el hook puede correr sobre
+// cualquier .md staged sin arriesgarse a modificar los que no llevan este patrón.
 //
-// No toca el número de versión (`**Versión:** vX`): ese es una decisión
-// semántica del autor, no algo que deba inferir un script.
+// No toca la descripción tras el "—": esa es una decisión semántica del
+// autor (qué cambió), no algo que deba inferir un script.
 //
 // Se invoca con los .md staged como argumentos:
 //   node script/stamp-doc-header.cjs <archivo1> <archivo2> ...
@@ -19,7 +19,8 @@
 "use strict";
 const fs = require("fs");
 
-const FECHA_RE = /(\*\*Fecha:\*\*\s*)\d{2}\/\d{2}\/\d{4}(?:\s+\d{2}:\d{2}:\d{2})?/;
+const FECHA_RE =
+  /(\*\*Última actualización:\*\*\s*)\d{4}-\d{2}-\d{2} \d{2}:\d{2}(?=\s*(—|$))/;
 
 // Siempre en hora de Madrid (CET/CEST según la época del año), no en la
 // zona horaria local de la máquina/runner donde corra el hook.
@@ -31,11 +32,10 @@ function ahora() {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
     hourCycle: "h23",
   }).formatToParts(new Date());
   const get = (tipo) => partes.find((p) => p.type === tipo).value;
-  return `${get("day")}/${get("month")}/${get("year")} ${get("hour")}:${get("minute")}:${get("second")}`;
+  return `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}`;
 }
 
 for (const archivo of process.argv.slice(2)) {

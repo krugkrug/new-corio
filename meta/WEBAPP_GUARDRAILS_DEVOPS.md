@@ -4,10 +4,8 @@
 > Objetivo: **procesos que aseguren calidad de código y seguridad**, adaptados a alguien que **no es DevOps** pero está comprometido con la mejora continua.
 > Se rige por `PRINCIPIOS_DE_TRABAJO.md` (Lean, empezar por lo básico, reusar y simplificar, reducir fricción).
 
-**Versión:** v1.3 · **Fecha:** 03/07/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
-> v1.1: §8 (stack) actualizado con tu stack real observado en GitHub (Vite+React+Express+TS+Tailwind+Drizzle/SQLite; Vercel), y adaptado a la decisión de usar Google Sheets como BD.
-> v1.2: añadida §1.1 — regla explícita de que no se commitea/pushea una funcionalidad hasta tener el OK al boceto correspondiente (la infraestructura del repo sí puede montarse desde Semana 0).
-> v1.3: añadida §1.1 — regla explícita de que no se commitea/pushea una funcionalidad hasta tener el OK al boceto correspondiente (la infraestructura del repo sí puede montarse desde Semana 0).
+**Última actualización:** 2026-07-22 10:38 — sustituye "Versión: vX" por el indicador único obligatorio de fecha+hora+descripción (§1.2) · **Responsable:** Alfredo Sánchez-Bella Solís
+> Histórico: v1.1 actualizó §8 (stack real observado en GitHub); v1.2 y v1.3 añadieron §1.1 (regla de cuándo commitear).
 
 ---
 
@@ -55,6 +53,21 @@ Cuanto antes atrapes un fallo, más barato. **Mueve los controles a la izquierda
 ### 1.1 Cuándo empezar a commitear (regla de Alfredo)
 
 > **No se hace commit/push de una funcionalidad hasta tener el OK explícito al boceto/wireframe correspondiente.** Es la aplicación literal de "bocetos antes de previews" (`PRINCIPIOS_DE_TRABAJO.md` §3) al control de versiones: el repo y el `main` protegido pueden crearse desde ya (Semana 0, es infraestructura, no funcionalidad), pero el código de una pantalla/feature concreta no empieza a escribirse — y por tanto no hay nada que commitear de ella — hasta que el boceto de esa pantalla esté aprobado. Evita construir (y dejar rastro en el historial de) algo que luego se descarta por no haber validado el enfoque antes.
+
+### 1.2 Indicador de versión obligatorio (regla de Alfredo)
+
+> **Todo documento `.md` con cabecera de control** (este documento, `PLANTILLA_PROYECTO.md`, fichas de proyecto…) **y todo header visible de cualquier webapp** llevan, siempre, una línea con este formato exacto:
+
+```
+**Última actualización:** YYYY-MM-DD HH:MM — <descripción breve del cambio, en minúsculas>
+```
+
+Ejemplo real: `**Última actualización:** 2026-07-22 10:18 — corrige autorreferencia del liquidador y añade venta/valoración de acciones`
+
+- **Fecha y hora**: siempre hora de Madrid, formato ISO (`YYYY-MM-DD HH:MM`, sin segundos). En documentos `.md` se sella sola vía `script/stamp-doc-header.cjs` (pre-commit/pre-push — ver `plantillas/SETUP-completo.md` / `SETUP-simplificado.md`). En una webapp, el proceso de build/deploy la fija (timestamp del build o del último commit) — nunca se escribe a mano.
+- **Descripción**: una frase corta, en minúsculas y sin punto final, estilo *changelog* (qué cambió, no un resumen del documento). La escribe quien hace el cambio; el hook nunca la toca.
+- **Sustituye** cualquier campo previo de `**Versión:** vX` — un único dato (fecha+hora+qué cambió) en vez de versionar semánticamente.
+- **Obligatorio** en los 8 repos del ecosistema (`meta`, `alfbank`, `coriodash`, `prado`, `ratioc`, `gt`, `news`, `alfplan`).
 
 ---
 
@@ -214,6 +227,7 @@ Los datos de targets/deals son **confidenciales** (cuentas, NDAs, valoraciones).
 - [ ] Backups automáticos + una restauración probada.
 - [ ] `README` + `DECISIONS.md` iniciados.
 - [ ] Stack validado contigo.
+- [ ] Header de la webapp muestra el indicador obligatorio (§1.2): `Última actualización: YYYY-MM-DD HH:MM — descripción`.
 
 ---
 
