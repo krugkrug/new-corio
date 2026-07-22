@@ -1,15 +1,27 @@
 name: Auto-merge a main
 
 # Fusiona automáticamente a la rama por defecto todo PR abierto por el dueño
-# del repo (o un colaborador). Combinado con la integración Git de Vercel,
-# cada PR pasa a producción sin intervención manual.
+# del repo (o un colaborador) — pero SOLO si pasa los checks:
+#   - en repos Node (package-lock.json en la raíz): type-check, lint, tests y build;
+#   - en todos: escaneo de secretos (gitleaks) sobre los commits del PR.
+# Combinado con la integración Git de Vercel, cada PR verde pasa a producción
+# sin intervención manual. Es la aplicación de "Merge solo con CI en verde"
+# (WEBAPP_GUARDRAILS_DEVOPS.md §2-3): los repos son privados en plan Free, sin
+# branch protection, así que los checks corren aquí mismo, antes del merge.
+# `synchronize` re-lanza todo cuando el PR recibe un push (p. ej. tras
+# resolver un conflicto), cosa que antes exigía fusionar a mano.
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, synchronize]
 
 permissions:
   contents: write
   pull-requests: write
+
+# Un push nuevo al PR cancela la pasada anterior: solo cuenta el último estado.
+concurrency:
+  group: automerge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   automerge:
@@ -19,6 +31,49 @@ jobs:
       && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          # Historial completo: gitleaks escanea el rango base..head del PR.
+          fetch-depth: 0
+
+      # El criterio de "repo Node" es el LOCKFILE, no package.json: npm ci lo
+      # exige, y algún repo estático lleva un package.json de utilería sin
+      # scripts de checks (gt, news) que rompía setup-node con cache: npm.
+      - uses: actions/setup-node@v4
+        if: ${{ hashFiles('package-lock.json') != '' }}
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Checks Node (type-check, lint, tests, build)
+        if: ${{ hashFiles('package-lock.json') != '' }}
+        run: |
+          npm ci --ignore-scripts
+          npm run check --if-present
+          npm run lint --if-present
+          npm run test --if-present
+          npm run build --if-present
+
+      - name: Escaneo de secretos (gitleaks) sobre los commits del PR
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # Versión pineada + checksum oficial. Solo se escanea el diff del PR:
+          # el historial antiguo ya se auditó y bloquearía por hallazgos pasados.
+          VER=8.24.3
+          FICHERO="gitleaks_${VER}_linux_x64.tar.gz"
+          curl -sSL -o "$FICHERO" "https://github.com/gitleaks/gitleaks/releases/download/v${VER}/${FICHERO}"
+          curl -sSL -o checksums.txt "https://github.com/gitleaks/gitleaks/releases/download/v${VER}/gitleaks_${VER}_checksums.txt"
+          grep "  ${FICHERO}$" checksums.txt | sha256sum -c -
+          tar xzf "$FICHERO" gitleaks
+          # Si el repo trae .gitleaks.toml (allowlist de falsos positivos,
+          # p. ej. los hashes públicos del candado de cliente), se usa.
+          CFG=""
+          [ -f .gitleaks.toml ] && CFG="--config .gitleaks.toml"
+          ./gitleaks git $CFG --redact --log-opts="${BASE}..${HEAD}" .
+
       - name: Fusionar el PR
         env:
           GH_TOKEN: ${{ github.token }}
@@ -28,15 +83,30 @@ jobs:
           # GitHub tarda unos segundos en calcular la mergeability de un PR
           # recién abierto, de ahí los reintentos. Se prueba cada método de
           # merge porque cada repo permite unos u otros.
+          # La API puede fusionar y AUN ASÍ devolver error (un 502 tras
+          # aplicar el merge, o "Merge already in progress"): tras cada
+          # intento fallido se comprueba el estado real del PR antes de
+          # reintentar, para no marcar en rojo un merge que sí ocurrió.
+          ya_fusionado() {
+            [ "$(gh pr view "$PR" --repo "$REPO" --json state -q .state)" = "MERGED" ]
+          }
           for intento in 1 2 3 4 5 6; do
             for metodo in --merge --squash --rebase; do
               if gh pr merge "$PR" --repo "$REPO" $metodo; then
                 echo "PR #$PR fusionado con $metodo."
                 exit 0
               fi
+              if ya_fusionado; then
+                echo "PR #$PR ya estaba fusionado (la API falló después de aplicar el merge)."
+                exit 0
+              fi
             done
             echo "Aún no se puede fusionar (intento $intento/6); reintento en 10s..."
             sleep 10
           done
+          if ya_fusionado; then
+            echo "PR #$PR ya estaba fusionado."
+            exit 0
+          fi
           echo "::error::No se pudo fusionar el PR #$PR automáticamente; fusiónalo a mano."
           exit 1

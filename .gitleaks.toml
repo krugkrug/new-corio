@@ -1,0 +1,11 @@
+# Allowlist de falsos positivos para el escaneo de secretos del auto-merge.
+# El hash de abajo es el SHA-256 del candado de CLIENTE (CONFIG.password en home/js/config.js): es público por
+# diseño (el navegador lo necesita para comparar la contraseña tecleada) y no
+# es una credencial. Sin esta entrada, cualquier PR que toque esa línea
+# quedaría bloqueado por gitleaks.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Hash SHA-256 público del candado de cliente"
+regexes = ['''d8b186940f2099118e4e6d6fc34ba0c37448fc3ac62cf11626fa2d515e8cb82a''']

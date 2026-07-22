@@ -1,0 +1,8 @@
+{
+  "name": "alf-legal",
+  "version": "1.0.0",
+  "description": "Marco general de trabajo jurídico (derecho español): analizar, redactar y revisar contratos, escritos procesales, dictámenes, due diligence, M&A, reclamaciones y consultas normativas.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}
