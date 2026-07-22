@@ -4,11 +4,11 @@
 > Rellenar solo lo necesario; borrar lo que no aplique. Lean: empezar por lo básico.
 > Frameworks de ejecución (ver §4.1 del general): **TOC** (¿dónde está el cuello de botella?), **Lean Startup** (¿qué hipótesis valido con este MVP?), **Agile** (¿en qué ciclos cortos?).
 
-**Versión de la plantilla:** v1.1 · **Fecha:** 02/07/2026
-> v1.1: añadido §0 "Semáforo del proyecto" (veredicto + tesis en una línea + siguiente paso), patrón que FICHA_SEARCHFUND_TARGET y SUBPROYECTO_HERRAMIENTA_DEALS ya usaban por su cuenta.
+**Última actualización de la plantilla:** 2026-07-22 10:38 — sustituye "Versión de la plantilla: vX" por el indicador único obligatorio de fecha+hora+descripción (ver `WEBAPP_GUARDRAILS_DEVOPS.md` §1.2)
+> Histórico: v1.1 añadió §0 "Semáforo del proyecto" (veredicto + tesis en una línea + siguiente paso), patrón que FICHA_SEARCHFUND_TARGET y SUBPROYECTO_HERRAMIENTA_DEALS ya usaban por su cuenta.
 
 **Estado:** ⬜ Idea · ⬜ Spec · ⬜ En desarrollo · ⬜ En revisión · ⬜ Entregado
-**Última actualización:** dd/mm/yyyy
+**Última actualización:** YYYY-MM-DD HH:MM — <descripción breve del cambio>
 **Fecha objetivo / deadline:** dd/mm/yyyy
 **Coste estimado:** … (tiempo / esfuerzo / €)
 **Responsable / interlocutor:** …

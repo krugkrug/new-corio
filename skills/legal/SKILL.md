@@ -126,6 +126,9 @@ crear). En tareas legales, combina este marco con:
 
 - `skills/revision-contestacion-demanda/` — revisión sistemática de escritos de contestación a la
   demanda (proceso civil, LEC).
+- `skills/revision-certificacion-administrador-unico/` — revisión de certificaciones del
+  administrador único (aprobación de cuentas anuales, aplicación del resultado, aprobación de la
+  gestión) previas a su depósito en el Registro Mercantil.
 
 ---
 

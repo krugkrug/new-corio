@@ -1,0 +1,8 @@
+{
+  "name": "alf-revision-cuentas-anuales",
+  "version": "1.0.0",
+  "description": "Revisión de las cuentas anuales de una sociedad española (balance, PyG, ECPN, EFE, memoria e informe de auditoría) para due diligence financiera de M&A/search fund: calidad del EBITDA, red flags contables, ratios y contingencias.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}
