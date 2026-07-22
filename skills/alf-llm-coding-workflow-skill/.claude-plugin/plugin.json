@@ -1,0 +1,8 @@
+{
+  "name": "alf-llm-coding-workflow",
+  "version": "3.1.0",
+  "description": "AI-augmented software engineering workflow — interactive pair programming and autonomous delegation with structured planning, context management and strategic model selection.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}

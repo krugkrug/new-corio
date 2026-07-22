@@ -1,0 +1,43 @@
+name: Borrar ramas (mantenimiento)
+
+# Borra las ramas que se le pasen, separadas por espacios. Lanzamiento manual
+# (pestaña Actions → este workflow → Run workflow) o por API. Existe porque el
+# repo no tiene "auto-delete head branches" y las ramas de PRs fusionados se
+# acumulan; el token de Actions puede borrarlas aunque un cliente externo no.
+# Se niega a borrar la rama por defecto.
+on:
+  workflow_dispatch:
+    inputs:
+      ramas:
+        description: "Ramas a borrar, separadas por espacios"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  borrar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Borrar las ramas indicadas
+        env:
+          RAMAS: ${{ inputs.ramas }}
+          DEF: ${{ github.event.repository.default_branch }}
+        run: |
+          fallos=0
+          for b in $RAMAS; do
+            if [ "$b" = "$DEF" ]; then
+              echo "::error::Me niego a borrar la rama por defecto ($DEF)."
+              exit 1
+            fi
+            if git push origin --delete "$b"; then
+              echo "borrada: $b"
+            else
+              echo "::warning::no se pudo borrar: $b"
+              fallos=$((fallos+1))
+            fi
+          done
+          [ "$fallos" -eq 0 ] || exit 1
