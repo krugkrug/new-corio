@@ -5,9 +5,12 @@ description: Revisión sistemática de las cuentas anuales de una sociedad espa�
 
 # Revisión de Cuentas Anuales (sociedad española)
 
-**Versión:** v1.1 · **Fecha:** 22/07/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
+**Versión:** v1.2 · **Fecha:** 22/07/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
 > v1.1: añadida fase 8 (valoración, puente EV→equity value y capacidad de financiación de la
 > adquisición) — el ángulo financiero de la operación más allá de si las cuentas son fiables.
+> v1.2: añadida la previsión de sostenibilidad financiera para el ejercicio siguiente (§F) y
+> reforzada la nota de operaciones vinculadas con el deber de lealtad del administrador (arts.
+> 227–229 LSC, §E).
 
 **Nota de vigencia:** la normativa contable de referencia es el PGC (RD 1514/2007) y PGC-PYMES
 (RD 1515/2007), el Código de Comercio y la Ley de Sociedades de Capital (RDLeg 1/2010). Antes de
@@ -90,7 +93,9 @@ cierre, situación fiscal abierta. Léela **nota a nota**. Checklist §E.
 
 ### Fase 5 — EFE y ECPN
 Conversión de EBITDA a caja operativa (la señal clásica de "beneficio de papel" está aquí), capex
-de mantenimiento vs. crecimiento, movimientos de patrimonio neto y deuda con socios. Checklist §F–§G.
+de mantenimiento vs. crecimiento, movimientos de patrimonio neto y deuda con socios, y una
+**previsión propia de sostenibilidad financiera para el ejercicio siguiente** (no solo el EFE
+histórico). Checklist §F–§G.
 
 ### Fase 6 — Ratios y comparación
 Solvencia, endeudamiento, rentabilidad, ciclo de conversión de caja — en tendencia de al menos 3
