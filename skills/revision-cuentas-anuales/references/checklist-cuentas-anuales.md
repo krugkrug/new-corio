@@ -129,7 +129,14 @@ la PyG no muestran. Revisar **nota a nota**, no solo por encima:
 - [ ] **Operaciones con partes vinculadas** (nota obligatoria, art. 260.9º LSC y NRV 15ª PGC):
   la nota más importante de toda la memoria en un proceso de M&A/search fund. Identificar
   préstamos, alquileres, prestación de servicios, ventas o compras entre la sociedad y
-  socios/administradores/otras sociedades del grupo — y si están a condiciones de mercado.
+  socios/administradores/otras sociedades del grupo — y si están a condiciones de mercado. El
+  deber de lealtad del administrador (arts. 227–229 LSC) prohíbe estas transacciones salvo que
+  sean operaciones ordinarias, en condiciones estándar para los clientes y de escasa relevancia
+  (art. 229.1.a LSC): cualquier facturación cruzada relevante entre la sociedad y otra vinculada al
+  mismo administrador, especialmente en contextos de conflictividad entre socios, debe estar
+  documentada y acreditada — no basta con que figure contabilizada. Si el análisis alimenta una
+  certificación de acuerdos del administrador único, cruza con
+  `skills/revision-certificacion-administrador-unico`.
 - [ ] **Garantías comprometidas con terceros** (avales, hipotecas, prendas) — buscar aquí lo que no
   aparecía en el balance como pasivo (§C).
 - [ ] **Contingencias y litigios:** procedimientos judiciales o administrativos en curso, con
@@ -158,6 +165,12 @@ partir de balance y PyG y marcarlo como estimación, no como dato reportado.)*
 - [ ] **Flujos de financiación:** ¿la sociedad ha estado repagando deuda, refinanciando, o
   disfrazando iliquidez con líneas de circulante crecientes?
 - [ ] **Dividendos repartidos** en el periodo vs. capacidad real de generación de caja.
+- [ ] **Sostenibilidad financiera para el ejercicio siguiente:** no te quedes en el EFE histórico —
+  estima si la sociedad dispondrá de fondos suficientes en los próximos 12 meses cruzando caja
+  actual, deuda con vencimiento próximo (§C), estacionalidad del ciclo de caja (§I) y cualquier
+  compromiso de inversión o pago conocido por hechos posteriores (memoria, §E). Esto es un juicio
+  propio del analista, independiente de si el auditor ha señalado o no una incertidumbre de
+  empresa en funcionamiento (§B) — la ausencia de salvedad del auditor no exime de este análisis.
 
 ## G. Estado de cambios en el patrimonio neto (ECPN)
 

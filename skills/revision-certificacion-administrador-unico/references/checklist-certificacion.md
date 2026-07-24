@@ -24,8 +24,9 @@
   meses del ejercicio** (art. 164.1 LSC). Fuera de plazo = irregularidad a señalar, no invalida el
   acuerdo por sí sola.
 - [ ] **Formulación de las cuentas por el administrador** dentro de los 3 primeros meses desde el
-  cierre del ejercicio (art. 253.1 LSC) — comprobar que la fecha de formulación es anterior a la
-  de aprobación por la junta.
+  cierre del ejercicio (art. 253.1 LSC) — comprobar que la fecha de formulación es anterior **a la
+  convocatoria de la junta**, no solo a su aprobación: la documentación debe existir y estar lista
+  para su entrega a los socios desde el momento en que se convoca (art. 272.2 LSC, ver §C).
 - [ ] **Depósito en el Registro Mercantil dentro del mes siguiente a la aprobación** (art. 279.1
   LSC). Es el plazo que expone a cierre de hoja — cómputo desde la fecha del acuerdo de
   aprobación, no desde el cierre del ejercicio.
@@ -33,6 +34,10 @@
   mención expresa al riesgo de cierre registral (art. 282 LSC, art. 378 RRM) y a sus excepciones
   tasadas (cese/dimisión/revocación de poderes de administradores, disolución, nombramiento o
   revocación de auditor cuando proceda).
+- [ ] **Si las cuentas no llegaron a aprobarse** (rechazo, falta de acuerdo, junta no constituida):
+  no certificar una aprobación inexistente. Comprobar que se opta por la vía del **art. 378.5
+  RRM** — certificación del órgano de administración que acredite fehacientemente la imposibilidad
+  de aprobación y sus motivos, depositable sin más trámite y sin exponer a cierre de hoja.
 
 ## B. Requisitos formales de la certificación
 
@@ -53,11 +58,19 @@
 
 ## C. Formación válida del acuerdo de origen
 
-- [ ] **Junta convocada:** antelación mínima de 15 días (art. 176 LSC, salvo mayor previsión
-  estatutaria); forma de convocatoria conforme a estatutos (BORME + diario, web corporativa
-  inscrita, o comunicación individual escrita — art. 173 LSC); orden del día que incluya
-  expresamente los tres puntos (censura de gestión, aprobación de cuentas, aplicación del
-  resultado — art. 164.1 LSC).
+- [ ] **Mención obligatoria del derecho de información** (art. 272.2 LSC): la convocatoria debe
+  hacer constar expresamente que cualquier socio puede obtener de la sociedad, de forma
+  **inmediata y gratuita**, los documentos que van a someterse a aprobación (cuentas, informe de
+  gestión, informe de auditoría). Su ausencia es defecto de la convocatoria — repercute en la
+  validez del acuerdo que la certificación recoge.
+- [ ] **Documentación disponible desde la publicación de la convocatoria**, no después — si el
+  input sugiere que las cuentas se formularon o cerraron después de convocar, es un hallazgo.
+- [ ] **Junta convocada — antelación mínima según tipo social** (art. 176 LSC, salvo mayor
+  previsión estatutaria): **15 días en la S.L.**, **1 mes en la S.A.** No dar por buena una
+  antelación de 15 días en una sociedad anónima. Forma de convocatoria conforme a estatutos (BORME
+  + diario, web corporativa inscrita, o comunicación individual escrita — art. 173 LSC); orden del
+  día que incluya expresamente los tres puntos (censura de gestión, aprobación de cuentas,
+  aplicación del resultado — art. 164.1 LSC).
 - [ ] **Junta universal** (art. 178 LSC): la certificación debe declarar expresamente que concurrió
   el 100% del capital social y que se aceptó por unanimidad tanto la celebración como el orden del
   día. Llamarla "universal" sin esa doble mención es un defecto habitual.
@@ -107,6 +120,18 @@
   cuentas ni darse por sobreentendido.
 - [ ] Referencia al **ejercicio y al órgano de administración** cuya gestión se aprueba (relevante
   si hubo cambio de administrador durante el ejercicio: distinguir gestión de cada uno si procede).
+- [ ] **Conflicto de interés y operaciones vinculadas** (deber de lealtad, arts. 227–229 LSC):
+  prohibición general de transacciones entre la sociedad y el administrador único, salvo
+  operaciones ordinarias, en condiciones estándar para los clientes y de escasa relevancia (art.
+  229.1.a LSC) — extremo especialmente sensible si hay conflictividad entre socios. Cualquier
+  operación vinculada relevante del ejercicio (facturación cruzada con sociedades del mismo
+  administrador, remuneraciones, préstamos) debe estar documentada, acreditada y reflejada en la
+  memoria de las cuentas que se certifican — cruzar con la nota de operaciones vinculadas (art.
+  260.9º LSC).
+- [ ] **Dispensa del conflicto cuando el administrador único es la parte afectada:** al no existir
+  "otros miembros del órgano" independientes a quienes comunicar la situación, la dispensa solo
+  puede otorgarla la **junta general** (art. 230.1 LSC) — no dar por válida una autodispensa del
+  propio administrador único.
 - [ ] Si hubo o pudo haber conflicto de interés relevante del administrador único con la sociedad
   durante el ejercicio (p. ej. contratos del art. 16 LSC en sociedad unipersonal), señalarlo como
   punto a valorar por el cliente — no lo resuelve esta certificación pero conviene advertirlo.
@@ -127,7 +152,9 @@
 ## H. Firma y presentación
 
 - [ ] **Depósito telemático:** certificación firmada con certificado electrónico reconocido del
-  administrador único, vigente y correctamente vinculado a su identidad inscrita.
+  administrador único, vigente y correctamente vinculado a su identidad inscrita. **Verificar la
+  validez del certificado/firma** en un portal oficial (p. ej. VALIDe — valide.redsara.es) antes de
+  dar la firma por buena; no asumirla solo porque el documento "parece" firmado.
 - [ ] **Depósito en papel** (si aplica): firma legitimada notarialmente.
 - [ ] **Modelo oficial vigente** (actualmente el aprobado por Orden JUS/319/2018 y sus
   modificaciones) — comprobar que no se usa una versión obsoleta del formulario D2/D3.
@@ -142,6 +169,10 @@
   los datos con más riesgo de quedar desactualizados en este skill.
 - [ ] Datos de la sociedad, del administrador y del ejercicio **exactos** en todo el documento — un
   desajuste de NIF o de fecha es un clásico motivo de defecto registral.
+- [ ] **Coherencia cronológica de fechas** entre la memoria, el balance, el acta/certificación de
+  formulación, la convocatoria y la certificación de aprobación: el orden lógico es formulación →
+  convocatoria → celebración/decisión → aprobación → certificación → depósito. Una certificación
+  fechada antes de un hito que dice certificar es un defecto que salta a la vista del registrador.
 - [ ] Los tres acuerdos (cuentas, aplicación del resultado, gestión) están **cada uno** presente,
   diferenciado y con cifras que cuadran.
 - [ ] La tabla de acuerdos certificados del informe está completa (ninguno de los tres en blanco).

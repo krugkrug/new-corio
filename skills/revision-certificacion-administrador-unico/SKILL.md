@@ -9,7 +9,11 @@ description: Revisión de una certificación del administrador único de los acu
 > sus reglas de oro — citas verificables, plazos como ruin filter, revisión humana obligatoria —
 > gobiernan también esta revisión. Este documento está referenciado desde el índice §8 de aquel.
 
-**Versión:** v1.0 · **Fecha:** 22/07/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
+**Versión:** v1.1 · **Fecha:** 22/07/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
+> v1.1: añadida la secuencia formulación→convocatoria y la mención obligatoria del art. 272.2 LSC,
+> la distinción de antelación de convocatoria S.L./S.A., el conflicto de interés del administrador
+> único (arts. 227–230 LSC, dispensa por la junta), el supuesto de no aprobación de las cuentas
+> (art. 378.5 RRM) y la verificación de firma electrónica.
 
 **Nota de vigencia:** los artículos citados corresponden al texto refundido de la Ley de
 Sociedades de Capital (RDLeg 1/2010, "LSC") y al Reglamento del Registro Mercantil (RD 1784/1996,
@@ -128,12 +132,26 @@ Checklist completa en `references/checklist-certificacion.md` §B.
 
 ### Fase 3 — Formación válida del acuerdo de origen
 
-- **Junta pluripersonal:** si fue **convocada**, comprobar antelación (mínimo 15 días, art. 176
-  LSC salvo mayor previsión estatutaria), forma de convocatoria (la que fijen los estatutos:
-  BORME + diario, web corporativa, o comunicación individual escrita — art. 173 LSC) y contenido
-  mínimo del orden del día. Si fue **universal** (art. 178 LSC), la certificación debe decir
-  expresamente que concurrió el 100% del capital social y que se aceptó por unanimidad la
-  celebración y el orden del día — un defecto habitual es llamarla "universal" sin esa mención.
+- **Secuencia obligatoria:** las cuentas deben estar **formuladas por el administrador único**
+  (art. 253.1 LSC) **antes** de que se publique la convocatoria de la junta — no solo antes de la
+  aprobación. Comprobar que la fecha de formulación es anterior a la fecha de la convocatoria; si
+  no lo es, la mención del punto siguiente no puede ser cierta.
+- **Mención obligatoria en la convocatoria** (art. 272.2 LSC): el anuncio debe hacer constar
+  expresamente el **derecho de cualquier socio a obtener de la sociedad, de forma inmediata y
+  gratuita**, los documentos que se someterán a aprobación (cuentas anuales y, en su caso, informe
+  de gestión e informe de auditoría). Su omisión es un defecto formal de la convocatoria, no de la
+  certificación en sí, pero contamina la validez del acuerdo que esta certifica.
+- **Disponibilidad de la documentación:** los documentos deben estar a disposición de los socios
+  **desde el mismo momento en que se publica la convocatoria** — si la certificación o sus
+  antecedentes sugieren que las cuentas no estaban listas en esa fecha, señálalo.
+- **Junta pluripersonal:** si fue **convocada**, comprobar la **antelación mínima según el tipo
+  social** (art. 176 LSC): **quince días en la S.L.**, **un mes en la S.A.** (salvo mayor previsión
+  estatutaria) — un error habitual es aplicar los 15 días de la S.L. a una S.A. Comprobar también
+  la forma de convocatoria (la que fijen los estatutos: BORME + diario, web corporativa, o
+  comunicación individual escrita — art. 173 LSC) y contenido mínimo del orden del día. Si fue
+  **universal** (art. 178 LSC), la certificación debe decir expresamente que concurrió el 100% del
+  capital social y que se aceptó por unanimidad la celebración y el orden del día — un defecto
+  habitual es llamarla "universal" sin esa mención.
 - **Socio único:** basta la decisión documentada y firmada; no hay convocatoria ni quorum que
   comprobar, pero sí que la decisión esté fechada y consignada correctamente.
 - **Quorum y mayoría de votación** aplicados (mayoría ordinaria del art. 198 LSC en la S.L. salvo
@@ -159,6 +177,15 @@ El corazón de la revisión — cada acuerdo tiene su propio riesgo:
    expreso** — "censura de la gestión social" o "aprobación de la gestión" —, no fundido ni dado
    por implícito en la aprobación de las cuentas; son dos pronunciamientos distintos aunque se
    voten en el mismo punto del orden del día.
+   **Conflicto de interés del administrador único:** el deber de lealtad (arts. 227–229 LSC)
+   prohíbe, con carácter general, las transacciones entre la sociedad y su administrador salvo que
+   sean operaciones ordinarias, en condiciones estándar para los clientes y de escasa relevancia
+   (art. 229.1.a LSC) — extremo especialmente sensible si existe conflictividad entre socios.
+   Cualquier operación vinculada relevante debe estar documentada, acreditada y reflejada en la
+   memoria de las cuentas que se aprueban. Si requiere dispensa y el administrador único **es**
+   la persona en conflicto, no hay "otros miembros del órgano" a quienes comunicarla: la dispensa
+   solo puede otorgarla la **junta general** (art. 230.1 LSC) — comprobar que así se hizo constar,
+   si el caso lo exige, y no dar por buena una autodispensa del propio administrador.
 
 Checklist en §D–§F de la referencia.
 
@@ -179,9 +206,23 @@ frecuentes de defecto en el depósito de cuentas en el Registro Mercantil de Mad
   depósito desde la Orden JUS/470/2021, salvo excepciones tasadas (p. ej. sociedades cotizadas).
 - Firma no legitimada notarialmente (depósito en papel) o certificado electrónico reconocido
   incorrecto o caducado (depósito telemático) — el Registro Mercantil de Madrid opera
-  mayoritariamente en modo telemático.
+  mayoritariamente en modo telemático. **Verifica la validez del certificado/firma electrónica** en
+  un portal oficial de verificación (p. ej. VALIDe — valide.redsara.es) antes de dar la firma por
+  buena; una firma caducada o de un certificado no reconocido invalida la certificación aunque el
+  contenido sea correcto.
 - Plazo de depósito vencido sin nota de excepción aplicable → riesgo de cierre de hoja (art. 282
   LSC).
+- **Fechas incoherentes entre documentos:** la fecha de formulación (acta/certificación de
+  formulación), la de las cuentas y balances, y la del acuerdo de aprobación deben seguir un orden
+  cronológico lógico (formulación → convocatoria → aprobación → certificación → depósito). Un
+  salto de fechas — p. ej. una certificación fechada antes de la formulación que dice certificar —
+  es un defecto que el registrador detecta a simple vista.
+- **Las cuentas no llegaron a aprobarse:** si la junta rechazó las cuentas, no alcanzó acuerdo, o
+  no pudo constituirse, no cabe "forzar" una certificación de aprobación inexistente. La vía es la
+  del **art. 378.5 RRM**: depositar una certificación del propio órgano de administración que
+  **acredite fehacientemente la imposibilidad de aprobación** y sus motivos — eso evita el cierre
+  de hoja sin necesidad de ningún otro trámite. Si el input indica que la junta no aprobó las
+  cuentas, reorienta la revisión hacia este supuesto en vez de revisar una aprobación que no existe.
 
 Cada defecto encontrado aquí es un hallazgo del informe. Esta fase existe porque el redactor deja
 de ver sus propios huecos: el valor está en el cambio de perspectiva, no en releer más veces.
