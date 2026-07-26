@@ -1,100 +1,87 @@
+// Botón "volver arriba" con indicador de progreso de lectura
 const scrollToTopButton = document.getElementById("scrollToTop");
 
-// Update button progress on scroll
-window.addEventListener("scroll", () => {
-  const scrollableHeight =
-    document.documentElement.scrollHeight - window.innerHeight;
-  const scrolled = (window.scrollY / scrollableHeight) * 100;
-  scrollToTopButton.style.setProperty("--scroll", `${scrolled}%`);
+if (scrollToTopButton) {
+  window.addEventListener(
+    "scroll",
+    () => {
+      const scrollableHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled =
+        scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
+      scrollToTopButton.style.setProperty("--scroll", `${scrolled}%`);
+      scrollToTopButton.classList.toggle("show", window.scrollY > 200);
+    },
+    { passive: true }
+  );
 
-  // Show or hide button based on scroll position
-  if (window.scrollY > 200) {
-    scrollToTopButton.classList.add("show");
-  } else {
-    scrollToTopButton.classList.remove("show");
+  scrollToTopButton.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+// Resalta en la navegación la sección visible en pantalla
+document.addEventListener("DOMContentLoaded", () => {
+  const navLinks = Array.from(
+    document.querySelectorAll("header .nav-item .nav-link")
+  );
+  // Compensa la altura de la barra fija, igual que scroll-padding-top en el CSS
+  const OFFSET_NAVBAR = 90;
+
+  const secciones = navLinks
+    .map((link) => ({ link, seccion: document.querySelector(link.hash || "") }))
+    .filter((par) => par.seccion);
+
+  if (!secciones.length) return;
+
+  function setActiveLink() {
+    const posicion = window.scrollY + OFFSET_NAVBAR + 1;
+    const activa = secciones.find(({ seccion }) => {
+      const top = seccion.offsetTop;
+      return posicion >= top && posicion < top + seccion.offsetHeight;
+    });
+
+    secciones.forEach(({ link }) =>
+      link.classList.toggle("active", activa != null && link === activa.link)
+    );
   }
+
+  window.addEventListener("scroll", setActiveLink, { passive: true });
+  setActiveLink();
 });
 
-// Scroll to top when button is clicked
-scrollToTopButton.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
+// Año del pie
+const yearEl = document.getElementById("year");
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
 
-            // Ensuring the correct link is highlighted on load
-document.addEventListener("DOMContentLoaded", function () {
-    let navLinks = document.querySelectorAll("header .nav-item .nav-link");
-
-    function setActiveLink() {
-        let currentScroll = window.scrollY;
-
-        navLinks.forEach(link => {
-            let section = document.querySelector(link.getAttribute("href"));
-            if (section) {
-                let sectionTop = section.offsetTop - 80; // Adjust for navbar height
-                let sectionBottom = sectionTop + section.offsetHeight;
-
-                if (currentScroll >= sectionTop && currentScroll < sectionBottom) {
-                    navLinks.forEach(l => l.classList.remove("active"));
-                    link.classList.add("active");
-                }
-            }
-        });
-    }
-
-    // Run on scroll
-    window.addEventListener("scroll", setActiveLink);
-    setActiveLink(); // Run initially
-});
-
-
-
-// Get the current year and update the span footer
-const currentYear = new Date().getFullYear();
-document.getElementById("year").textContent = currentYear;
-
- 
-//Typing js
-var options = {
-  strings: [
-    "eguimos con tu legado.",
-    "eguimos con tu legado.",
-    "eguimos con tu legado.",
-  ],
-  typeSpeed: 50,
-  backSpeed: 50,
-  loop: true,
-};
-var typed = new Typed(".typing", options);
-
-var options = {
-  strings: ["@corioliscap.com", "@corioliscap.com", "@corioliscap.com"],
-  typeSpeed: 50,
-  backSpeed: 50,
-  loop: true,
-};
-var typed = new Typed(".typing2", options);
-
-// Select all dotlottie-player animations
-const lottiePlayers = document.querySelectorAll(".lottie-animation");
-
-// Pause all animations initially
-lottiePlayers.forEach((player) => {
-  player.addEventListener("load", () => {
-    player.pause(); // Pause the animation as soon as it loads
+// Efecto máquina de escribir del titular y del email
+function iniciarTyped(selector, texto) {
+  if (!document.querySelector(selector)) return;
+  new Typed(selector, {
+    strings: [texto, texto],
+    typeSpeed: 50,
+    backSpeed: 50,
+    loop: true,
   });
-});
+}
 
-// Add hover play and pause functionality for each card
-const cards = document.querySelectorAll(".valores__card");
-cards.forEach((card) => {
+iniciarTyped(".typing", "eguimos con tu legado.");
+iniciarTyped(".typing2", "@corioliscap.com");
+
+// Las animaciones Lottie arrancan solo al pasar el cursor por la tarjeta
+document.querySelectorAll(".valores__card").forEach((card) => {
   const lottiePlayer = card.querySelector(".lottie-animation");
+  if (!lottiePlayer) return;
 
+  lottiePlayer.addEventListener("load", () => lottiePlayer.pause());
   card.addEventListener("mouseenter", () => {
-    lottiePlayer.stop(); // Reset animation to the start
-    lottiePlayer.play(); // Play animation on hover
+    lottiePlayer.stop();
+    lottiePlayer.play();
   });
 });
 
-AOS.init({
-  once: true,
-});
+if (window.AOS) {
+  AOS.init({ once: true });
+}
