@@ -4,8 +4,8 @@
 > Objetivo: **procesos que aseguren calidad de código y seguridad**, adaptados a alguien que **no es DevOps** pero está comprometido con la mejora continua.
 > Se rige por `PRINCIPIOS_DE_TRABAJO.md` (Lean, empezar por lo básico, reusar y simplificar, reducir fricción).
 
-**Última actualización:** 2026-07-22 10:38 — sustituye "Versión: vX" por el indicador único obligatorio de fecha+hora+descripción (§1.2) · **Responsable:** Alfredo Sánchez-Bella Solís
-> Histórico: v1.1 actualizó §8 (stack real observado en GitHub); v1.2 y v1.3 añadieron §1.1 (regla de cuándo commitear).
+**Última actualización:** 2026-07-28 19:30 — registro de auditoría sube de 🟡 a 🟢 en §5: un descarte masivo accidental en coriodash resultó irrecuperable sin log (el historial de Google Sheets consolida el día en una revisión) · **Responsable:** Alfredo Sánchez-Bella Solís
+> Histórico: v1.1 actualizó §8 (stack real observado en GitHub); v1.2 y v1.3 añadieron §1.1 (regla de cuándo commitear); 2026-07-22 sustituyó "Versión: vX" por el indicador único de fecha+hora+descripción (§1.2).
 
 ---
 
@@ -132,7 +132,7 @@ Los datos de targets/deals son **confidenciales** (cuentas, NDAs, valoraciones).
 - **Cifrado en tránsito** (HTTPS siempre) y en reposo (BD cifrada del proveedor).
 - **Backups automáticos** de la base de datos + prueba de restauración (un backup sin restaurar no es un backup).
 - **Datos de prueba anonimizados** en desarrollo/staging — nunca deals reales fuera de producción.
-- 🟡 **Registro de auditoría** (quién cambió qué y cuándo) — ya previsto como entidad `audit` en el subproyecto.
+- 🟢 **Registro de auditoría** (quién cambió qué y cuándo, con valor anterior → nuevo) — **imprescindible en toda webapp con acciones que mutan datos**, no opcional: sin él, un cambio masivo accidental es irrecuperable (incidente coriodash 28/07/2026 — el historial de versiones de Google Sheets NO sirve de sustituto, consolida las ediciones del día en una revisión). Referencia de implementación: pestaña `audit` + `GET /api/audit` en coriodash (PR #53).
 
 ### Dependencias
 - **Dependabot** activo: PRs automáticos para parches de seguridad.
@@ -201,8 +201,8 @@ Los datos de targets/deals son **confidenciales** (cuentas, NDAs, valoraciones).
 |------|-------------|-----------------|
 | **Semana 0** 🟢 | Git + repo + `.gitignore` + `main` protegida + PR checklist | Red de seguridad básica |
 | **Semana 0-1** 🟢 | CI: formateo + lint + type-check + build + escaneo de secretos | Guardrails baratos, gran retorno |
-| **Semana 1-2** 🟢 | Tests de cálculo financiero + auth + `.env`/secrets + backups | Protege números y datos sensibles |
-| **Semana 2+** 🟡 | Pre-commit hooks, Dependabot, staging, deploy auto, auditoría | Reduce fricción y sube seguridad |
+| **Semana 1-2** 🟢 | Tests de cálculo financiero + auth + `.env`/secrets + backups + auditoría | Protege números y datos sensibles |
+| **Semana 2+** 🟡 | Pre-commit hooks, Dependabot, staging, deploy auto | Reduce fricción y sube seguridad |
 | **Cuando duela** 🔵 | CodeQL, monitorización, roles finos, E2E completos | Solo si el uso lo justifica |
 
 ---
