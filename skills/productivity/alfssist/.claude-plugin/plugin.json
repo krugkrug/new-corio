@@ -1,0 +1,8 @@
+{
+  "name": "alfssist",
+  "version": "1.1.1",
+  "description": "Personal/family assistant for the Sánchez Bella household — form filling, appointments, insurance, medical, travel and financial tasks using stored family reference info.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}

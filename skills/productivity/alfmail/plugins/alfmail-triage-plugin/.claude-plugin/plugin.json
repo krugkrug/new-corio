@@ -1,0 +1,8 @@
+{
+  "name": "alfmail-triage-plugin",
+  "version": "1.7",
+  "description": "Scans your inbox for recent emails, triages by priority tier, and offers reply drafting. Configured for Alfredo Sánchez Bella.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}
