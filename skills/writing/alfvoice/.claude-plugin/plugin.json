@@ -1,0 +1,8 @@
+{
+  "name": "alfvoice",
+  "version": "0.1.0",
+  "description": "Guía de voz, tono y estilo de Alfredo Sánchez-Bella Solís por modo (Coriolis/M&A, institucional/liquidador, personal, transaccional). v1-scaffold generado con el meta-skill de ericporres/voice-as-a-skill (Apache 2.0), a partir de muestras reales; evoluciona por harvest cycles.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}
