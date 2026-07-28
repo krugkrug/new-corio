@@ -345,6 +345,9 @@ export class WhatsAppClient {
   }
 
   private async createSocket(): Promise<void> {
+    // useMultiFileAuthState es una función de Baileys, no un hook de React; el
+    // linter la confunde por el prefijo "use".
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { state, saveCreds } = await useMultiFileAuthState(WhatsAppClient.AUTH_DIR);
     this.saveCreds = saveCreds;
 
