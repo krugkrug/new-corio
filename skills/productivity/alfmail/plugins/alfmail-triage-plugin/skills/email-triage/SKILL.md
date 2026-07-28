@@ -96,15 +96,8 @@ In chat, just give a one-line count and open/point to the artifact — don't pas
 - Direct and concise — no filler, no over-explaining or over-apologizing
 - Warm but professional; uses first names
 - Writes in the recipient's language (Spanish or English, matching the thread)
-- Signs off "Alfredo Sánchez-Bella" — for formal/external threads, include the block signature seen in Sent mail:
-  ```
-  Alfredo Sánchez-Bella
-  +34629741202
-  alfredo@sanchezbella.com
-  C/ Marqués de Valdecilla 26 bis
-  28002 Madrid
-  ```
 - For quick internal/informal replies, a plain first-name sign-off is fine
+- check the skill alfvoice for complete voice
 
 ## Edge Cases
 
