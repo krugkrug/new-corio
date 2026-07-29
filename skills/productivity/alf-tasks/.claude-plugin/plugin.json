@@ -1,0 +1,8 @@
+{
+  "name": "alf-tasks",
+  "version": "1.0.0",
+  "description": "Panel de tareas de Alfredo: abre el tablero y ejecuta la cola de tareas (GitHub Issues con etiquetas prio/semaforo/estado) de krugkrug/meta y krugkrug/ratioc.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}
