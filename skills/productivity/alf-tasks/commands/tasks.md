@@ -20,5 +20,7 @@ Según `$ARGUMENTS`:
   semáforo, modelo y dependencia.
 - `republica` / `publica` → republica `panel-tareas/index.html` sobre el Artifact
   existente (misma URL) subiendo `PANEL_VERSION`, sin tocar la cola.
+- `taskrun` → como `lanza`, pero un agente por repositorio en paralelo en vez de
+  tarea a tarea en esta sesión. Ver `taskrun.md`.
 - un `owner/repo` → limita todo lo anterior a las tareas de ese repo.
 - un número → abre esa tarea: descripción, notas completas, estado y qué falta.
