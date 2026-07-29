@@ -1,155 +1,85 @@
 # Protocolo de ejecución de la cola
 
-Cárgalo solo cuando vayas a **ejecutar** tareas. Para abrir el panel y resumir el
-estado no hace falta.
+Cárgalo solo cuando vayas a **ejecutar** tareas. Para abrir el panel y resumir no
+hace falta. El almacén es `panel-tareas/tareas.json` en `krugkrug/meta` (main).
 
 ---
 
-## Paso 0 — normalizar antes de decidir nada
+## Paso 0 — sincronizar y sanear
 
-Lee el estado real de cada issue abierto y arréglalo si está roto.
+```bash
+git pull --rebase origin main
+```
 
-- **Más de una etiqueta `estado:*`**: déjala en una. Si `pendiente` está entre ellas,
-  quédate con `pendiente` — una transición correcta nunca deja `pendiente` detrás: o
-  falló a medias, o Alfredo reencoló la tarea; en ambos casos toca trabajar. Si no,
-  quédate con la más avanzada: `hecha` > `bloqueada` > `en-curso`.
-- **Cero etiquetas `estado:*`**: pon `estado:pendiente` y sigue.
-- **`estado:en-curso` sin nadie trabajando** (sesión muerta a mitad): antes de rehacer
-  nada, comprueba si el trabajo ya llegó a `main`:
+Lo que diga el archivo tras el pull es la verdad. Saneos baratos antes de decidir:
 
-  ```bash
-  git fetch origin main && git log --oneline -20 origin/main
-  ```
+- **`en-curso` con `sesion` de otra sesión y sin actividad reciente** (mira
+  `actualizada`; el umbral del panel es 15 min): sesión muerta. Antes de rehacer
+  nada, comprueba con `git log --oneline -20 origin/main` si el trabajo ya llegó;
+  si llegó, salta a la entrega; si no, retómala (pon tu `sesion`).
+- **`en-curso` sin `sesion`**: tarjeta fantasma. Igual que la anterior.
+- **`dependeDe` apuntando a una tarea hecha o descartada**: ya no bloquea, se
+  ejecuta con normalidad.
 
-  Si ya está: no lo repitas, salta directo a la entrega (Paso 2). Si no está: retómala
-  desde el principio manteniendo `estado:en-curso`.
-
-Di en un comentario qué has normalizado y por qué.
-
----
+Anota en `notas` cualquier saneo que hagas.
 
 ## Paso 1 — decidir por semáforo
 
 | Situación | Qué haces |
 |---|---|
-| `semaforo:verde` + `estado:pendiente` | `estado:en-curso` y **ejecuta** |
-| `semaforo:amarillo` o `semaforo:rojo` | **No edites nada.** Pregunta lo concreto y bloquea |
-| `estado:bloqueada` + respuesta nueva de Alfredo en el hilo | Ese comentario **es** el OK que faltaba, también en amarillo y rojo → `estado:en-curso` y ejecuta |
-| `estado:hecha` | Nada. Si Alfredo quiere más, la reencolará |
+| `pendiente` + `verde` + sin dependencia viva | Ejecutar (Paso 2) |
+| `amarillo` o `rojo` | **No tocar nada.** Pregunta concreta en `notas`, `estado: bloqueada`, `necesitaRespuesta: true` |
+| `bloqueada` + respuesta nueva de Alfredo en `notas` | Esa respuesta ES el OK, también en amarillo/rojo → ejecutar. Relee las notas enteras; no repreguntes lo contestado |
+| `hecha` / `descartada` | Nada |
 
-Antes de ejecutar una desbloqueada, **relee el hilo entero**: no vuelvas a preguntar lo
-que ya está contestado.
+**Tope anti-bucle:** si la tarea ya se bloqueó 2 veces (cuéntalo en `notas`), no
+puedes bloquearla otra vez: ejecuta lo que puedas, declara los supuestos por
+escrito en `notas`, y entrega.
 
-**Dependencias.** Si el cuerpo tiene una línea `Depende de: #N` y el issue N sigue
-abierto, no la ejecutes. Cuando cierres N, puedes encadenar la dependiente en la misma
-pasada. Solo aplica dentro del mismo repo.
+## Paso 2 — ejecutar y entregar
 
-**Tope anti-bucle.** Cuenta cuántas veces se ha bloqueado ya esa tarea en el hilo. A la
-tercera no puedes volver a bloquear: ejecuta lo que sí puedas, **declara por escrito los
-supuestos** que hayas asumido, y entrega. Para volver a bloquear tras un desbloqueo hay
-que citar (i) la pregunta anterior, (ii) la respuesta de Alfredo y (iii) por qué esa
-respuesta no cubre la duda nueva. Sin las tres cosas: asume y sigue.
+1. Marca el arranque **en una sola edición** de `tareas.json`: `estado: "en-curso"`,
+   `sesion: {id, donde, desde}`, `actualizada`, y commit+push de ese cambio. Es lo
+   que el panel enseña como "quién está trabajando".
+2. Trabaja en el repo que diga el campo `repo` (clónalo o entra en él; `git pull`
+   primero).
+3. Entrega trunk-based — nada de PRs ni ramas:
 
----
+   ```bash
+   git add <tus archivos> && git commit -m "<mensaje>"
+   git pull --rebase origin main
+   COMMIT=$(git rev-parse HEAD)
+   git push origin HEAD:main          # nunca -f
+   git fetch origin main
+   git merge-base --is-ancestor "$COMMIT" origin/main && echo "CONFIRMADO EN MAIN"
+   ```
 
-## Paso 2 — entregar (trunk-based, sin PR)
+   No arrastres al commit cambios ajenos a tu tarea (stash selectivo si hace falta).
+4. **Prohibido marcar `hecha` sin "CONFIRMADO EN MAIN" en esta sesión.**
+5. Cierre, otra vez en una sola edición de `tareas.json`: `estado: "hecha"`,
+   `sesion: null`, `necesitaRespuesta: false`, nota en `notas` con qué hiciste,
+   el commit, y cómo verificarlo. Commit+push del archivo.
 
-Repos de trabajo en solitario: **commit y push directo a `main`**. Nada de pull requests
-— una rama sin fusionar es trabajo perdido, y `limpiar-ramas.yml` puede borrarla.
+## Cómo bloquear
 
-Si el árbol tiene cambios ajenos a tu tarea (típico: trabajo a medias de Alfredo), **no
-los arrastres al commit**: añade solo tus archivos, o guárdalos con
-`git stash push -- <ruta>` antes del rebase y recupéralos después.
+Una sola edición: la pregunta concreta como nota (`quien: "claude"` o el nombre de
+la routine), `estado: "bloqueada"`, `necesitaRespuesta: true`, `sesion: null`.
+También cuando el fallo es técnico (conflicto, push rechazado, test roto): sin
+`necesitaRespuesta` la tarea muere en silencio. Nunca descartes una bloqueada.
 
-```bash
-git add <tus archivos> && git commit -m "<mensaje>"
-git pull --rebase origin main
-COMMIT=$(git rev-parse HEAD)
-git push origin HEAD:main          # nunca -f, nunca --force
-git fetch origin main
-git merge-base --is-ancestor "$COMMIT" origin/main && echo "CONFIRMADO EN MAIN"
-git status --porcelain              # sin tus archivos pendientes
-```
+## Escrituras concurrentes
 
-**Prohibido marcar `estado:hecha` sin haber visto "CONFIRMADO EN MAIN" en esta misma
-sesión.** "He hecho commit" no es haber entregado.
+El archivo lo escriben el panel, la routine y las sesiones de escritorio. Regla:
+**pull inmediatamente antes de cada escritura, escritura pequeña, push inmediato.**
+Si el push rebota, `git pull --rebase` y reintenta; el JSON casi nunca conflicta si
+cada escritura toca solo su tarea. Conserva el formato: 2 espacios de indentación,
+UTF-8, salto final.
 
-Si el rebase da conflicto y sabes resolverlo, resuélvelo; si no, bloquea.
+## Trampas heredadas (siguen vigentes)
 
-Con la verificación en verde: comenta un resumen de qué hiciste y **cómo comprobarlo**,
-pon `estado:hecha` y cierra el issue.
-
----
-
-## Paso 3 — comprobación final
-
-Cada issue tocado queda con **exactamente una** etiqueta `estado:*`, y si es `hecha`,
-sin `necesita-respuesta`.
-
-```bash
-gh issue view <n> --json labels --jq '[.labels[].name|select(startswith("estado:"))]'
-```
-
-Si sale 0 o 2+, corrígelo ahí mismo.
-
----
-
-## Cómo bloquear (siempre igual, sin excepciones)
-
-Comenta **la pregunta concreta** —no "necesito más contexto"— y:
-
-```bash
-gh issue edit <n> --add-label estado:bloqueada --add-label necesita-respuesta \
-  --remove-label estado:pendiente --remove-label estado:en-curso
-```
-
-`necesita-respuesta` es **obligatoria**: enciende el aviso "⚑ necesita tu respuesta" en
-el panel y es lo que permite reconocer la respuesta después. Bloquea igual cuando lo que
-falla es técnico (conflicto de rebase, push rechazado, test roto): sin esa etiqueta la
-tarea se queda muerta y nadie sabe que te espera.
-
-**No cierres nunca un issue bloqueado.**
-
----
-
-## Transiciones de etiquetas
-
-Cambia `--add-label` y `--remove-label` **en una sola llamada**. Dos llamadas dejan una
-ventana con dos etiquetas `estado:*` y ensucian la máquina de estados.
-
-Con el conector MCP de GitHub, `issue_write` + `method: "update"` **reemplaza el conjunto
-entero de etiquetas**: construye la lista completa conservando `prio:*`, `semaforo:*` y
-`modelo:*`, y mándala de una vez.
-
----
-
-## Trampas conocidas (cada una costó tiempo)
-
-- El conector MCP de GitHub **no puede escribir en `.github/workflows/`** (403). Esos
-  archivos van por git local. Dentro de la Claude Code Action el push a esa ruta también
-  se rechaza (falta el permiso `workflows`): deja el archivo corregido en `plantillas/`,
-  explica en un comentario qué hay que copiar y dónde, y **bloquea** — no marques `hecha`.
-- El input de la Claude Code Action es `prompt`, **no** `direct_prompt`.
-- Los comentarios de progreso del agente firman como `claude[bot]`: para ignorar eventos
-  de bots hay que filtrar por `github.event.sender.type != 'Bot'`, no por login.
-- Una tarea en `estado:en-curso` cuya sesión murió **no la despierta ningún evento**. Por
-  eso el Paso 0 empieza por rescatarlas; el panel las marca en rojo como "posible run
-  muerto" a los 15 min sin actividad.
-- Reabrir un issue `estado:hecha` no dispara nada. Para relanzarlo hay que ponerle
-  `estado:pendiente`.
-- Un issue sin ninguna etiqueta `estado:*` no lo despierta nada. Rescate: `estado:pendiente`.
-
----
-
-## Historia del ejecutor automático (no lo reintentes a ciegas)
-
-El workflow `.github/workflows/tareas.yml` funcionaba, pero consumía créditos de la API.
-Se intentó pasarlo a `claude_code_oauth_token` para que fuera contra la suscripción y
-**la autenticación se rechaza**: probado con dos tokens distintos, con y sin `--model`,
-muere a los 2 segundos, coste cero, sin denegación de permisos. Se desactivó.
-
-Comprueba el estado real antes de afirmar nada (§ "Quién ejecuta" del SKILL.md):
-
-```bash
-gh api repos/<owner>/<repo>/actions/workflows --jq '.workflows[] | select(.path==".github/workflows/tareas.yml") | .state'
-```
+- El conector MCP de GitHub no escribe en `.github/workflows/` (403): por git local.
+- GitHub Actions como ejecutor está muerto: `tareas.yml` `disabled_manually`, y el
+  `claude_code_oauth_token` se rechaza (2 tokens probados, con y sin `--model`,
+  muere a los 2 s). No reintentar sin nueva información.
+- Editar `panel-tareas/index.html` no actualiza el Artifact: republicar y subir
+  `PANEL_VERSION`.

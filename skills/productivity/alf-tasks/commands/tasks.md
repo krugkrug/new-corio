@@ -1,22 +1,24 @@
 ---
-description: Abre el panel de tareas y resume la cola (pendientes, bloqueadas, encalladas)
+description: Abre el panel de tareas y resume la cola (pendientes, bloqueadas, fantasmas)
 ---
 
 Carga la skill `tasks` y ejecútala.
 
 1. Abre el panel (Artifact de claude.ai) en el navegador integrado.
-2. Lee la cola de GitHub y resume el estado: pendientes por prioridad, bloqueadas
-   esperando respuesta, y encalladas en `estado:en-curso` sin actividad.
-3. No te quedes en "panel abierto": el resumen va en la misma respuesta.
+2. `git pull` y lee `panel-tareas/tareas.json` del repo `krugkrug/meta`. Resume:
+   pendientes por prioridad, bloqueadas esperando respuesta, y en-curso —
+   marcando las que no tienen `sesion` (fantasmas).
+3. El resumen va en la misma respuesta; no te quedes en "panel abierto".
 
 Según `$ARGUMENTS`:
 
 - vacío → abrir + resumen, sin tocar nada.
-- `lanza` / `ejecuta` → además, **ejecuta** las tareas `semaforo:verde` +
-  `estado:pendiente` siguiendo `references/protocolo-cola.md`. Las amarillas y rojas
+- `lanza` / `ejecuta` → además, ejecuta las `pendiente` + `semaforo:verde` sin
+  dependencia viva, siguiendo `references/protocolo-cola.md`. Amarillas y rojas
   se preguntan, no se ejecutan.
-- `nueva <título>` → crea la tarea preguntando antes prioridad, semáforo y modelo.
+- `nueva <título>` → añade la tarea a tareas.json preguntando antes prioridad,
+  semáforo, modelo y dependencia.
 - `republica` / `publica` → republica `panel-tareas/index.html` sobre el Artifact
-  existente (misma URL), sin tocar la cola.
-- un `owner/repo` → limita todo lo anterior a ese repositorio.
-- un `#N` → abre esa tarea concreta: hilo completo, estado y qué falta para cerrarla.
+  existente (misma URL) subiendo `PANEL_VERSION`, sin tocar la cola.
+- un `owner/repo` → limita todo lo anterior a las tareas de ese repo.
+- un número → abre esa tarea: descripción, notas completas, estado y qué falta.
