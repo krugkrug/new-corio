@@ -20,6 +20,12 @@ Según `$ARGUMENTS`:
   semáforo, modelo y dependencia.
 - `republica` / `publica` → republica `panel-tareas/index.html` sobre el Artifact
   existente (misma URL) subiendo `PANEL_VERSION`, sin tocar la cola.
+- `sync` / `importa sesiones` → lista las sesiones de Claude Code activas
+  (`mcp__ccd_session_mgmt__list_sessions`) y, para las que no tengan ya una tarea
+  `en-curso` con esa `sesion.id` en `tareas.json`, las da de alta. Ver
+  `references/sincronizar-sesiones.md`. **Solo funciona desde una sesión de
+  Claude Code** — el panel web no tiene acceso a esta herramienta (no es un
+  conector de claude.ai), así que esto no puede ser un botón del Artifact.
 - `taskrun` → como `lanza`, pero un agente por repositorio en paralelo en vez de
   tarea a tarea en esta sesión. Ver `taskrun.md`.
 - un `owner/repo` → limita todo lo anterior a las tareas de ese repo.
