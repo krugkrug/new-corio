@@ -1,7 +1,7 @@
 {
   "name": "alf-whatsapp-triage",
   "description": "WhatsApp group chat intelligence — analyze, triage, and brief from your WhatsApp groups",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "Alfredo Sánchez Bella"
   }
