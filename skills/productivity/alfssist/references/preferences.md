@@ -88,6 +88,14 @@
 
 ---
 
+## Clothing Sizes
+
+| Person | Item | Size | Store/Brand | Notes |
+|--------|------|------|--------------|-------|
+| Alfredo | Pantalones | 44 | Unit | |
+
+---
+
 ## Dietary Preferences & Restrictions
 
 | Person | Restrictions | Preferences |
