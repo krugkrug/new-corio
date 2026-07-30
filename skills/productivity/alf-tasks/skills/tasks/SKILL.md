@@ -9,8 +9,9 @@ description: Abre el panel de tareas de Alfredo y ejecuta su cola. Las tareas vi
 > v2.0: el almacén pasa de GitHub Issues a `panel-tareas/tareas.json`. Todo lo de
 > etiquetas `estado:*`, `gh issue edit` y transiciones atómicas queda obsoleto.
 
-Esta skill hace dos cosas, en este orden: **(1) abre el panel** y **(2) hace de
-ejecutor de la cola** cuando el usuario lo pide.
+Esta skill hace tres cosas: **(1) abre el panel**, **(2) sincroniza sesiones
+activas** (`/tasks sync`) y **(3) hace de ejecutor de la cola**, las dos
+últimas solo cuando el usuario lo pide.
 
 ---
 
@@ -52,7 +53,15 @@ Detalle completo de campos y trampas: `panel-tareas/README.md`.
 
 ---
 
-## 3. Ejecutar la cola
+## 3. Sincronizar sesiones activas
+
+`/tasks sync` da de alta en `tareas.json` las sesiones de Claude Code que
+están trabajando de verdad pero no tienen tarea `en-curso` asociada. Solo
+funciona desde Claude Code (`mcp__ccd_session_mgmt__list_sessions` no es un
+conector de claude.ai, así que el panel no puede llamarlo). Protocolo completo:
+`references/sincronizar-sesiones.md`.
+
+## 4. Ejecutar la cola
 
 Cuando el usuario diga "lanza las tareas" o similar, carga
 `references/protocolo-cola.md` y síguelo. Resumen de una línea por regla:
