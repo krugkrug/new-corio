@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maleta — {{DESTINO}}</title>
+<style>
+  :root {
+    --bg: #f7f6f3;
+    --card: #ffffff;
+    --text: #1f2321;
+    --text-dim: #6b6f6c;
+    --border: #e2e0da;
+    --accent: #2f6f4f;
+    --accent-bg: #e8f2ec;
+    --done: #8a8f8a;
+    --danger: #b3492f;
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17181a; --card: #212325; --text: #eceae5; --text-dim: #9a9d9a;
+      --border: #33352f; --accent: #5fb98a; --accent-bg: #1e2c24; --done: #6b6f6c; --danger: #e0836a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17181a; --card: #212325; --text: #eceae5; --text-dim: #9a9d9a;
+    --border: #33352f; --accent: #5fb98a; --accent-bg: #1e2c24; --done: #6b6f6c; --danger: #e0836a;
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f6f3; --card: #ffffff; --text: #1f2321; --text-dim: #6b6f6c;
+    --border: #e2e0da; --accent: #2f6f4f; --accent-bg: #e8f2ec; --done: #8a8f8a; --danger: #b3492f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.4;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 24px 16px 80px; }
+  header h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  header p { color: var(--text-dim); margin: 0 0 20px; font-size: 0.9rem; }
+  h3.section-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-dim); margin: 22px 0 8px; }
+
+  select, .trip-meta input, textarea {
+    width: 100%; padding: 8px 10px; border-radius: var(--radius);
+    border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 0.9rem;
+    font-family: inherit;
+  }
+  textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
+
+  .destino-picker { margin-bottom: 14px; }
+
+  .trip-meta {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px; margin-bottom: 8px;
+  }
+
+  .notes-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 12px 14px; margin-bottom: 20px;
+  }
+  .notes-card > label { font-size: 0.78rem; color: var(--text-dim); display: block; margin-bottom: 6px; }
+
+  .progress-bar {
+    height: 8px; border-radius: 999px; background: var(--border); overflow: hidden; margin-bottom: 6px;
+  }
+  .progress-bar > div {
+    height: 100%; background: var(--accent); width: 0%; transition: width .2s ease;
+  }
+  .progress-label { font-size: 0.8rem; color: var(--text-dim); margin: 0 0 20px; text-align: right; }
+
+  .module {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 12px; overflow: hidden;
+  }
+  .module.destino-module { border-color: var(--accent); }
+  .module-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; cursor: pointer; user-select: none;
+  }
+  .module-head h2 { font-size: 1rem; margin: 0; display: flex; align-items: center; gap: 8px; }
+  .module-count { font-size: 0.78rem; color: var(--text-dim); }
+  .module-toggle {
+    display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-dim);
+  }
+  .module.inactive .module-body { display: none; }
+  .module.inactive { opacity: 0.55; }
+  .module-body { padding: 4px 14px 12px; border-top: 1px solid var(--border); }
+
+  .item {
+    display: flex; align-items: center; gap: 10px; padding: 6px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .item:last-child { border-bottom: none; }
+  .item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+  .item label { flex: 1; font-size: 0.92rem; cursor: pointer; }
+  .item.checked label { color: var(--done); text-decoration: line-through; }
+  .item .remove-btn {
+    border: none; background: none; color: var(--text-dim); cursor: pointer; font-size: 0.85rem;
+    padding: 2px 6px; opacity: 0; transition: opacity .15s;
+  }
+  .item:hover .remove-btn { opacity: 1; }
+
+  .add-item { display: flex; gap: 8px; margin-top: 8px; }
+  .add-item input {
+    flex: 1; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); font-size: 0.85rem;
+  }
+  .add-item button, .toolbar button {
+    border: 1px solid var(--border); background: var(--accent-bg); color: var(--accent);
+    border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; cursor: pointer;
+  }
+
+  .toolbar {
+    position: sticky; bottom: 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    background: var(--bg); padding: 14px 0 6px; margin-top: 8px;
+  }
+  .toolbar button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .toolbar button.danger { color: var(--danger); }
+  .save-status { font-size: 0.78rem; color: var(--text-dim); }
+
+  #inventory-output {
+    display: none; margin-top: 16px; background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px;
+  }
+  #inventory-output pre { white-space: pre-wrap; font-size: 0.82rem; margin: 0; }
+
+  input:focus, button:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🧳 Maleta</h1>
+    <p>Elige destino, marca lo que ya va en la maleta y ajusta módulos, checks y notas a tu gusto. Al terminar, "Guardar inventario" lo escribe en <code>alfssist/references/inventarios/</code>.</p>
+  </header>
+
+  <div class="destino-picker">
+    <select id="destino-select"></select>
+  </div>
+
+  <div class="trip-meta">
+    <input type="text" id="trip-dates" placeholder="Fechas">
+    <input type="text" id="trip-climate" placeholder="Clima previsto">
+    <input type="text" id="trip-who" placeholder="Quién viaja">
+  </div>
+
+  <div class="notes-card">
+    <label for="destino-notes">Notas del destino (editable)</label>
+    <textarea id="destino-notes" placeholder="Notas específicas de este destino…"></textarea>
+  </div>
+
+  <div class="progress-bar"><div id="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label">0 / 0</div>
+
+  <h3 class="section-title" id="destino-items-title">Checks específicos del destino</h3>
+  <div id="destino-module"></div>
+
+  <h3 class="section-title">Módulos por contexto</h3>
+  <div id="modules"></div>
+
+  <div class="toolbar">
+    <button class="primary" id="btn-save">Guardar inventario</button>
+    <button id="btn-preview">Vista previa</button>
+    <button id="btn-reset-checks">Desmarcar todo</button>
+    <button class="danger" id="btn-reset-all">Reiniciar plantilla</button>
+    <span class="save-status" id="save-status"></span>
+  </div>
+
+  <div id="inventory-output">
+    <strong style="font-size:0.85rem;">Inventario</strong>
+    <pre id="inventory-text"></pre>
+    <div class="toolbar" style="padding-top:10px;">
+      <button id="btn-copy">Copiar al portapapeles</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------------
+// Datos de partida: módulos, destinos e items, tomados de
+// alfssist/references/travel-checklist.md ("Checklist de maleta" y "Destinos recurrentes").
+// La skill de maleta puede editar/añadir módulos, destinos e items aquí
+// antes de entregar este HTML para un viaje concreto; todo sigue siendo
+// editable a mano desde la propia página.
+// ---------------------------------------------------------------------
+const DATA_KEY = 'alfssist-packing-state-v2';
+const SAVE_DIR_HINT = 'skills/productivity/alfssist/references/inventarios/';
+
+const DEFAULT_MODULES = [
+  { id: 'base', name: 'Base / general', active: true, items: [
+    'Pasaporte', 'Cartera', 'Llaves', 'Móvil', 'Auriculares', 'Cámara / GoPro',
+    'PC + cargador', 'Cargadores varios', 'Batería móvil', 'Gafas de sol', 'Gorra',
+    'Casco/guantes (moto)', 'iPad', 'Libros', 'Música/audiolibros descargados', 'Altavoz portátil',
+    'Colonia', 'Desodorante de viaje', 'Medicinas personales', 'Bolsa para ropa sucia', 'Poncho-toalla'
+  ]},
+  { id: 'ropa', name: 'Ropa base', active: true, items: [
+    'Camisas', 'Camisetas', 'Pantalones', 'Cinturón', 'Calcetines', 'Ropa interior',
+    'Pijama', 'Zapatos', 'Traje de baño', 'Abrigo', 'Chubasquero', 'Jerseys', 'Guantes'
+  ]},
+  { id: 'tropico', name: 'Trópico', active: false, items: [
+    'Antimosquitos', 'Vacunas al día', 'Crema (repelente + solar)'
+  ]},
+  { id: 'playa', name: 'Playa', active: false, items: [
+    'Bañador', 'Gafas de sol', 'Gafas de buceo + snorkel', 'Cámara acuática',
+    'Caña de pescar / arpón', 'Crema solar', 'Alpargatas', 'Limpiador de gafas'
+  ]},
+  { id: 'surf', name: 'Surf', active: false, items: [
+    'Tabla(s)', 'Neopreno', 'Rashguard', 'Leashes', 'Parafina', 'Escarpines',
+    'Guantes de neopreno', 'Previsión de olas y mareas (Stormrider, Magicseaweed)',
+    'Crema para después del sol/agua (cacao)', 'Llave de coche + candado', 'Bolsa para bañador mojado'
+  ]},
+  { id: 'esqui', name: 'Esquí / nieve', active: false, items: [
+    'Abrigo', 'Pantalones técnicos', 'Bastones', 'Esquís', 'Pieles de foca', 'Mochila',
+    'Crema solar de alta protección', 'Buff', 'Cacao labial', 'Pasamontañas',
+    'Gafas de sol', 'Gafas de esquí', 'Guantes de esquí'
+  ]},
+  { id: 'formal', name: 'Traje formal', active: false, items: [
+    'Pantalón sin rotos', 'Chaqueta sin rotos', 'Camisa', 'Ballenas de cuello',
+    'Gemelos', 'Tirantes/cinturón', 'Pañuelo de bolsillo', 'Calcetines a juego', 'Zapatos limpios'
+  ]},
+  { id: 'running', name: 'Running', active: false, items: [
+    'Zapatillas', 'Calcetines técnicos', 'Camisetas', 'Auriculares'
+  ]},
+  { id: 'scuba', name: 'Scuba / buceo', active: false, items: [
+    'Limpiador de gafas', 'Filtro rojo para GoPro', 'Gafas propias'
+  ]},
+  { id: 'ninos-peque', name: 'Niños — bebé pequeño', active: false, items: [
+    'Fórmula', 'Agua', 'Pañales', 'Chupete', 'Juguetes', 'Toalla',
+    'Gotas/vitaminas según pauta pediátrica', 'Carrito', 'Mecedora', 'Muselinas',
+    'Bodies', 'Patucos', 'Arrullo'
+  ]},
+  { id: 'ninos-mayor', name: 'Niños — algo más mayor', active: false, items: [
+    'Potitos', 'Cereales', 'Babero', 'Pañales', 'Toallitas', 'Crema de pañales',
+    'Medicinas infantiles (antitérmico)', 'Termómetro', 'Sombrilla', 'Corral de juego',
+    'Zapatos', 'Pijama', 'Camisas', 'Calcetines', 'Gorro de sol', 'Bañador', 'Crema solar', 'Cámara'
+  ]},
+  { id: 'tajo', name: 'Tajo (perro)', active: false, items: [
+    'Colchoneta/cama', 'Pienso + margen', 'Correa', 'Cartilla sanitaria', 'Collar GPS',
+    'Mando/collar de adiestramiento', 'Bolsas para caca', 'Condroprotector', 'Cuencos',
+    'Caseta (si aplica)', 'Pomada', 'Toalla'
+  ]},
+  { id: 'barco', name: 'Barco / navegación', active: false, items: [
+    'Batería + regleta de varias salidas', 'Cargadores', 'Móvil', 'iPad', 'GoPro',
+    'Cremas (sol + después)', 'Gorra', 'Bolsas organizadoras', 'Cuerda para gafas',
+    'Funda impermeable móvil/iPad', 'Gafas de sol', 'Neceser de aseo', 'Altavoz', 'Navaja',
+    'Toalla de microfibra', 'Libro PER', 'Farol', 'Pinzas para colgar ropa', 'Pulpos', 'Mechero',
+    'Libro de derroteros', 'Guantes (vela)', 'Chanclas', 'Pantalones cortos', 'Trajes de baño',
+    'Jersey', 'Snorkel', 'Jabón para snorkel', 'Aletas', 'Linterna submarina', 'Licra',
+    'Sedal, cebo y anzuelos (pesca)', 'Señuelos y pesos'
+  ]},
+];
+
+// Destinos recurrentes: preseleccionan módulos + traen checks e notas propias, editables.
+const DESTINATIONS = [
+  {
+    id: 'generico', name: 'Genérico / otro destino', modules: ['base', 'ropa'],
+    items: [],
+    notes: 'Sin preset. Usa la guía de temperatura → ropa de travel-checklist.md para decidir qué módulos activar según el clima.'
+  },
+  {
+    id: 'sotogrande', name: 'Sotogrande', modules: ['base', 'ropa', 'playa', 'surf'],
+    items: ['Licencia de pesca', 'Arpón', 'Cañas de pescar'],
+    notes:
+`Actividades: surf, windsurf, pesca submarina y normal, piragua en el Guadiaro, parapente, bici, scuba, golf.
+Buceo: Punta Chullera, Torre de la Sal, arrecife de las Diaclasas (Punta Carnero), Placer de las Bóvedas, barco hundido de San Andrés.
+Windsurf solo con F5+ y levante. Pesca mejor con marea bajando en movimiento, tras el levantazo (no con mar plato).
+Visitas: Castellar, Jimena, Grazalema, Alcornocales, Ronda, Cueva del Gato, Caminito del Rey, Acinipo.
+Wifi / alarma / contactos de servicio: no están aquí por seguridad — preguntar a Alfredo.
+Ruta: A4 → A44 → A92. Parada: Despeñaperros.`
+  },
+  {
+    id: 'sierra-nevada', name: 'Sierra Nevada (esquí)', modules: ['base', 'ropa', 'esqui'],
+    items: ['Tarjeta forfait', 'Tarjeta parking', 'Kit mantenimiento esquís', 'Cadenas para el coche', 'Llave del garaje'],
+    notes:
+`Preparar material la noche antes; salida habitual 8:30 (avisar 15 min antes).
+Crema solar siempre, incluso con niebla. Sauna al terminar o salir directo.
+Comprobar webcam de carretera antes de salir.
+Ruta: A4 → A44 (por Despeñaperros).`
+  },
+  {
+    id: 'norte-verano', name: 'Norte - Verano', modules: ['base', 'ropa', 'playa'],
+    items: [],
+    notes:
+`Zona: Cantabria (Santander, Oyambre, Pedreña, Cofiño, Alles). Suele ser en coche o tren (Madrid–Torrelavega) en agosto.
+Restaurantes: Casa Ichi, Anero (Pedreña, con amigos), Pan de Cuco (reservar con antelación), Gandarilla, sardinas en Alles, Alf Riojano, comida en Hontoria (Santander), Lerga.
+Planes típicos: playa en Oyambre, cocido montañés, huevos encapotados, salida en barco, mercadillo de Novales.
+Comprobar que el alojamiento admite mascotas (Tajo suele viajar).
+Visitas pendientes: Bulnes, cueva de Altamira.`
+  },
+  {
+    id: 'norte-prado', name: 'Norte - Prado', modules: ['base'],
+    items: [
+      'Sierra', 'Taladro', 'Pilas', 'Cargador', 'Martillo', 'Nivel', 'Escuadra de carpintero',
+      'Escuadras', 'Tornillos', 'Metro', 'Cabezales torx', 'Nivel de cuerda', 'Soplete', 'Grapadora',
+      'Cuerda de albañil', 'Botas', 'Cadenas', 'Desencayadores', 'Tienda de campaña', 'Sacos de dormir',
+      'Esterillas', 'Ropa de faena'
+    ],
+    notes:
+`Parcela/prado en el norte con un proyecto de construcción (yurta) en marcha — destino de trabajo/campo más que de vacaciones.
+Llevar ropa de faena aparte del equipaje normal.`
+  },
+  {
+    id: 'toledo', name: 'Toledo (El Cigarral)', modules: ['base', 'ropa'],
+    items: [
+      'Ropa de faena/taller', 'Bañador (piscina)', 'Cañas de pescar / cebo', 'Escopeta y cartuchos (si hay caza)'
+    ],
+    notes:
+`Actividades en la finca: piscina (abre en junio), pádel/tenis, tiro al plato, caza con hurón, motocross (Beta, GasGas — comprobar fugas/frenos antes de salir), hípica, ultraligero, tirolina, kayak/piragua, BBQ.
+Fauna: cámaras de fototrampeo para pájaros y animales nocturnos (comprobar consumo de gas); visita nocturna a ver linces en Ventas con Peña Aguilera.
+Visitas cercanas: Montes de Toledo, Parque Nacional de Cabañeros, Bodegas Dehesa del Carrizal (Retuerta del Bullaque), enotecas/bodegas y quesería locales, ruta a caballo, vías pecuarias.
+Restaurantes: La Fábrica de Harinas, Taberna El Botero, Entre Dos Fuegos, El Cigarral de las Mercedes.
+Mantenimiento pendiente: filtros de agua, taller de pintura.`
+  },
+  {
+    id: 'alameda', name: 'Alameda', modules: ['base', 'ropa'],
+    items: [],
+    notes: 'Punto de paso habitual en los trayectos Madrid–Sotogrande. Sin notas específicas registradas todavía — añade aquí lo que se vaya aprendiendo.'
+  },
+  {
+    id: 'barco', name: 'Barco / navegación a vela', modules: ['base', 'ropa', 'barco'],
+    items: [],
+    notes:
+`Antes de zarpar: vídeo del estado general (llaves, piloto automático, bandas) y enviarlo; confirmar seguro; bajar mapas Navionics y marcar ruta.
+Canal 16 (general) y canal 9 (puerto). Luz roja de otro barco de noche = él tiene preferencia.
+Orzar = proa al viento. Arribar = a favor del viento. Puerto: verde con verde, rojo con rojo (al revés saliendo).
+Atraque: normalmente marcha atrás, estribor en popa; tirar cadena, guía en tensión.
+Roles de tripulación a repartir: cabos, segundo de timón, ancla, izar mayor, escotas, cocina/nevera, orden en cubierta, restaurantes.
+Destinos deseados: Turquía, Grecia (Kalymnos, Zante), Italia (Ustica, Panarea), Córcega, Cerdeña, Azores, Costa Rica, Ibiza-Formentera.`
+  },
+];
+
+let state = loadState();
+
+function freshDestinoState(dest) {
+  return { items: dest.items.map(text => ({ text, checked: false })), notes: dest.notes };
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(DATA_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  const destinos = {};
+  DESTINATIONS.forEach(d => { destinos[d.id] = freshDestinoState(d); });
+  return {
+    meta: { destinoId: 'generico', dates: '', climate: '', who: '' },
+    modules: DEFAULT_MODULES.map(m => ({
+      id: m.id, name: m.name, active: m.active,
+      items: m.items.map(text => ({ text, checked: false }))
+    })),
+    destinos
+  };
+}
+
+function saveState() { localStorage.setItem(DATA_KEY, JSON.stringify(state)); }
+
+function currentDestino() {
+  return DESTINATIONS.find(d => d.id === state.meta.destinoId) || DESTINATIONS[0];
+}
+
+function activateDestinoModules(dest) {
+  dest.modules.forEach(mid => {
+    const mod = state.modules.find(m => m.id === mid);
+    if (mod) mod.active = true;
+  });
+}
+
+function render() {
+  // selector de destino
+  const sel = document.getElementById('destino-select');
+  if (!sel.dataset.built) {
+    sel.innerHTML = DESTINATIONS.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+    sel.dataset.built = '1';
+    sel.addEventListener('change', () => {
+      state.meta.destinoId = sel.value;
+      if (!state.destinos[sel.value]) state.destinos[sel.value] = freshDestinoState(currentDestino());
+      activateDestinoModules(currentDestino());
+      saveState(); render();
+    });
+  }
+  sel.value = state.meta.destinoId;
+
+  document.getElementById('trip-dates').value = state.meta.dates;
+  document.getElementById('trip-climate').value = state.meta.climate;
+  document.getElementById('trip-who').value = state.meta.who;
+
+  const dest = currentDestino();
+  if (!state.destinos[dest.id]) state.destinos[dest.id] = freshDestinoState(dest);
+  const destState = state.destinos[dest.id];
+
+  document.getElementById('destino-notes').value = destState.notes;
+  document.getElementById('destino-items-title').textContent = `Checks específicos — ${dest.name}`;
+
+  let total = 0, checked = 0;
+
+  // módulo de checks específicos del destino actual
+  const destContainer = document.getElementById('destino-module');
+  destContainer.innerHTML = '';
+  if (destState.items.length) { total += destState.items.length; checked += destState.items.filter(i => i.checked).length; }
+  destContainer.appendChild(buildModuleEl({
+    key: 'destino', name: dest.name, active: true, toggleable: false, items: destState.items, extraClass: 'destino-module'
+  }));
+
+  // módulos por contexto
+  const container = document.getElementById('modules');
+  container.innerHTML = '';
+  state.modules.forEach((mod, mi) => {
+    if (mod.active) { total += mod.items.length; checked += mod.items.filter(i => i.checked).length; }
+    container.appendChild(buildModuleEl({ key: 'mod', mi, name: mod.name, active: mod.active, toggleable: true, items: mod.items }));
+  });
+
+  document.getElementById('progress-label').textContent = `${checked} / ${total}`;
+  document.getElementById('progress-fill').style.width = total ? `${(checked / total) * 100}%` : '0%';
+
+  wireModuleEvents();
+}
+
+function buildModuleEl({ key, mi, name, active, toggleable, items, extraClass }) {
+  const modEl = document.createElement('div');
+  modEl.className = 'module' + (active ? '' : ' inactive') + (extraClass ? ' ' + extraClass : '');
+  modEl.dataset.key = key;
+  if (mi !== undefined) modEl.dataset.mi = mi;
+
+  const checkedCount = items.filter(i => i.checked).length;
+  const head = document.createElement('div');
+  head.className = 'module-head';
+  head.innerHTML = `
+    <h2>${name} <span class="module-count">${checkedCount}/${items.length}</span></h2>
+    ${toggleable ? `<label class="module-toggle" onclick="event.stopPropagation()">
+      <input type="checkbox" ${active ? 'checked' : ''} data-mod-toggle="${mi}"> activo
+    </label>` : ''}
+  `;
+  const body = document.createElement('div');
+  body.className = 'module-body';
+  head.addEventListener('click', (e) => {
+    if (e.target.closest('.module-toggle')) return;
+    body.style.display = body.style.display === 'none' ? 'block' : 'none';
+  });
+
+  items.forEach((item, ii) => {
+    const row = document.createElement('div');
+    row.className = 'item' + (item.checked ? ' checked' : '');
+    row.innerHTML = `
+      <input type="checkbox" id="i-${key}-${mi}-${ii}" ${item.checked ? 'checked' : ''} data-key="${key}" data-mi="${mi}" data-ii="${ii}">
+      <label for="i-${key}-${mi}-${ii}">${item.text}</label>
+      <button class="remove-btn" data-remove-key="${key}" data-remove-mi="${mi}" data-remove-ii="${ii}" title="Quitar">✕</button>
+    `;
+    body.appendChild(row);
+  });
+
+  const addRow = document.createElement('div');
+  addRow.className = 'add-item';
+  addRow.innerHTML = `
+    <input type="text" placeholder="Añadir objeto…" data-add-key="${key}" data-add-mi="${mi}">
+    <button data-add-btn-key="${key}" data-add-btn-mi="${mi}">Añadir</button>
+  `;
+  body.appendChild(addRow);
+
+  modEl.appendChild(head);
+  modEl.appendChild(body);
+  return modEl;
+}
+
+function itemsArrayFor(key, mi) {
+  if (key === 'destino') return state.destinos[currentDestino().id].items;
+  return state.modules[+mi].items;
+}
+
+function wireModuleEvents() {
+  document.querySelectorAll('[data-mod-toggle]').forEach(el => {
+    el.addEventListener('change', (e) => {
+      state.modules[+el.dataset.modToggle].active = e.target.checked;
+      saveState(); render();
+    });
+  });
+  document.querySelectorAll('.item input[type="checkbox"]').forEach(el => {
+    el.addEventListener('change', (e) => {
+      itemsArrayFor(el.dataset.key, el.dataset.mi)[+el.dataset.ii].checked = e.target.checked;
+      saveState(); render();
+    });
+  });
+  document.querySelectorAll('[data-remove-key]').forEach(el => {
+    el.addEventListener('click', () => {
+      itemsArrayFor(el.dataset.removeKey, el.dataset.removeMi).splice(+el.dataset.removeIi, 1);
+      saveState(); render();
+    });
+  });
+  document.querySelectorAll('[data-add-btn-key]').forEach(el => {
+    el.addEventListener('click', () => addItemFromInput(el.dataset.addBtnKey, el.dataset.addBtnMi));
+  });
+  document.querySelectorAll('[data-add-key]').forEach(el => {
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addItemFromInput(el.dataset.addKey, el.dataset.addMi);
+    });
+  });
+}
+
+function addItemFromInput(key, mi) {
+  const input = document.querySelector(`[data-add-key="${key}"][data-add-mi="${mi}"]`);
+  const text = input.value.trim();
+  if (!text) return;
+  itemsArrayFor(key, mi).push({ text, checked: false });
+  input.value = '';
+  saveState(); render();
+}
+
+['trip-dates', 'trip-climate', 'trip-who'].forEach(id => {
+  document.getElementById(id).addEventListener('input', (e) => {
+    const key = id.replace('trip-', '');
+    state.meta[key] = e.target.value;
+    saveState();
+  });
+});
+
+document.getElementById('destino-notes').addEventListener('input', (e) => {
+  state.destinos[currentDestino().id].notes = e.target.value;
+  saveState();
+});
+
+document.getElementById('btn-reset-checks').addEventListener('click', () => {
+  state.modules.forEach(m => m.items.forEach(i => i.checked = false));
+  Object.values(state.destinos).forEach(d => d.items.forEach(i => i.checked = false));
+  saveState(); render();
+});
+
+document.getElementById('btn-reset-all').addEventListener('click', () => {
+  if (!confirm('Esto borra el estado guardado (incluidas tus notas y checks propios) y vuelve a la plantilla original. ¿Seguro?')) return;
+  localStorage.removeItem(DATA_KEY);
+  state = loadState();
+  document.getElementById('destino-select').dataset.built = '';
+  render();
+});
+
+function buildInventoryText() {
+  const dest = currentDestino();
+  const destState = state.destinos[dest.id];
+  const today = new Date().toISOString().slice(0, 10);
+  const lines = [];
+  lines.push(`### ${dest.name} — ${state.meta.dates || '(fechas)'} (inventario generado ${today})`);
+  if (state.meta.climate) lines.push(`Clima: ${state.meta.climate}`);
+  if (state.meta.who) lines.push(`Quién viaja: ${state.meta.who}`);
+  lines.push('');
+
+  if (destState.items.length) {
+    const llevado = destState.items.filter(i => i.checked).map(i => i.text);
+    const noLlevado = destState.items.filter(i => !i.checked).map(i => i.text);
+    lines.push(`**Checks específicos — ${dest.name}**`);
+    lines.push(`- Llevado: ${llevado.length ? llevado.join(', ') : '—'}`);
+    if (noLlevado.length) lines.push(`- No llevado / faltó: ${noLlevado.join(', ')}`);
+    lines.push('');
+  }
+
+  state.modules.filter(m => m.active).forEach(m => {
+    const llevado = m.items.filter(i => i.checked).map(i => i.text);
+    const noLlevado = m.items.filter(i => !i.checked).map(i => i.text);
+    lines.push(`**${m.name}**`);
+    lines.push(`- Llevado: ${llevado.length ? llevado.join(', ') : '—'}`);
+    if (noLlevado.length) lines.push(`- No llevado / faltó: ${noLlevado.join(', ')}`);
+    lines.push('');
+  });
+
+  if (destState.notes && destState.notes.trim()) {
+    lines.push('**Notas del destino**');
+    lines.push(destState.notes.trim());
+    lines.push('');
+  }
+
+  return { text: lines.join('\n'), destSlug: slugify(dest.name), today };
+}
+
+function slugify(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'viaje';
+}
+
+function showPreview(text) {
+  document.getElementById('inventory-text').textContent = text;
+  document.getElementById('inventory-output').style.display = 'block';
+  document.getElementById('inventory-output').scrollIntoView({ behavior: 'smooth' });
+}
+
+document.getElementById('btn-preview').addEventListener('click', () => {
+  showPreview(buildInventoryText().text);
+});
+
+document.getElementById('btn-copy').addEventListener('click', () => {
+  const text = document.getElementById('inventory-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy');
+    const original = btn.textContent;
+    btn.textContent = 'Copiado ✓';
+    setTimeout(() => { btn.textContent = original; }, 1500);
+  });
+});
+
+// Guardar inventario: intenta escribir directamente en una carpeta del repo
+// (File System Access API — solo disponible en contexto seguro, p.ej. servido
+// por localhost, no al abrir el archivo con doble clic). Si no está disponible
+// o el usuario cancela, cae a una descarga normal del .md.
+document.getElementById('btn-save').addEventListener('click', async () => {
+  const { text, destSlug, today } = buildInventoryText();
+  showPreview(text);
+  const filename = `inventario-${destSlug}-${today}.md`;
+  const status = document.getElementById('save-status');
+
+  if (window.showSaveFilePicker) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [{ description: 'Markdown', accept: { 'text/markdown': ['.md'] } }]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(text);
+      await writable.close();
+      status.textContent = `Guardado como "${handle.name}". Verifica que quedó dentro de ${SAVE_DIR_HINT}`;
+      return;
+    } catch (err) {
+      if (err && err.name === 'AbortError') { status.textContent = 'Guardado cancelado.'; return; }
+      // sigue al fallback de descarga
+    }
+  }
+
+  const blob = new Blob([text], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  status.textContent = `Descargado como "${filename}" — muévelo a ${SAVE_DIR_HINT}`;
+});
+
+render();
+</script>
+</body>
+</html>
