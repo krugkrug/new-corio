@@ -27,6 +27,7 @@ Personal assistant skill for Alfredo and family. Load the appropriate reference 
 | Address, utilities, services | [household.md](references/household.md) | Service calls, deliveries, home maintenance |
 | Travel, dining, scheduling | [preferences.md](references/preferences.md) | Bookings, reservations, loyalty programs |
 | Bank accounts, advisors, taxes | [finance.md](references/finance.md) | Financial forms, wire transfers, tax prep |
+| Trip prep, packing checklists, travel learnings | [travel-checklist.md](references/travel-checklist.md) | Preparing for a trip, generating a packing list, pre-departure protocol |
 
 ## Usage Guidelines
 
@@ -65,3 +66,9 @@ Personal assistant skill for Alfredo and family. Load the appropriate reference 
 2. Load [family-members.md](references/family-members.md) for traveler details
 3. Apply relevant frequent flyer/hotel status
 4. Note TSA PreCheck/Global Entry numbers for flight bookings
+
+### Trip Prep / Packing
+1. If the user wants the interactive packing list HTML (`/maleta`, "prepara la maleta", "checklist de viaje"), use the [maleta](skills/maleta/SKILL.md) skill — it opens [assets/packing-list-template.html](assets/packing-list-template.html), which already has all destinations and modules built in; don't regenerate the HTML from scratch.
+2. For anything else trip-prep related (a form, a question about what to pack, updating the reference data), load [travel-checklist.md](references/travel-checklist.md) for the pre-departure protocol, packing modules by context (playa, esquí, trópico, niños, perro, barco...) and recurring destinations (Sotogrande, Sierra Nevada, Norte-Verano, Norte-Prado, Toledo, Alameda, Barco)
+3. Use the temperature → clothing guide to translate destination climate into packing categories when there's no destination preset
+4. Durable learnings from a saved inventory (something that keeps getting forgotten, a new destination note) should be promoted by hand into `travel-checklist.md` and mirrored in the HTML's `MODULES`/`DESTINATIONS` — not left only in `references/inventarios/`
