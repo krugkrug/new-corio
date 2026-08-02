@@ -40,6 +40,20 @@
   .wrap { max-width: 760px; margin: 0 auto; padding: 24px 16px 80px; }
   header h1 { font-size: 1.4rem; margin: 0 0 4px; }
   header p { color: var(--text-dim); margin: 0 0 20px; font-size: 0.9rem; }
+  #header-activities { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: -12px; }
+  #header-activities .chip {
+    display: inline-flex; align-items: center; gap: 4px; background: var(--accent-bg); color: var(--accent);
+    border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; cursor: pointer; border: 1px solid transparent;
+  }
+  #header-activities .chip.inactive { background: transparent; color: var(--text-dim); border-color: var(--border); text-decoration: line-through; }
+  #header-activity-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  #header-activity-picker .chip {
+    display: inline-flex; align-items: center; gap: 4px; background: transparent; color: var(--accent);
+    border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; cursor: pointer; border: 1px dashed var(--accent);
+  }
+  #header-activity-picker .chip.added {
+    border-style: solid; color: var(--text-dim); border-color: var(--border); cursor: default; opacity: 0.7;
+  }
   h3.section-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-dim); margin: 22px 0 8px; }
 
   select, .trip-meta input, textarea {
@@ -134,6 +148,8 @@
   <header>
     <h1>🧳 Maleta</h1>
     <p>Elige destino, marca lo que ya va en la maleta y ajusta módulos, checks y notas a tu gusto. Al terminar, "Guardar inventario" lo escribe en <code>alfssist/references/inventarios/</code>.</p>
+    <p id="header-activities"></p>
+    <div id="header-activity-picker"></div>
   </header>
 
   <div class="destino-picker">
@@ -154,11 +170,21 @@
   <div class="progress-bar"><div id="progress-fill"></div></div>
   <div class="progress-label" id="progress-label">0 / 0</div>
 
+  <h3 class="section-title">Checks libres</h3>
+  <div id="free-module"></div>
+
   <h3 class="section-title" id="destino-items-title">Checks específicos del destino</h3>
   <div id="destino-module"></div>
 
   <h3 class="section-title">Módulos por contexto</h3>
   <div id="modules"></div>
+
+  <h3 class="section-title">Actividades</h3>
+  <div class="add-item" style="margin-bottom:12px;">
+    <input type="text" id="new-activity-name" placeholder="Nombre de la actividad personalizada…">
+    <button id="btn-add-activity">Añadir actividad</button>
+  </div>
+  <div id="activities"></div>
 
   <div class="toolbar">
     <button class="primary" id="btn-save">Guardar inventario</button>
@@ -185,7 +211,7 @@
 // antes de entregar este HTML para un viaje concreto; todo sigue siendo
 // editable a mano desde la propia página.
 // ---------------------------------------------------------------------
-const DATA_KEY = 'alfssist-packing-state-v2';
+const DATA_KEY = 'alfssist-packing-state-v3';
 const SAVE_DIR_HINT = 'skills/productivity/alfssist/references/inventarios/';
 
 const DEFAULT_MODULES = [
@@ -199,32 +225,9 @@ const DEFAULT_MODULES = [
     'Camisas', 'Camisetas', 'Pantalones', 'Cinturón', 'Calcetines', 'Ropa interior',
     'Pijama', 'Zapatos', 'Traje de baño', 'Abrigo', 'Chubasquero', 'Jerseys', 'Guantes'
   ]},
-  { id: 'tropico', name: 'Trópico', active: false, items: [
-    'Antimosquitos', 'Vacunas al día', 'Crema (repelente + solar)'
-  ]},
   { id: 'playa', name: 'Playa', active: false, items: [
     'Bañador', 'Gafas de sol', 'Gafas de buceo + snorkel', 'Cámara acuática',
     'Caña de pescar / arpón', 'Crema solar', 'Alpargatas', 'Limpiador de gafas'
-  ]},
-  { id: 'surf', name: 'Surf', active: false, items: [
-    'Tabla(s)', 'Neopreno', 'Rashguard', 'Leashes', 'Parafina', 'Escarpines',
-    'Guantes de neopreno', 'Previsión de olas y mareas (Stormrider, Magicseaweed)',
-    'Crema para después del sol/agua (cacao)', 'Llave de coche + candado', 'Bolsa para bañador mojado'
-  ]},
-  { id: 'esqui', name: 'Esquí / nieve', active: false, items: [
-    'Abrigo', 'Pantalones técnicos', 'Bastones', 'Esquís', 'Pieles de foca', 'Mochila',
-    'Crema solar de alta protección', 'Buff', 'Cacao labial', 'Pasamontañas',
-    'Gafas de sol', 'Gafas de esquí', 'Guantes de esquí'
-  ]},
-  { id: 'formal', name: 'Traje formal', active: false, items: [
-    'Pantalón sin rotos', 'Chaqueta sin rotos', 'Camisa', 'Ballenas de cuello',
-    'Gemelos', 'Tirantes/cinturón', 'Pañuelo de bolsillo', 'Calcetines a juego', 'Zapatos limpios'
-  ]},
-  { id: 'running', name: 'Running', active: false, items: [
-    'Zapatillas', 'Calcetines técnicos', 'Camisetas', 'Auriculares'
-  ]},
-  { id: 'scuba', name: 'Scuba / buceo', active: false, items: [
-    'Limpiador de gafas', 'Filtro rojo para GoPro', 'Gafas propias'
   ]},
   { id: 'ninos-peque', name: 'Niños — bebé pequeño', active: false, items: [
     'Fórmula', 'Agua', 'Pañales', 'Chupete', 'Juguetes', 'Toalla',
@@ -241,7 +244,36 @@ const DEFAULT_MODULES = [
     'Mando/collar de adiestramiento', 'Bolsas para caca', 'Condroprotector', 'Cuencos',
     'Caseta (si aplica)', 'Pomada', 'Toalla'
   ]},
-  { id: 'barco', name: 'Barco / navegación', active: false, items: [
+];
+
+// Biblioteca de actividades preestablecidas para los chips de "Añadir actividad"
+// (checklist de maleta, sección "Checklist de maleta" en travel-checklist.md). Independiente
+// de DEFAULT_MODULES para poder ofrecer aquí tipos que un viaje concreto no trae activados como módulo.
+const ACTIVITY_PRESETS = [
+  { id: 'surf', name: 'Surf', items: [
+    'Tabla(s)', 'Neopreno', 'Rashguard', 'Leashes', 'Parafina', 'Escarpines',
+    'Guantes de neopreno', 'Previsión de olas y mareas (Stormrider, Magicseaweed)',
+    'Crema para después del sol/agua (cacao)', 'Llave de coche + candado', 'Bolsa para bañador mojado'
+  ]},
+  { id: 'esqui', name: 'Esquí / nieve', items: [
+    'Abrigo', 'Pantalones técnicos', 'Bastones', 'Esquís', 'Pieles de foca', 'Mochila',
+    'Crema solar de alta protección', 'Buff', 'Cacao labial', 'Pasamontañas',
+    'Gafas de sol', 'Gafas de esquí', 'Guantes de esquí'
+  ]},
+  { id: 'tropico', name: 'Trópico', items: [
+    'Antimosquitos', 'Vacunas al día', 'Crema (repelente + solar)'
+  ]},
+  { id: 'formal', name: 'Traje formal', items: [
+    'Pantalón sin rotos', 'Chaqueta sin rotos', 'Camisa', 'Ballenas de cuello',
+    'Gemelos', 'Tirantes/cinturón', 'Pañuelo de bolsillo', 'Calcetines a juego', 'Zapatos limpios'
+  ]},
+  { id: 'running', name: 'Running', items: [
+    'Zapatillas', 'Calcetines técnicos', 'Camisetas', 'Auriculares'
+  ]},
+  { id: 'scuba', name: 'Scuba / buceo', items: [
+    'Limpiador de gafas', 'Filtro rojo para GoPro', 'Gafas propias'
+  ]},
+  { id: 'barco', name: 'Barco / navegación', items: [
     'Batería + regleta de varias salidas', 'Cargadores', 'Móvil', 'iPad', 'GoPro',
     'Cremas (sol + después)', 'Gorra', 'Bolsas organizadoras', 'Cuerda para gafas',
     'Funda impermeable móvil/iPad', 'Gafas de sol', 'Neceser de aseo', 'Altavoz', 'Navaja',
@@ -260,7 +292,7 @@ const DESTINATIONS = [
     notes: 'Sin preset. Usa la guía de temperatura → ropa de travel-checklist.md para decidir qué módulos activar según el clima.'
   },
   {
-    id: 'sotogrande', name: 'Sotogrande', modules: ['base', 'ropa', 'playa', 'surf'],
+    id: 'sotogrande', name: 'Sotogrande', modules: ['base', 'ropa', 'playa'],
     items: ['Licencia de pesca', 'Arpón', 'Cañas de pescar'],
     notes:
 `Actividades: surf, windsurf, pesca submarina y normal, piragua en el Guadiaro, parapente, bici, scuba, golf.
@@ -271,7 +303,7 @@ Wifi / alarma / contactos de servicio: no están aquí por seguridad — pregunt
 Ruta: A4 → A44 → A92. Parada: Despeñaperros.`
   },
   {
-    id: 'sierra-nevada', name: 'Sierra Nevada (esquí)', modules: ['base', 'ropa', 'esqui'],
+    id: 'sierra-nevada', name: 'Sierra Nevada (esquí)', modules: ['base', 'ropa'],
     items: ['Tarjeta forfait', 'Tarjeta parking', 'Kit mantenimiento esquís', 'Cadenas para el coche', 'Llave del garaje'],
     notes:
 `Preparar material la noche antes; salida habitual 8:30 (avisar 15 min antes).
@@ -319,7 +351,7 @@ Mantenimiento pendiente: filtros de agua, taller de pintura.`
     notes: 'Punto de paso habitual en los trayectos Madrid–Sotogrande. Sin notas específicas registradas todavía — añade aquí lo que se vaya aprendiendo.'
   },
   {
-    id: 'barco', name: 'Barco / navegación a vela', modules: ['base', 'ropa', 'barco'],
+    id: 'barco', name: 'Barco / navegación a vela', modules: ['base', 'ropa'],
     items: [],
     notes:
 `Antes de zarpar: vídeo del estado general (llaves, piloto automático, bandas) y enviarlo; confirmar seguro; bajar mapas Navionics y marcar ruta.
@@ -350,7 +382,9 @@ function loadState() {
       id: m.id, name: m.name, active: m.active,
       items: m.items.map(text => ({ text, checked: false }))
     })),
-    destinos
+    destinos,
+    activities: [],
+    free: { items: [] }
   };
 }
 
@@ -395,6 +429,15 @@ function render() {
 
   let total = 0, checked = 0;
 
+  // checks libres — independientes de destino y módulos, no se resetean al cambiar de destino
+  if (!state.free) state.free = { items: [] };
+  const freeContainer = document.getElementById('free-module');
+  freeContainer.innerHTML = '';
+  total += state.free.items.length; checked += state.free.items.filter(i => i.checked).length;
+  freeContainer.appendChild(buildModuleEl({
+    key: 'free', name: 'Sin categoría', active: true, toggleable: false, items: state.free.items
+  }));
+
   // módulo de checks específicos del destino actual
   const destContainer = document.getElementById('destino-module');
   destContainer.innerHTML = '';
@@ -411,13 +454,74 @@ function render() {
     container.appendChild(buildModuleEl({ key: 'mod', mi, name: mod.name, active: mod.active, toggleable: true, items: mod.items }));
   });
 
+  // actividades — módulos creados a mano, con su propia lista de checks
+  if (!state.activities) state.activities = [];
+  const actContainer = document.getElementById('activities');
+  actContainer.innerHTML = '';
+  state.activities.forEach((act, ai) => {
+    if (act.active) { total += act.items.length; checked += act.items.filter(i => i.checked).length; }
+    actContainer.appendChild(buildModuleEl({
+      key: 'activity', mi: ai, name: act.name, active: act.active, toggleable: true, items: act.items, removable: true
+    }));
+  });
+
+  // chips de actividades en el header, para verlas de un vistazo sin bajar hasta la sección
+  const headerAct = document.getElementById('header-activities');
+  headerAct.innerHTML = state.activities.length
+    ? state.activities.map((act, ai) => {
+        const c = act.items.filter(i => i.checked).length;
+        return `<span class="chip${act.active ? '' : ' inactive'}" data-jump-activity="${ai}">${act.name} (${c}/${act.items.length})</span>`;
+      }).join('')
+    : '<span style="color:var(--text-dim);font-size:0.85rem;">Sin actividades añadidas todavía.</span>';
+  headerAct.querySelectorAll('[data-jump-activity]').forEach(el => {
+    el.addEventListener('click', () => {
+      document.getElementById('activities').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  renderActivityPicker();
+
   document.getElementById('progress-label').textContent = `${checked} / ${total}`;
   document.getElementById('progress-fill').style.width = total ? `${(checked / total) * 100}%` : '0%';
 
   wireModuleEvents();
 }
 
-function buildModuleEl({ key, mi, name, active, toggleable, items, extraClass }) {
+function renderActivityPicker() {
+  const picker = document.getElementById('header-activity-picker');
+  picker.innerHTML = ACTIVITY_PRESETS.map(p => {
+    const added = (state.activities || []).some(a => a.name === p.name);
+    return `<span class="chip${added ? ' added' : ''}" data-add-preset="${p.id}" title="${added ? 'Ya añadida' : 'Añadir actividad'}">${added ? '✓' : '+'} ${p.name}</span>`;
+  }).join('');
+  picker.querySelectorAll('[data-add-preset]:not(.added)').forEach(el => {
+    el.addEventListener('click', () => addActivityFromPreset(el.dataset.addPreset));
+  });
+}
+
+function addActivityFromPreset(presetId) {
+  const preset = ACTIVITY_PRESETS.find(p => p.id === presetId);
+  if (!preset) return;
+  if (!state.activities) state.activities = [];
+  if (state.activities.some(a => a.name === preset.name)) return;
+  const items = preset.items.map(text => ({ text, checked: false }));
+  state.activities.push({ name: preset.name, active: true, items });
+  saveState(); render();
+}
+
+function addActivityFromInput() {
+  const nameInput = document.getElementById('new-activity-name');
+  const name = nameInput.value.trim();
+  if (!name) return;
+  if (!state.activities) state.activities = [];
+  state.activities.push({ name, active: true, items: [] });
+  nameInput.value = '';
+  saveState(); render();
+}
+document.getElementById('btn-add-activity').addEventListener('click', addActivityFromInput);
+document.getElementById('new-activity-name').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') addActivityFromInput();
+});
+
+function buildModuleEl({ key, mi, name, active, toggleable, items, extraClass, removable }) {
   const modEl = document.createElement('div');
   modEl.className = 'module' + (active ? '' : ' inactive') + (extraClass ? ' ' + extraClass : '');
   modEl.dataset.key = key;
@@ -428,9 +532,12 @@ function buildModuleEl({ key, mi, name, active, toggleable, items, extraClass })
   head.className = 'module-head';
   head.innerHTML = `
     <h2>${name} <span class="module-count">${checkedCount}/${items.length}</span></h2>
-    ${toggleable ? `<label class="module-toggle" onclick="event.stopPropagation()">
-      <input type="checkbox" ${active ? 'checked' : ''} data-mod-toggle="${mi}"> activo
-    </label>` : ''}
+    <div style="display:flex;align-items:center;gap:10px;">
+      ${toggleable ? `<label class="module-toggle" onclick="event.stopPropagation()">
+        <input type="checkbox" ${active ? 'checked' : ''} data-toggle-key="${key}" data-toggle-mi="${mi}"> activo
+      </label>` : ''}
+      ${removable ? `<button class="remove-btn" style="opacity:1;font-size:0.78rem;" data-remove-activity-mi="${mi}" title="Eliminar actividad completa">Eliminar ✕</button>` : ''}
+    </div>
   `;
   const body = document.createElement('div');
   body.className = 'module-body';
@@ -465,13 +572,20 @@ function buildModuleEl({ key, mi, name, active, toggleable, items, extraClass })
 
 function itemsArrayFor(key, mi) {
   if (key === 'destino') return state.destinos[currentDestino().id].items;
+  if (key === 'free') return state.free.items;
+  if (key === 'activity') return state.activities[+mi].items;
   return state.modules[+mi].items;
 }
 
+function setModuleActive(key, mi, val) {
+  if (key === 'activity') state.activities[+mi].active = val;
+  else state.modules[+mi].active = val;
+}
+
 function wireModuleEvents() {
-  document.querySelectorAll('[data-mod-toggle]').forEach(el => {
+  document.querySelectorAll('[data-toggle-key]').forEach(el => {
     el.addEventListener('change', (e) => {
-      state.modules[+el.dataset.modToggle].active = e.target.checked;
+      setModuleActive(el.dataset.toggleKey, el.dataset.toggleMi, e.target.checked);
       saveState(); render();
     });
   });
@@ -484,6 +598,14 @@ function wireModuleEvents() {
   document.querySelectorAll('[data-remove-key]').forEach(el => {
     el.addEventListener('click', () => {
       itemsArrayFor(el.dataset.removeKey, el.dataset.removeMi).splice(+el.dataset.removeIi, 1);
+      saveState(); render();
+    });
+  });
+  document.querySelectorAll('[data-remove-activity-mi]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!confirm('¿Eliminar esta actividad y todos sus checks?')) return;
+      state.activities.splice(+el.dataset.removeActivityMi, 1);
       saveState(); render();
     });
   });
@@ -522,6 +644,8 @@ document.getElementById('destino-notes').addEventListener('input', (e) => {
 document.getElementById('btn-reset-checks').addEventListener('click', () => {
   state.modules.forEach(m => m.items.forEach(i => i.checked = false));
   Object.values(state.destinos).forEach(d => d.items.forEach(i => i.checked = false));
+  state.free.items.forEach(i => i.checked = false);
+  state.activities.forEach(a => a.items.forEach(i => i.checked = false));
   saveState(); render();
 });
 
@@ -543,6 +667,15 @@ function buildInventoryText() {
   if (state.meta.who) lines.push(`Quién viaja: ${state.meta.who}`);
   lines.push('');
 
+  if (state.free.items.length) {
+    const llevado = state.free.items.filter(i => i.checked).map(i => i.text);
+    const noLlevado = state.free.items.filter(i => !i.checked).map(i => i.text);
+    lines.push('**Sin categoría**');
+    lines.push(`- Llevado: ${llevado.length ? llevado.join(', ') : '—'}`);
+    if (noLlevado.length) lines.push(`- No llevado / faltó: ${noLlevado.join(', ')}`);
+    lines.push('');
+  }
+
   if (destState.items.length) {
     const llevado = destState.items.filter(i => i.checked).map(i => i.text);
     const noLlevado = destState.items.filter(i => !i.checked).map(i => i.text);
@@ -556,6 +689,15 @@ function buildInventoryText() {
     const llevado = m.items.filter(i => i.checked).map(i => i.text);
     const noLlevado = m.items.filter(i => !i.checked).map(i => i.text);
     lines.push(`**${m.name}**`);
+    lines.push(`- Llevado: ${llevado.length ? llevado.join(', ') : '—'}`);
+    if (noLlevado.length) lines.push(`- No llevado / faltó: ${noLlevado.join(', ')}`);
+    lines.push('');
+  });
+
+  state.activities.filter(a => a.active).forEach(a => {
+    const llevado = a.items.filter(i => i.checked).map(i => i.text);
+    const noLlevado = a.items.filter(i => !i.checked).map(i => i.text);
+    lines.push(`**Actividad: ${a.name}**`);
     lines.push(`- Llevado: ${llevado.length ? llevado.join(', ') : '—'}`);
     if (noLlevado.length) lines.push(`- No llevado / faltó: ${noLlevado.join(', ')}`);
     lines.push('');
