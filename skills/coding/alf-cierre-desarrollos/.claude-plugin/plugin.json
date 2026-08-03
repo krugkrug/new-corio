@@ -1,0 +1,8 @@
+{
+  "name": "alf-cierre-desarrollos",
+  "version": "1.0.0",
+  "description": "Rutina de cierre de desarrollos: revisa todas las ramas de todos tus repos locales, reconcilia (merge a main) lo que esté terminado, publica (push a origin/main) y borra las ramas ya integradas.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}
