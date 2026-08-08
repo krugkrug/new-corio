@@ -1,5 +1,7 @@
 # Medical Information
 
+> **Síntomas en curso:** este fichero recoge datos *estáticos* (alergias, condiciones crónicas, medicación habitual, proveedores, antecedentes familiares). Los síntomas actualmente en investigación —con hipótesis, literatura y planes— viven en [seguimiento-sintomas.md](seguimiento-sintomas.md). Cuando un caso se cierra, su resumen se promueve aquí como antecedente.
+
 ## Allergies & Conditions
 
 <!-- Copy this block for each family member -->
@@ -26,6 +28,13 @@
 | Estrés | Moderado |
 | Alcohol | Consumo habitual |
 | Tabaco | Exfumador: activo 16–26 años; ocasional muy poco frecuente 30–38 años |
+
+#### Antecedentes personales
+
+| Antecedente | Detalle | Fecha | Secuelas / seguimiento |
+|-------------|---------|-------|------------------------|
+| Lesión en la córnea | Causa y ojo afectado por precisar | Por precisar | Molestia ocasional tipo sequedad — caso abierto en [seguimiento-sintomas.md](seguimiento-sintomas.md) §5 |
+| Alopecia androgénica | En tratamiento con dutasterida (Avidart); receta previa de minoxidil (2024-07-10) | — | Ver medicación actual |
 
 ### [Family Member Name]
 
@@ -171,6 +180,10 @@
 - **Tumor renal en ambas ramas** (padre maligno de inicio precoz <43 años; madre benigno) → antecedente más destacable del historial.
 - **Cáncer colorrectal** (tío materno) y **cáncer de próstata** (abuelo paterno) en primer/segundo grado.
 - Patología cardiovascular en rama materna.
+
+#### Pendiente de completar
+
+- **Psoriasis o piel atópica en la familia**: desconocido. Dato relevante para el caso 1 (escamación de cuero cabelludo) en [seguimiento-sintomas.md](seguimiento-sintomas.md) — merece preguntar a madre/hermanos.
 
 ---
 

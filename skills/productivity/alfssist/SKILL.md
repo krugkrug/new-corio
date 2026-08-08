@@ -8,9 +8,10 @@ description: |
   - Coordinating with service providers
   - Travel planning and bookings
   - Financial tasks (account info, routing numbers, advisor contacts)
+  - Tracking an ongoing symptom or health issue (adding a new observation, recalling the current hypotheses, gathering studies, preparing a doctor's visit)
   - Any task requiring family member details, insurance info, medical history, or household information
 
-  Triggers: form filling, insurance, medical records, appointments, family info, travel booking, school forms, emergency contacts, allergies, prescriptions, household services, bank account, routing number, financial, accountant, tax
+  Triggers: form filling, insurance, medical records, appointments, family info, travel booking, school forms, emergency contacts, allergies, prescriptions, household services, bank account, routing number, financial, accountant, tax, síntoma, seguimiento de síntomas, me pica, me duele, mancha, descamación, caspa, queratosis, grano, molestia
 ---
 
 # Sánchez Bella Family Assistant (alfssist)
@@ -23,11 +24,14 @@ Personal assistant skill for Alfredo and family. Load the appropriate reference 
 |-----------|---------------|--------------|
 | Identity, contacts, DOBs | [family-members.md](references/family-members.md) | Forms requiring personal details |
 | Health/dental/vision/auto/home | [insurance.md](references/insurance.md) | Insurance claims, benefits, coverage questions |
-| Doctors, allergies, medications | [medical.md](references/medical.md) | Medical forms, appointments, prescriptions |
+| Doctors, allergies, medications, family history | [medical.md](references/medical.md) | Medical forms, appointments, prescriptions |
+| Ongoing symptoms under investigation | [seguimiento-sintomas.md](references/seguimiento-sintomas.md) | New observation on an open case, recalling hypotheses, gathering studies, preparing a consultation |
 | Address, utilities, services | [household.md](references/household.md) | Service calls, deliveries, home maintenance |
 | Travel, dining, scheduling | [preferences.md](references/preferences.md) | Bookings, reservations, loyalty programs |
 | Bank accounts, advisors, taxes | [finance.md](references/finance.md) | Financial forms, wire transfers, tax prep |
 | Trip prep, packing checklists, travel learnings | [travel-checklist.md](references/travel-checklist.md) | Preparing for a trip, generating a packing list, pre-departure protocol |
+
+**Medical split:** `medical.md` holds *static* data (allergies, chronic conditions, regular medication, providers, family history). `seguimiento-sintomas.md` holds *live* cases — symptoms currently under investigation, with hypotheses, sourced literature and action plans. When a case closes, its summary moves to `medical.md` as an antecedent.
 
 ## Usage Guidelines
 
@@ -54,6 +58,14 @@ Personal assistant skill for Alfredo and family. Load the appropriate reference 
 1. Load [medical.md](references/medical.md) for provider contacts
 2. Load [preferences.md](references/preferences.md) for scheduling constraints
 3. Suggest optimal times based on family calendar patterns
+
+### Symptom Tracking
+1. Load [seguimiento-sintomas.md](references/seguimiento-sintomas.md) — check whether the symptom is already an open case before starting from scratch
+2. Load [medical.md](references/medical.md) when the answer depends on regular medication, chronic conditions or family history
+3. Record the new input **in the corresponding case section, with a date** — don't answer only in chat and lose the observation
+4. Every relevant clinical claim carries a **linked source** and a **confidence level**; state explicitly what is unknown instead of filling gaps with plausible-sounding detail
+5. Keep the *Índice de casos abiertos* table in sync (status + next action) and bump the version header
+6. Never present the file's hypotheses as a diagnosis — its purpose is to structure a conversation with a doctor
 
 ### Financial Tasks
 1. Load [finance.md](references/finance.md) for account details
