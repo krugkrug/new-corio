@@ -26,6 +26,7 @@ Los cambios hechos dentro del HTML (checks añadidos, notas editadas) solo persi
 
 1. Edita `../../references/travel-checklist.md` (fuente de verdad legible).
 2. Edita el array `MODULES` o `DESTINATIONS` en `../../assets/packing-list-template.html` para que quede igual.
+   Los **diagramas de barco** no están ahí: viven solo en `home/js/diagramas-barco.js` del repo `meta`, que la plantilla carga por ruta relativa. Se editan en ese fichero y punto — no hay segunda copia que sincronizar.
 3. Si añades un destino nuevo al desplegable, dile al usuario que puede que quiera subir la versión del plugin (`.claude-plugin/plugin.json` y la entrada de `alfssist` en `.claude-plugin/marketplace.json` del repo `meta`).
 
 ## Después del viaje

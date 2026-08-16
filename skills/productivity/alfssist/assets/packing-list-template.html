@@ -15,21 +15,30 @@
     --accent-bg: #e8f2ec;
     --done: #8a8f8a;
     --danger: #b3492f;
+    /* Colores de balizamiento y luces de navegación (diagramas del destino
+       barco). Van aparte de --accent/--danger porque ahí el color ES el dato:
+       verde = estribor, rojo = babor. No reutilizarlos para otra cosa. */
+    --nav-rojo: #c0392b;
+    --nav-verde: #1e8449;
+    --viento: #9a6b1f;
     --radius: 10px;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #17181a; --card: #212325; --text: #eceae5; --text-dim: #9a9d9a;
       --border: #33352f; --accent: #5fb98a; --accent-bg: #1e2c24; --done: #6b6f6c; --danger: #e0836a;
+      --nav-rojo: #ef7d68; --nav-verde: #4fc08a; --viento: #d9b24c;
     }
   }
   :root[data-theme="dark"] {
     --bg: #17181a; --card: #212325; --text: #eceae5; --text-dim: #9a9d9a;
     --border: #33352f; --accent: #5fb98a; --accent-bg: #1e2c24; --done: #6b6f6c; --danger: #e0836a;
+    --nav-rojo: #ef7d68; --nav-verde: #4fc08a; --viento: #d9b24c;
   }
   :root[data-theme="light"] {
     --bg: #f7f6f3; --card: #ffffff; --text: #1f2321; --text-dim: #6b6f6c;
     --border: #e2e0da; --accent: #2f6f4f; --accent-bg: #e8f2ec; --done: #8a8f8a; --danger: #b3492f;
+    --nav-rojo: #c0392b; --nav-verde: #1e8449; --viento: #9a6b1f;
   }
   * { box-sizing: border-box; }
   body {
@@ -89,6 +98,35 @@
     margin-bottom: 12px; overflow: hidden;
   }
   .module.destino-module { border-color: var(--accent); }
+
+  /* Diagramas de referencia del destino (solo barco, por ahora). Son consulta,
+     no checklist: no entran en el estado ni cuentan para el progreso. */
+  .diagram {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    margin: 0 0 12px; padding: 14px;
+  }
+  .diagram h4 { margin: 0 0 10px; font-size: 0.92rem; }
+  .diagram svg { display: block; width: 100%; max-width: 100%; height: auto; color: var(--text); }
+  .diagram figcaption {
+    margin-top: 10px; font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;
+  }
+  .diagram svg text { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+
+  .saber {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px;
+  }
+  .saber > summary { cursor: pointer; padding: 11px 14px; font-size: 0.93rem; font-weight: 600; list-style: none; }
+  .saber > summary::after { content: ' ▸'; color: var(--text-dim); font-weight: 400; }
+  .saber[open] > summary::after { content: ' ▾'; }
+  .saber-cuerpo {
+    padding: 0 14px 12px; font-size: 0.86rem; line-height: 1.55; color: var(--text-dim);
+    border-top: 1px solid var(--border);
+  }
+  .saber-cuerpo b { color: var(--text); }
+  .saber-cuerpo ul { padding-left: 18px; margin: 10px 0; }
+  .saber-cuerpo li { margin-bottom: 7px; }
+  .saber-cuerpo table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 0.82rem; }
+  .saber-cuerpo th, .saber-cuerpo td { border: 1px solid var(--border); padding: 5px 8px; text-align: left; }
   .module-head {
     display: flex; align-items: center; justify-content: space-between;
     padding: 12px 14px; cursor: pointer; user-select: none;
@@ -176,6 +214,12 @@
   <h3 class="section-title" id="destino-items-title">Checks específicos del destino</h3>
   <div id="destino-module"></div>
 
+  <h3 class="section-title" id="destino-diagrams-title" hidden>Diagramas</h3>
+  <div id="destino-diagrams" hidden></div>
+
+  <h3 class="section-title" id="destino-saber-title" hidden>Conocimiento de alquiler de barco</h3>
+  <div id="destino-saber" hidden></div>
+
   <h3 class="section-title">Módulos por contexto</h3>
   <div id="modules"></div>
 
@@ -203,6 +247,14 @@
   </div>
 </div>
 
+<!-- Los diagramas de barco viven en UN solo sitio, home/js/diagramas-barco.js,
+     que es el que sirve la app. Antes esta plantilla llevaba su propia copia
+     del array y había que corregir cualquier regla en los dos ficheros. Se
+     carga por ruta relativa al repo; si esta plantilla se abre suelta, fuera
+     de su carpeta, la constante no existe y la sección de diagramas
+     sencillamente no aparece — el resto de la checklist funciona igual. -->
+<script src="../../../../home/js/diagramas-barco.js"></script>
+<script src="../../../../home/js/barco-conocimiento.js"></script>
 <script>
 // ---------------------------------------------------------------------
 // Datos de partida: módulos, destinos e items, tomados de
@@ -211,7 +263,12 @@
 // antes de entregar este HTML para un viaje concreto; todo sigue siendo
 // editable a mano desde la propia página.
 // ---------------------------------------------------------------------
-const DATA_KEY = 'alfssist-packing-state-v3';
+// Se sube la versión cada vez que cambia el contenido de partida (módulos,
+// destinos, items). `loadState()` devuelve el localStorage guardado si existe,
+// así que sin subirla los items nuevos nunca aparecerían en un navegador que
+// ya haya usado la plantilla. Equivale a un "Reiniciar plantilla" automático:
+// aceptable porque esto se rearma en cada viaje.
+const DATA_KEY = 'alfssist-packing-state-v4';
 const SAVE_DIR_HINT = 'skills/productivity/alfssist/references/inventarios/';
 
 const DEFAULT_MODULES = [
@@ -278,9 +335,12 @@ const ACTIVITY_PRESETS = [
     'Cremas (sol + después)', 'Gorra', 'Bolsas organizadoras', 'Cuerda para gafas',
     'Funda impermeable móvil/iPad', 'Gafas de sol', 'Neceser de aseo', 'Altavoz', 'Navaja',
     'Toalla de microfibra', 'Libro PER', 'Farol', 'Pinzas para colgar ropa', 'Pulpos', 'Mechero',
-    'Libro de derroteros', 'Guantes (vela)', 'Chanclas', 'Pantalones cortos', 'Trajes de baño',
-    'Jersey', 'Snorkel', 'Jabón para snorkel', 'Aletas', 'Linterna submarina', 'Licra',
-    'Sedal, cebo y anzuelos (pesca)', 'Señuelos y pesos'
+    'Libro de derroteros', 'Libro de peces', 'Biodramina',
+    'Guantes (vela)', 'Chanclas', 'Pantalones cortos', 'Trajes de baño',
+    'Jersey', 'Cortavientos', 'Impermeable', 'Camisa de manga larga (sol de mediodía)',
+    'Snorkel', 'Jabón para snorkel', 'Aletas', 'Linterna submarina', 'Licra',
+    'Sedal, cebo y anzuelos (pesca)', 'Excitador', 'Señuelos y pesos',
+    'Cuchillo y tabla (pesca)', 'Aliño para ceviche/tartar (lima, soja, sal)'
   ]},
 ];
 
@@ -352,14 +412,53 @@ Mantenimiento pendiente: filtros de agua, taller de pintura.`
   },
   {
     id: 'barco', name: 'Barco / navegación a vela', modules: ['base', 'ropa'],
-    items: [],
+    items: [
+      'Contrato — día completo, nunca medio día ni salida por la tarde',
+      'Contrato — pasar los datos de todos por adelantado (firmado antes de llegar)',
+      'Contrato — qué seguro incluye y con qué franquicia, por escrito',
+      'Contrato — fianza: importe, forma de pago y plazo de devolución',
+      'Contrato — si se cierra fuera de la plataforma, el vídeo y las fotos son la única prueba',
+      'Antes — bajar mapas Navionics offline y dejar la ruta marcada',
+      'Antes — app de viento y rumbo (Windy / PredictWind) + parte del día',
+      'Antes — hora de puesta de sol y plan B de fondeo',
+      'Antes — minicursillo a la tripulación: ballestrinque, as de guía, defensas',
+      'Antes — repartir roles de tripulación (ver notas)',
+      'Antes — asignar a alguien grabar el vídeo del casco',
+      'Antes — sorteo de camarotes',
+      'Antes — menús y compra cerrados',
+      'Antes — biodramina antes de embarcar, no cuando ya se marea',
+      'Antes — llegar al pantalán media hora antes y pasar por el baño',
+      'Entrega — vídeo del estado general (casco, bandas, llaves, piloto) y enviarlo',
+      'Entrega — foto del nivel de gasofa y del cuentahoras',
+      'Entrega — probar el motor del ancla subiendo y bajando; cabo/tensor de fondeo',
+      'Entrega — qué cabo es cuál (pajarín) y diagrama de cabos',
+      'Entrega — reglaje de cabos y que haya un cabo largo para atracar',
+      'Entrega — probar qué enchufe funciona navegando',
+      'Entrega — arrancar el motor con el charter delante (la llave se queda pillada)',
+      'Entrega — issues conocidos, anotados por escrito',
+      'Entrega — botiquín: dónde está y qué lleva',
+      'Seguridad — chalecos: cuántos, dónde, probarse uno',
+      'Seguridad — balsa, bengalas y aro: ubicación exacta',
+      'Seguridad — cortes de gas, de baterías y bomba de achique',
+      'Seguridad — VHF: MMSI, DSC, canal 16 y canal 9',
+      'Seguridad — protocolo de hombre al agua explicado a todos',
+      'Seguridad — extintores y grifos de fondo',
+      'Devolución — vídeo final con el mismo recorrido que la entrega, y enviarlo',
+      'Devolución — foto de gasofa y cuentahoras; repostar al nivel del contrato',
+      'Devolución — nada olvidado en camarotes ni en la nevera',
+    ],
     notes:
-`Antes de zarpar: vídeo del estado general (llaves, piloto automático, bandas) y enviarlo; confirmar seguro; bajar mapas Navionics y marcar ruta.
-Canal 16 (general) y canal 9 (puerto). Luz roja de otro barco de noche = él tiene preferencia.
-Orzar = proa al viento. Arribar = a favor del viento. Puerto: verde con verde, rojo con rojo (al revés saliendo).
-Atraque: normalmente marcha atrás, estribor en popa; tirar cadena, guía en tensión.
-Roles de tripulación a repartir: cabos, segundo de timón, ancla, izar mayor, escotas, cocina/nevera, orden en cubierta, restaurantes.
-Destinos deseados: Turquía, Grecia (Kalymnos, Zante), Italia (Ustica, Panarea), Córcega, Cerdeña, Azores, Costa Rica, Ibiza-Formentera.`
+`Alquiler SIN patrón: la entrega, las maniobras, la seguridad y la devolución son tuyas.
+
+Maniobras. Atraque: entrando de popa marcha atrás, atraque a estribor, defensas puestas antes de entrar a puerto. Fondeo: tirar mucha cadena, guía en tensión y barco recto.
+
+Chuleta. Canal 16 general, canal 9 puerto. Si de noche ves la luz roja de otro barco cruzándose, él tiene preferencia: si ves rojo, ¡quieto! Barcos encontrados de frente, caer a estribor los dos. A vela con amuras contrarias cede el que recibe el viento por babor (preferencia el de estribor); con la misma amura cede el de barlovento. Orzar = acercar la proa al viento, para ceñir; arribar = caer hacia donde va el viento. Entrando a puerto verde con verde y rojo con rojo, saliendo al revés. Batería: "alguien negativo lo ve todo negro" (negro = negativo). Sol: crema en escote y empeines, y camisa de manga larga a mediodía mejor que repetir crema.
+
+Roles a repartir: orden de cabos, segundo de timón, ancla (con comunicación clara con el timón), izar mayor, escotas, ajustes de mayor, auxiliar en la suelta de cabos, cocina/nevera, orden en cubierta/salón/camarotes, responsable de salidas y restaurantes.
+
+Menús de a bordo (poca cocina, poca nevera): gambas cocidas con mayonesa, bígaros, salmón ahumado, carpaccio, tartar de atún, un ceviche simple, tacos de roast beef, pizzas, pasta, empanadas, donetes.
+
+Destinos deseados: Turquía, Grecia (Kalymnos, Zante), Italia (Ustica, Panarea), Córcega, Cerdeña, Azores, Costa Rica, Ibiza-Formentera.`,
   },
 ];
 
@@ -445,6 +544,39 @@ function render() {
   destContainer.appendChild(buildModuleEl({
     key: 'destino', name: dest.name, active: true, toggleable: false, items: destState.items, extraClass: 'destino-module'
   }));
+
+  // diagramas de referencia del destino — material de consulta, no checks: no
+  // se guardan en el estado ni suman al progreso, así que se pintan desde
+  // DESTINATIONS en cada render y no se pueden "perder" al reiniciar.
+  const diagContainer = document.getElementById('destino-diagrams');
+  const diagTitle = document.getElementById('destino-diagrams-title');
+  // Por `typeof` y no por `window.`: DIAGRAMAS_BARCO se declara con `const`,
+  // y las declaraciones léxicas del ámbito global NO cuelgan de window —
+  // sí son visibles entre scripts clásicos del mismo documento. Con
+  // window. daba siempre undefined aunque el fichero cargara bien.
+  const hayDiagramas = typeof DIAGRAMAS_BARCO !== 'undefined' && Array.isArray(DIAGRAMAS_BARCO);
+  const diagramas = (dest.id === 'barco' && hayDiagramas) ? DIAGRAMAS_BARCO : [];
+  diagContainer.innerHTML = diagramas.map(d => `
+    <figure class="diagram">
+      <h4>${d.title}</h4>
+      ${d.svg}
+      <figcaption>${d.caption}</figcaption>
+    </figure>`).join('');
+  diagContainer.hidden = diagramas.length === 0;
+  diagTitle.hidden = diagramas.length === 0;
+
+  // Mismo patrón que los diagramas: fuente única en home/js, aquí sólo se pinta.
+  const saberCont = document.getElementById('destino-saber');
+  const saberTitle = document.getElementById('destino-saber-title');
+  const haySaber = typeof CONOCIMIENTO_BARCO !== 'undefined' && Array.isArray(CONOCIMIENTO_BARCO);
+  const saber = (dest.id === 'barco' && haySaber) ? CONOCIMIENTO_BARCO : [];
+  saberCont.innerHTML = saber.map(c => `
+    <details class="saber">
+      <summary>${c.title}</summary>
+      <div class="saber-cuerpo">${c.body}</div>
+    </details>`).join('');
+  saberCont.hidden = saber.length === 0;
+  saberTitle.hidden = saber.length === 0;
 
   // módulos por contexto
   const container = document.getElementById('modules');
