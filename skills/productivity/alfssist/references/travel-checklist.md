@@ -165,13 +165,15 @@ Comida: potitos, cereales, babero. Pañales, toallitas, crema de pañales, medic
 Colchoneta/cama, pienso + margen, correa, cartilla sanitaria, collar GPS, mando/collar de adiestramiento, bolsas para caca, condroprotector, cuencos, caseta si aplica, pomada, toalla.
 
 ### Barco / navegación
-Equipo general: batería + regleta de varias salidas, cargadores, móvil, iPad, GoPro, cremas (sol + después), gorra, bolsas organizadoras, cuerda para gafas, funda impermeable para móvil/iPad, gafas de sol, neceser de aseo, altavoz, navaja, toalla de microfibra, libro PER, farol, pinzas para colgar ropa, pulpos, mechero, libro de derroteros.
+Equipo general: batería + regleta de varias salidas, cargadores, móvil, iPad, GoPro, cremas (sol + después), gorra, bolsas organizadoras, cuerda para gafas, funda impermeable para móvil/iPad, gafas de sol, neceser de aseo, altavoz, navaja, toalla de microfibra, libro PER, farol, pinzas para colgar ropa, pulpos, mechero, libro de derroteros, libro de peces, biodramina.
 
-Ropa de vela: guantes, chanclas, pantalones cortos, traje(s) de baño, camisetas, pantalón ligero, jersey, pijama.
+Ropa de vela: guantes, chanclas, pantalones cortos, traje(s) de baño, camisetas, pantalón ligero, jersey, cortavientos, impermeable, pijama, camisa de manga larga (para el sol de mediodía: protege mejor que repetir crema).
 
-Pesca a bordo: sedal, cebo (incl. cabezas de gambas), anzuelos, excitador, señuelos, pesos.
+Pesca a bordo: sedal, cebo (incl. cabezas de gambas), anzuelos, excitador, señuelos, pesos, cuchillo y tabla, aliño ya preparado para ceviche/tartar (lima, soja, sal) — a bordo no se improvisa.
 
 Agua: snorkel, jabón para el snorkel (importante para que no empañe), aletas, linterna submarina, licra.
+
+Compra de a bordo (no es maleta, va a la lista de la compra): vasos y platos de plástico, jabón, champú, pinzas de tender.
 
 ## Destinos recurrentes
 
@@ -213,6 +215,10 @@ Módulos por defecto: Base/general.
 Parcela/prado en el norte donde hay un proyecto de construcción (yurta) en marcha — el "destino" aquí es más de trabajo/campo que de vacaciones. Sin módulo de ropa específico; usa los checks propios de abajo.
 
 - Notas: llevar ropa de faena aparte del equipaje normal
+- Herramienta y faena: cincel · sierra · taladro + brocas · puntas y cabezales torx · martillos · nivel · nivel de cuerda (que sea bueno) · escuadra de carpintero · metro · grapadora · soplete · pegamento bueno para madera · tornillos y clavos · cadenas · desencajadores · cuerda de albañil
+- Energía: baterías y pilas de repuesto · estación de batería · cargador · lámpara
+- Protección y ropa: mono · cinturón de herramientas · mascarilla · gafas de protección · botas de trabajo · guantes de trabajo · ropa de faena
+- Intendencia si se duerme allí: tienda de campaña · sacos de dormir · esterillas
 
 ### Toledo (El Cigarral)
 Módulos por defecto: Base/general, Ropa base.
@@ -229,26 +235,53 @@ Módulos por defecto: Base/general, Ropa base.
 Punto de paso habitual en los trayectos Madrid–Sotogrande. Sin notas específicas registradas todavía — añadir aquí lo que se vaya aprendiendo en próximos viajes.
 
 ### Barco / navegación a vela
-Módulos por defecto: Base/general, Ropa base, Barco.
+Módulos por defecto: Base/general, Ropa base + actividad «Barco / navegación».
 
-Antes de zarpar:
-- Grabar siempre vídeo del estado general antes y después (incluye llaves, piloto automático, bandas) y enviarlo
-- Confirmar que el seguro está incluido/al día
-- Cuidado al arrancar el motor — puede quedarse pillada la llave de arranque
-- Bajar mapas de Navionics y marcar la ruta antes de salir
-- Comprobar qué enchufe funciona navegando
+Escrito para **alquiler sin patrón**: la entrega, las maniobras, la seguridad y la devolución son tuyas.
 
-Navegación:
-- Canal 16 (uso general) y canal 9 (puerto) — los de siempre
-- Regla de luces nocturnas: si ves la luz roja de otro barco cruzándose de noche, él tiene preferencia (quieto)
-- Prioridad: viento de babor tiene preferencia sobre viento de estribor (a barlovento)
-- Orzar = proa al viento, para ceñir. Arribar = hacia donde va el viento
-- Entrando a puerto: verde con verde, rojo con rojo. Saliendo de puerto: invertido
-- Atraque: normalmente marcha atrás, con el atraque a estribor en popa; tirar bastante cadena al fondear, mantener la guía en tensión y el barco recto
+> **Dónde vive cada cosa.** Aquí abajo está el **protocolo accionable**: lo que se marca en una checklist, ordenado por momento de uso. El **conocimiento de consulta** —maniobras, chuleta de navegación, la vela por dentro, velas de proa, tipos de aparejo, trimado, roles, menús y destinos— vive en `home/js/barco-conocimiento.js` del repo `meta`, y los **quince diagramas** en `home/js/diagramas-barco.js`. Ahí y en ningún otro sitio: son los ficheros que llegan al navegador, que es donde se consulta esto de verdad (en el pantalán, con el móvil). Los pintan la app —en cualquier lista de viaje con el grupo «Barco / navegación» puesto— y [`../assets/packing-list-template.html`](../assets/packing-list-template.html), que los carga por ruta relativa sin guardar copia.
 
-Tripulación — roles a repartir antes de salir: orden de cabos, segundo de timón, ancla (con buena comunicación), izar la mayor, escotas, ajuste de la mayor, persona auxiliar en la suelta de cabos, cocina/nevera, orden en cubierta/salón/camarotes, responsable de salidas a restaurantes. Enviar antes del viaje un repaso de nudos básicos (ballestrinque, as de guía).
+#### 1. Contratar (semanas antes)
+- Coger **día completo**: nada de medio día ni de salidas por la tarde
+- Pasar los datos de todos por adelantado, para firmar antes de llegar
+- Confirmar por escrito qué seguro incluye y con qué **franquicia**
+- Fianza: importe, forma de pago y plazo de devolución
+- Si se cierra **fuera de la plataforma**, el vídeo y las fotos son la única prueba
 
-Destinos de vela pendientes/deseados: Turquía, Grecia (Kalymnos, Zante), Italia (Ustica, Panarea), Córcega, Cerdeña, Azores, Costa Rica (buceo), Ibiza-Formentera.
+#### 2. Antes de zarpar (en casa)
+- Bajar los mapas de **Navionics offline** y dejar la ruta marcada
+- App de viento y rumbo (Windy / PredictWind) + parte del día
+- Mirar la **hora de puesta de sol** y tener un plan B de fondeo
+- Minicursillo a la tripulación: ballestrinque, as de guía, defensas — por escrito
+- Repartir roles y asignar a alguien grabar el vídeo del casco
+- Sorteo de camarotes · menús y compra cerrados
+- Biodramina **antes** de embarcar, no cuando ya se está mareando
+- Llegar al pantalán **media hora antes** y pasar por el baño
+
+#### 3. Entrega del barco (con el charter delante)
+- **Vídeo completo del estado general** — casco, bandas, llaves, piloto — y **enviarlo**
+- **Foto del nivel de gasofa y del cuentahoras**
+- Probar el **motor del ancla** subiendo y bajando, y el cabo/tensor de fondeo
+- Identificar **qué cabo es cuál** (pajarín) y hacer el diagrama de cabos
+- Reglaje de cabos y confirmar que hay un **cabo largo** para atracar
+- Probar **qué enchufe funciona navegando**
+- Arrancar el motor con el charter delante — la llave se queda pillada
+- Preguntar por issues conocidos y anotarlos **por escrito**
+- Botiquín: dónde está y qué lleva
+
+#### 4. Seguridad (el primer día, con toda la tripulación)
+- Chalecos: cuántos hay, dónde están, probarse uno
+- Balsa salvavidas, bengalas y aro: ubicación exacta
+- Cortes de gas, de baterías y bomba de achique
+- VHF: MMSI, DSC y los canales — **16** general, **9** puerto
+- Protocolo de **hombre al agua** explicado a todos, no solo al patrón
+- Extintores y grifos de fondo
+
+#### 5. Devolución
+- **Cabos adujados y colgados**, no hechos un ovillo
+- Vídeo del estado final con el mismo recorrido que la entrega, y enviarlo
+- Foto de gasofa y cuentahoras; repostar al nivel del contrato
+- Nada olvidado en camarotes ni en la nevera
 
 ### Genérico / otro destino
 Sin preset — usar solo los módulos base/ropa + los que apliquen según clima y actividad ([guía temperatura → ropa](#guía-temperatura--ropa)), y añadir notas libres para ese viaje concreto.
