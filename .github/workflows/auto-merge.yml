@@ -25,9 +25,18 @@ concurrency:
 
 jobs:
   automerge:
+    # El filtro de `meta-sync` es puro ahorro de minutos: esa rama la crea (y la
+    # fusiona ella misma, con reintentos) el workflow sync-a-repos.yml de `meta`,
+    # y su contenido —CLAUDE.md, skills/, workflows, .gitleaks.toml y docs— ya
+    # pasó gitleaks en el PR que lo introdujo en `meta`. Sin este filtro, un sync
+    # que toque 10 repos gasta 1 minuto facturable en cada uno para revalidar
+    # ficheros que nadie ha tocado desde que se validaron. Basta con mirar el
+    # nombre de la rama: es la única que escribe ese workflow, siempre con
+    # force-push del set gestionado y de nada más.
     if: >-
       github.event.pull_request.base.ref == github.event.repository.default_branch
       && github.event.pull_request.draft == false
+      && github.event.pull_request.head.ref != 'meta-sync'
       && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
     runs-on: ubuntu-latest
     steps:
