@@ -19,6 +19,7 @@ Registro vivo de síntomas en curso: hipótesis diagnósticas, literatura recopi
 | 3 | Cuello — picor en Cantabria (verano/calor) | Sin datos suficientes | Aportar aspecto de la piel y desencadenantes |
 | 4 | Nuca — grano recurrente | Sin datos suficientes | Aportar frecuencia, aspecto, si deja cicatriz |
 | 5 | Ojo — molestia/sequedad tras lesión corneal | Sin datos suficientes | Aportar ojo afectado, frecuencia, desencadenantes |
+| 6 | Heces — aceite naranja | Hipótesis funcional, en observación 3-4 días | Confirmar si desaparece con ajuste dietético |
 
 **Antecedente transversal:** tratamiento con **Avidart (dutasterida)** por alopecia androgénica; receta previa de minoxidil (2024-07-10). Relevante como posible factor de sequedad si el vehículo tópico lleva alcohol. Ver [medical.md](medical.md) para el detalle de medicación.
 
@@ -183,11 +184,51 @@ Los síntomas oculares recurrentes tras una lesión corneal (dolor súbito, sens
 
 ---
 
+# 6. Heces — aceite naranja
+
+## Contexto / síntomas
+- Heces relativamente normales acompañadas de una especie de aceite de color naranja. 2º día de evolución (2026-09-02).
+- Sin suplementos (descartado fish oil/omega-3 como causa).
+- Comida con grasa moderada los últimos días (no excesiva).
+- Consumo de vino en el mismo periodo.
+- Etapa de estrés, ya en resolución.
+- Coincide con retomar el running tras tiempo sin correr.
+- Pendiente: si flota, si huele especialmente fuerte, dolor abdominal, pérdida de peso, color de piel/ojos, evolución tras ajuste dietético.
+
+## Hipótesis a explorar
+- **Esteatorrea funcional transitoria por alcohol**: el alcohol inhibe temporalmente la secreción de lipasa pancreática y altera el flujo biliar; con grasa aunque sea moderada, parte no se absorbe. Hipótesis principal — encaja con vino + grasa + 2 días de evolución.
+- **Estrés → tránsito intestinal acelerado**: menos tiempo para digerir/absorber grasa. Factor agravante, no causa única.
+- **Ejercicio intenso tras parón (running)**: desvía flujo sanguíneo del intestino durante horas, ralentiza digestión de grasa si se come cerca del entreno. Factor agravante adicional, coincide en el tiempo.
+- Malabsorción estructural (páncreas, biliar, celiaquía): baja probabilidad inicial dado que las heces son "relativamente normales" y no hay pérdida de peso ni otros signos de alarma; sube si persiste más de una semana.
+
+## Plan
+- Observación 3-4 días con ajuste dietético: bajar grasa (sobre todo frita), pausar alcohol, priorizar carbohidrato simple (arroz, pasta con salsas ligeras, patata, pan tostado), proteína magra, hidratación + electrolitos reforzados por el running.
+- Espaciar 2-3 h entre comida grasa y ejercicio; evitar grasa justo post-entreno.
+- Si desaparece en ese plazo → confirma hipótesis funcional, caso cerrado sin más estudios.
+
+## Señales de alarma (derivar a médico)
+- Heces que empiecen a flotar u oler muy fuerte, dolor abdominal, pérdida de peso, ictericia, o persistencia >5-7 días.
+- Relevante por antecedente familiar de cáncer colorrectal (tío materno) — no urgente, pero motivo de no ignorar si persiste.
+
+## Estudios y fuentes
+
+| Fecha | Fuente | Hallazgo clave | Confianza |
+|---|---|---|---|
+| 2026-09-02 | [Steatorrhea (Fatty Stool) — Cleveland Clinic](https://my.clevelandclinic.org/health/symptoms/24049-steatorrhea-fatty-stool) | Definición y causas generales de esteatorrea; malabsorción de grasa por causas pancreáticas, biliares o intestinales | Alto |
+| 2026-09-02 | [Steatorrhea — StatPearls, NCBI](https://www.ncbi.nlm.nih.gov/books/NBK541055/) | Fisiopatología de la malabsorción de grasa; insuficiencia pancreática exocrina como causa principal | Alto (revisión indexada) |
+| 2026-09-02 | [Understanding Orange Oily Stool — JustAnswer Medical](https://www.justanswer.com/medical/articles/orange-oily-stool-causes-oil-floating-toilet) | Causas dietéticas (betacaroteno, suplementos de aceite) vs. causas de malabsorción para heces naranjas y aceitosas | Medio |
+| 2026-09-02 | [Orlistat Side Effects — Drugs.com](https://www.drugs.com/sfx/orlistat-side-effects.html) | Descarta fármaco como causa (no hay orlistat ni similar en medicación actual) | Alto |
+
+*Pendiente: fuente específica sobre efecto del alcohol en secreción de lipasa pancreática y sobre desviación de flujo esplácnico durante ejercicio — citadas de conocimiento general, no verificadas con estudio primario todavía.*
+
+---
+
 # Notas cronológicas
 - **2026-08-06**: creación de los seguimientos de pelo, dedo y cuello (ficheros sueltos en Drive `2. Salud`).
 - **2026-08-06**: caso 1 — matiz "es más escamación"; perfil de síntomas completo; tabla de diagnósticos alternativos; 5 fuentes; plan de diagnóstico escalonado.
 - **2026-08-08**: añadidos casos 4 (grano nuca) y 5 (ojo/córnea).
 - **2026-08-08**: merge de los cinco casos en un documento único y promoción a `alfssist/references/`.
+- **2026-09-02**: añadido caso 6 (heces — aceite naranja); hipótesis funcional (alcohol + estrés + running), plan de observación 3-4 días.
 
 # Convenciones de mantenimiento
 - Toda afirmación clínica relevante lleva **fuente con link** y **nivel de confianza**.
