@@ -40,7 +40,7 @@ jobs:
       && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           # Historial completo: gitleaks escanea el rango base..head del PR.
@@ -49,7 +49,7 @@ jobs:
       # El criterio de "repo Node" es el LOCKFILE, no package.json: npm ci lo
       # exige, y algún repo estático lleva un package.json de utilería sin
       # scripts de checks (gt, news) que rompía setup-node con cache: npm.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         if: ${{ hashFiles('package-lock.json') != '' }}
         with:
           node-version: 22
