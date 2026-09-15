@@ -42,8 +42,15 @@ escrito en `notas`, y entrega.
    `sesion: {id, donde, desde}`, `actualizada`, y commit+push de ese cambio. Es lo
    que el panel enseña como "quién está trabajando".
 2. Trabaja en el repo que diga el campo `repo` (clónalo o entra en él; `git pull`
-   primero).
-3. Entrega trunk-based — nada de PRs ni ramas:
+   primero). Si quien ejecuta esta tarea es un subagente lanzado por otra sesión
+   (p. ej. `/tasks taskrun`), esa sesión ya lo lanzó con el modelo del campo
+   `modelo` — no hay nada que hacer aquí con ese campo.
+3. Antes de dar la tarea por cerrada, pasa QA barato sobre tu propio diff: carga
+   la skill `code-review` (nivel `low` si la tarea es mecánica, `medium` si toca
+   lógica) sobre los cambios sin commitear. Si hay hallazgos confirmados,
+   arréglalos antes de seguir; si algo es dudoso o de diseño mayor, anótalo en
+   `notas` en vez de bloquear la entrega por ello.
+4. Entrega trunk-based — nada de PRs ni ramas:
 
    ```bash
    git add <tus archivos> && git commit -m "<mensaje>"
@@ -55,10 +62,11 @@ escrito en `notas`, y entrega.
    ```
 
    No arrastres al commit cambios ajenos a tu tarea (stash selectivo si hace falta).
-4. **Prohibido marcar `hecha` sin "CONFIRMADO EN MAIN" en esta sesión.**
-5. Cierre, otra vez en una sola edición de `tareas.json`: `estado: "hecha"`,
+5. **Prohibido marcar `hecha` sin "CONFIRMADO EN MAIN" en esta sesión.**
+6. Cierre, otra vez en una sola edición de `tareas.json`: `estado: "hecha"`,
    `sesion: null`, `necesitaRespuesta: false`, nota en `notas` con qué hiciste,
-   el commit, y cómo verificarlo. Commit+push del archivo.
+   el commit, si `code-review` encontró algo (y qué se hizo), y cómo verificarlo.
+   Commit+push del archivo.
 
 ## Cómo bloquear
 
