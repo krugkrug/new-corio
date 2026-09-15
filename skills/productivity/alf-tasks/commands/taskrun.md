@@ -1,5 +1,5 @@
 ---
-description: Lanza toda la cola en paralelo — un agente por repositorio, cada uno siguiendo protocolo-cola.md
+description: Lanza toda la cola en paralelo — un agente por repositorio y modelo pedido, cada uno siguiendo protocolo-cola.md
 ---
 
 Carga la skill `tasks` (contexto general) y
@@ -9,10 +9,13 @@ ejecuta, pero repartido en varios agentes en vez de uno detrás de otro.
 
 ## Qué cambia frente a `/tasks lanza`
 
-`/tasks lanza` ejecuta la cola tarea a tarea dentro de esta misma sesión — si hay
-lanzables en tres repos, se hacen una tras otra. `/taskrun` agrupa las lanzables
-por repositorio y lanza **un agente por repo, en paralelo**, así que no hay que
-esperar a que un repo termine para empezar el siguiente.
+`/tasks lanza` ejecuta la cola tarea a tarea dentro de esta misma sesión, con el
+modelo de la sesión actual — si hay lanzables en tres repos, se hacen una tras
+otra. `/taskrun` agrupa las lanzables por repositorio y por el `modelo` pedido en
+cada tarea, y lanza **un agente por grupo (repo, modelo), en paralelo entre
+repos**, así que no hay que esperar a que un repo termine para empezar el
+siguiente, y cada tarea corre con el modelo que se le pidió (`haiku` para lo
+mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
 
 ## Pasos
 
@@ -31,22 +34,30 @@ esperar a que un repo termine para empezar el siguiente.
    con la pregunta concreta (Paso 1 de `protocolo-cola.md`). No inventes spec
    donde no la hay ni la fuerces a un agente que no puede pedir aclaración a
    mitad de tarea.
-5. Agrupa las lanzables ya refinadas por `repo`. Si un repo ya tiene una tarea
-   `en-curso` con sesión activa (no fantasma) de otra sesión, no le lances un
-   agente duplicado: repórtalo y sigue con el resto de repos.
-6. Por cada repo con lanzables, invoca la herramienta **Agent**
-   (`subagent_type: claude`, `isolation: worktree` — va a mutar archivos y hacer
-   commits) con un prompt autocontenido que incluya:
-   - la lista de tareas de ESE repo únicamente (id, título, descripción
-     completa, prio, modelo pedido);
+5. Agrupa las lanzables ya refinadas por `repo` y, dentro de cada repo, por
+   `modelo` (`haiku` / `sonnet` / `opus`) — el campo `modelo` de la tarea se
+   traduce **literalmente** al parámetro `model` de la herramienta Agent, sin
+   tabla de mapeo. Si un repo ya tiene una tarea `en-curso` con sesión activa
+   (no fantasma) de otra sesión, no le lances un agente duplicado: repórtalo y
+   sigue con el resto de repos.
+6. Por cada grupo (repo, modelo) con lanzables, invoca la herramienta **Agent**
+   (`subagent_type: claude`, `model: <el modelo del grupo>`, `isolation:
+   worktree` — va a mutar archivos y hacer commits) con un prompt autocontenido
+   que incluya:
+   - la lista de tareas de ESE grupo únicamente (id, título, descripción
+     completa, prio);
    - el protocolo de `protocolo-cola.md` completo o resumido con precisión —
-     el agente no tiene el resto de esta conversación;
+     el agente no tiene el resto de esta conversación, e incluye el paso de
+     QA con `code-review` antes de cerrar;
    - la instrucción explícita: marcar `en-curso` con `sesion` antes de tocar
      nada, entregar trunk-based con push directo a `main`, verificar
      "CONFIRMADO EN MAIN" antes de marcar nada `hecha`, y bloquear con pregunta
      concreta si algo no cuadra (nunca forzar una suposición no declarada).
-   Lanza todos los repos en el mismo turno (varias llamadas a Agent en paralelo),
-   no uno y esperar al siguiente.
+   Lanza en paralelo, en el mismo turno, todos los grupos de **repos
+   distintos**. Si un mismo repo tiene lanzables con más de un `modelo`, esos
+   grupos comparten repo y no se lanzan a la vez: van en serie (uno termina,
+   entrega y libera el repo, antes de lanzar el siguiente grupo de ese mismo
+   repo) para no duplicar trabajo sobre el mismo working tree/push a `main`.
 7. Cuando los agentes terminen, `git pull` y resume en la respuesta: qué quedó
    `hecha`, qué se bloqueó y por qué, y qué no se tocó (repo ya ocupado, sin
    lanzables, etc.).

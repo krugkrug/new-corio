@@ -28,5 +28,8 @@ Según `$ARGUMENTS`:
   conector de claude.ai), así que esto no puede ser un botón del Artifact.
 - `taskrun` → como `lanza`, pero un agente por repositorio en paralelo en vez de
   tarea a tarea en esta sesión. Ver `taskrun.md`.
+- `jefe` → agente jefe: revisa el backlog y los 8 repos, prioriza con TOC y
+  propone hasta 5 tareas nuevas con modelo y semáforo ya asignados. No ejecuta
+  nada. Manual, on-demand por ahora (sin Routine). Ver `jefe.md`.
 - un `owner/repo` → limita todo lo anterior a las tareas de ese repo.
 - un número → abre esa tarea: descripción, notas completas, estado y qué falta.
