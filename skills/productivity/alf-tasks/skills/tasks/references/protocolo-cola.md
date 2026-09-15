@@ -23,6 +23,39 @@ Lo que diga el archivo tras el pull es la verdad. Saneos baratos antes de decidi
 
 Anota en `notas` cualquier saneo que hagas.
 
+## Paso 0.5 — triaje de tareas sin refinar
+
+Antes de decidir por semáforo, procesa toda tarea con `estado: "sin-refinar"`
+(las crea el panel con "+ Nueva tarea": sin modelo ni fases, solo título,
+descripción, prioridad y dependencia). Este paso reemplaza al humano eligiendo
+`modelo` a mano — lo decide quien va a ejecutar, con el trabajo delante.
+
+1. **Si la descripción no basta** para ejecutarla sin supervisión (mismo
+   criterio que el Paso 4 de `taskrun.md`): bloquéala igual que el Paso 1 de
+   este documento — nota con la pregunta concreta, `estado: "bloqueada"`,
+   `necesitaRespuesta: true`. No inventes alcance ni fases sobre una
+   descripción insuficiente.
+2. **Si basta y es una sola pieza de trabajo** (no hay pasos secuenciales
+   claros ni mezcla de complejidad distinta): pásala directamente a
+   `pendiente`, asignando:
+   - `modelo`: `haiku` si es mecánica y bien acotada, `sonnet` por defecto,
+     `opus` solo si es arquitectura o ambigüedad real.
+   - `semaforo`: `verde` solo si es reversible y barata; si no, dilo en una
+     nota y déjala `amarillo`/`rojo` con `necesitaRespuesta: true` — el
+     triaje nunca se autoaprueba un amarillo o rojo.
+3. **Si conviene dividirla en fases** (pasos secuenciales con criterio de
+   éxito propio, o que mezclan niveles de complejidad que piden modelos
+   distintos): crea una tarea nueva por fase, cada una con su propio
+   `modelo` y `semaforo` (mismo criterio del punto 2), encadenadas con
+   `dependeDe` a la fase anterior (la primera, sin dependencia). Marca la
+   tarea original `estado: "hecha"` con una nota "Descompuesta en fases #X,
+   #Y, #Z" y el porqué del troceo — no se ejecuta ella misma, sus fases sí.
+
+Mismo tope anti-bucle que el Paso 1: si ya se bloqueó 2 veces en triaje, no la
+bloquees otra vez — decide con lo que hay y declara los supuestos por escrito.
+Misma disciplina de escritura: pull inmediato antes, una tarea (o su troceo
+completo) por escritura, push inmediato.
+
 ## Paso 1 — decidir por semáforo
 
 | Situación | Qué haces |
