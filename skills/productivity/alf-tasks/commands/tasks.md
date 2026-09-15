@@ -13,11 +13,15 @@ Carga la skill `tasks` y ejecútala.
 Según `$ARGUMENTS`:
 
 - vacío → abrir + resumen, sin tocar nada.
-- `lanza` / `ejecuta` → además, ejecuta las `pendiente` + `semaforo:verde` sin
-  dependencia viva, siguiendo `references/protocolo-cola.md`. Amarillas y rojas
-  se preguntan, no se ejecutan.
+- `lanza` / `ejecuta` → primero el **triaje** (Paso 0.5 de `protocolo-cola.md`):
+  toda tarea `sin-refinar` se descompone en fases con modelo asignado, o se
+  bloquea preguntando si la descripción no basta. Después ejecuta las
+  `pendiente` + `semaforo:verde` sin dependencia viva. Amarillas y rojas se
+  preguntan, no se ejecutan.
 - `nueva <título>` → añade la tarea a tareas.json preguntando antes prioridad,
-  semáforo, modelo y dependencia.
+  semáforo y dependencia. **Sin elegir modelo ni fases**: entra como
+  `sin-refinar` y el triaje (Paso 0.5) la descompone y asigna modelo en la
+  próxima pasada.
 - `republica` / `publica` → republica `panel-tareas/index.html` sobre el Artifact
   existente (misma URL) subiendo `PANEL_VERSION`, sin tocar la cola.
 - `sync` / `importa sesiones` → lista las sesiones de Claude Code activas
