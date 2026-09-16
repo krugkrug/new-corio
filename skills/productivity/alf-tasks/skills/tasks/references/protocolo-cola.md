@@ -53,12 +53,17 @@ Lo que diga el archivo tras el pull es la verdad. Saneos baratos antes de decidi
 
 Anota en `notas` cualquier saneo que hagas.
 
-## Paso 0.5 — triaje de tareas sin refinar
+## Paso 0.5 — triaje del backlog
 
-Antes de decidir por semáforo, procesa toda tarea con `estado: "sin-refinar"`
+Antes de decidir por semáforo, procesa toda tarea con `estado: "backlog"`
 (las crea el panel con "+ Nueva tarea": sin modelo ni fases, solo título,
-descripción, prioridad y dependencia). Este paso reemplaza al humano eligiendo
-`modelo` a mano — lo decide quien va a ejecutar, con el trabajo delante.
+descripción, prioridad y dependencia — `backlog` sustituyó a `sin-refinar`
+desde el panel v14). Este paso reemplaza al humano eligiendo `modelo` a mano —
+lo decide quien va a ejecutar, con el trabajo delante — y es más completo que
+el botón "Promover a Pendiente" de la vista Planificación del panel: ese botón
+solo pide el modelo; esto además bloquea lo insuficiente y descompone en fases.
+Si Alfredo ya promovió una tarea a mano desde el panel, llega aquí como
+`pendiente` con modelo puesto y no pasa por este paso — no hay que repetirlo.
 
 1. **Si la descripción no basta** para ejecutarla sin supervisión (mismo
    criterio que el Paso 4 de `taskrun.md`): bloquéala igual que el Paso 1 de
