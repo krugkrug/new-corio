@@ -68,9 +68,14 @@ mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
 - Nunca marca `hecha` sin "CONFIRMADO EN MAIN" de esa sesión.
 - Cada agente trabaja **su** repo únicamente — no le pases tareas de otro repo,
   y no dejes que dos agentes toquen el mismo repo a la vez.
-- Escrituras a `tareas.json`: pull inmediatamente antes de cada escritura,
-  escritura pequeña (una tarea cada vez cuando sea posible), push inmediato —
-  igual que dicta `protocolo-cola.md` para las escrituras concurrentes.
+- Escrituras a `tareas.json`: siempre con `panel-tareas/tarea.py` (nunca
+  reescribiendo el archivo a mano) — releé de disco y toca solo una tarea, así
+  que no pisa lo que otro grupo o el panel acaben de escribir. Ver
+  `protocolo-cola.md`. **Incluye explícitamente esta instrucción en el prompt
+  de cada agente**: un agente que lea `tareas.json` al empezar y lo vuelva a
+  escribir entero al cerrar (en vez de usar `tarea.py`) puede pisar tareas
+  dadas de alta por el panel mientras trabajaba — pasó el 16/09/2026 con la
+  tarea 14, que se llevó por delante las tareas 15 y 16.
 
 ## Uso
 

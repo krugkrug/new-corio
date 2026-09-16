@@ -39,8 +39,11 @@ badge junto al título delata un panel desfasado.
 
 **Un solo archivo: `panel-tareas/tareas.json` en `krugkrug/meta`, rama `main`.**
 Cubre todos los repositorios: el repo donde se trabaja es el campo `repo` de cada
-tarea. Desde una sesión de Claude Code se lee y edita como archivo local (tras
-`git pull`); el panel lo hace vía conector GitHub.
+tarea. Desde una sesión de Claude Code se lee con `git pull` y **se edita solo
+con `panel-tareas/tarea.py`** (nunca escribiendo el archivo a mano) — relee de
+disco y toca solo la tarea afectada, así que no pisa lo que el panel o la
+routine acaben de escribir. El panel lo hace vía conector GitHub, con su propio
+mecanismo de sha para no pisar tampoco.
 
 Campos: `prio` (alta/media/baja) · `semaforo` (verde/amarillo/rojo — **el
 guardarraíl real**) · `estado` (pendiente/en-curso/bloqueada/hecha/descartada) ·
@@ -90,5 +93,10 @@ sí solo**: alguien tiene que abrir el archivo.
 - Bloquear sin poner `necesitaRespuesta` (la pregunta desaparece del radar).
 - Tocar algo en amarillo o rojo sin respuesta explícita de Alfredo.
 - Editar `tareas.json` sin `git pull` previo (pisas a la routine).
+- **Escribir `tareas.json` reescribiendo el array completo desde una copia en
+  memoria en vez de con `tarea.py`** — así se pisaron las tareas 15 y 16 el
+  16/09/2026 (ver `references/protocolo-cola.md`). `tarea.py` releé de disco y
+  toca solo la tarea indicada; hacerlo a mano en una sesión larga es justo el
+  fallo que existe para evitar.
 - Volver a preguntar lo que ya está contestado en `notas`.
 - Usar los GitHub Issues como cola: eso murió el 29/07/2026.

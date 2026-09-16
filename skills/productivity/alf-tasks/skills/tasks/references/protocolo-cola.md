@@ -3,6 +3,36 @@
 Cárgalo solo cuando vayas a **ejecutar** tareas. Para abrir el panel y resumir no
 hace falta. El almacén es `panel-tareas/tareas.json` en `krugkrug/meta` (main).
 
+## Toda escritura a tareas.json va por `panel-tareas/tarea.py`
+
+**No edites `tareas.json` a mano (ni con Python/jq ad-hoc) en ningún paso de este
+documento.** Usa siempre:
+
+```bash
+python3 panel-tareas/tarea.py get <id>
+python3 panel-tareas/tarea.py patch <id> --set '<json de campos a fusionar>' \
+    [--nota "texto"] [--quien claude]
+python3 panel-tareas/tarea.py nueva --json '<json de la tarea, sin id>'
+```
+
+Por qué es obligatorio y no una sugerencia: el 16/09/2026 un agente cerró la
+tarea 14 volcando el array **entero** de `tareas.json` desde una copia que
+llevaba 11 minutos sosteniendo en memoria (leída en el Paso 2.1, reescrita
+entera en el Paso 2.6) — mientras tanto el panel dio de alta las tareas 15 y
+16, que desaparecieron pisadas por ese commit. No fue un fallo de "faltó hacer
+`git pull`": fue serializar una copia vieja del array completo en vez de
+releer el archivo justo antes de escribir. `tarea.py` lo hace estructuralmente
+imposible: cada operación relee `tareas.json` del disco en el momento de
+escribir, toca solo la tarea indicada (o añade una sola tarea nueva y sube
+`siguienteId`), y comitea+empuja con reintento (`pull --rebase` + push, nunca
+`-f`) si otra sesión escribió entre medias. Detalle y garantías completas en
+la cabecera del propio script (`--help` o leer el docstring).
+
+Si por lo que sea `tarea.py` no está disponible en el checkout (repo viejo sin
+este archivo), cae al patrón manual de siempre — pull inmediato, edición que
+toque solo tu tarea, push inmediato — pero es el camino degradado, no el
+normal.
+
 ---
 
 ## Paso 0 — sincronizar y sanear
@@ -53,8 +83,9 @@ descripción, prioridad y dependencia). Este paso reemplaza al humano eligiendo
 
 Mismo tope anti-bucle que el Paso 1: si ya se bloqueó 2 veces en triaje, no la
 bloquees otra vez — decide con lo que hay y declara los supuestos por escrito.
-Misma disciplina de escritura: pull inmediato antes, una tarea (o su troceo
-completo) por escritura, push inmediato.
+Misma herramienta de escritura que todo lo demás: `tarea.py patch` para la
+tarea original y sus cambios de campo, `tarea.py nueva` por cada fase nueva
+que crees.
 
 ## Paso 1 — decidir por semáforo
 
@@ -71,9 +102,14 @@ escrito en `notas`, y entrega.
 
 ## Paso 2 — ejecutar y entregar
 
-1. Marca el arranque **en una sola edición** de `tareas.json`: `estado: "en-curso"`,
-   `sesion: {id, donde, desde}`, `actualizada`, y commit+push de ese cambio. Es lo
-   que el panel enseña como "quién está trabajando".
+1. Marca el arranque con `tarea.py patch <id>`:
+
+   ```bash
+   python3 panel-tareas/tarea.py patch <id> --set \
+     '{"estado":"en-curso","sesion":{"id":"<tu id>","donde":"<dónde corres>","desde":"<ISO 8601 UTC ahora>"}}'
+   ```
+
+   Es lo que el panel enseña como "quién está trabajando".
 2. Trabaja en el repo que diga el campo `repo` (clónalo o entra en él; `git pull`
    primero). Si quien ejecuta esta tarea es un subagente lanzado por otra sesión
    (p. ej. `/tasks taskrun`), esa sesión ya lo lanzó con el modelo del campo
@@ -83,7 +119,8 @@ escrito en `notas`, y entrega.
    lógica) sobre los cambios sin commitear. Si hay hallazgos confirmados,
    arréglalos antes de seguir; si algo es dudoso o de diseño mayor, anótalo en
    `notas` en vez de bloquear la entrega por ello.
-4. Entrega trunk-based — nada de PRs ni ramas:
+4. Entrega trunk-based — nada de PRs ni ramas — **en el repo de la tarea**, que
+   normalmente NO es `krugkrug/meta`:
 
    ```bash
    git add <tus archivos> && git commit -m "<mensaje>"
@@ -96,25 +133,37 @@ escrito en `notas`, y entrega.
 
    No arrastres al commit cambios ajenos a tu tarea (stash selectivo si hace falta).
 5. **Prohibido marcar `hecha` sin "CONFIRMADO EN MAIN" en esta sesión.**
-6. Cierre, otra vez en una sola edición de `tareas.json`: `estado: "hecha"`,
-   `sesion: null`, `necesitaRespuesta: false`, nota en `notas` con qué hiciste,
-   el commit, si `code-review` encontró algo (y qué se hizo), y cómo verificarlo.
-   Commit+push del archivo.
+6. Cierre con `tarea.py patch <id>` (siempre en `krugkrug/meta`, que es donde vive
+   `tareas.json` — no confundir con el repo de la tarea del paso 4):
+
+   ```bash
+   cd <ruta a krugkrug/meta>   # si trabajaste en otro repo, vuelve aquí
+   python3 panel-tareas/tarea.py patch <id> \
+     --set '{"estado":"hecha","sesion":null,"necesitaRespuesta":false}' \
+     --nota "Qué hiciste, el commit del paso 4, si code-review encontró algo y qué se hizo, cómo verificarlo."
+   ```
 
 ## Cómo bloquear
 
-Una sola edición: la pregunta concreta como nota (`quien: "claude"` o el nombre de
-la routine), `estado: "bloqueada"`, `necesitaRespuesta: true`, `sesion: null`.
+```bash
+python3 panel-tareas/tarea.py patch <id> \
+  --set '{"estado":"bloqueada","necesitaRespuesta":true,"sesion":null}' \
+  --nota "<pregunta concreta>" --quien claude
+```
+
 También cuando el fallo es técnico (conflicto, push rechazado, test roto): sin
 `necesitaRespuesta` la tarea muere en silencio. Nunca descartes una bloqueada.
 
 ## Escrituras concurrentes
 
-El archivo lo escriben el panel, la routine y las sesiones de escritorio. Regla:
-**pull inmediatamente antes de cada escritura, escritura pequeña, push inmediato.**
-Si el push rebota, `git pull --rebase` y reintenta; el JSON casi nunca conflicta si
-cada escritura toca solo su tarea. Conserva el formato: 2 espacios de indentación,
-UTF-8, salto final.
+El archivo lo escriben el panel, la routine y las sesiones de escritorio.
+`tarea.py` ya encapsula la regla (pull inmediato, escritura que toca solo una
+tarea, push inmediato con reintento) — es la razón de que exista. Si el rebase
+del reintento entra en conflicto real (dos escrituras a la misma tarea a la
+vez, rarísimo si cada operación toca solo su tarea), el script aborta el
+rebase, deja el working tree limpio y para con instrucciones; no lo fuerces
+con `-f`. Conserva el formato del JSON si alguna vez tocas el archivo a mano:
+2 espacios de indentación, UTF-8, salto final.
 
 ## Trampas heredadas (siguen vigentes)
 
