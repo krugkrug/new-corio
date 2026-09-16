@@ -46,11 +46,14 @@ routine acaben de escribir. El panel lo hace vía conector GitHub, con su propio
 mecanismo de sha para no pisar tampoco.
 
 Campos: `prio` (alta/media/baja) · `semaforo` (verde/amarillo/rojo — **el
-guardarraíl real**) · `estado` (pendiente/en-curso/bloqueada/hecha/descartada) ·
-`modelo` (haiku/sonnet/opus — respétalo si puedes elegir) · `dependeDe` (id;
-bloquea mientras esa tarea no esté hecha ni descartada; solo mismo repo) ·
-`necesitaRespuesta` (bool) · `sesion` (`{id, donde, desde}` o null) · `notas`
-(hilo de la tarea: `{quien, cuando, texto}`).
+guardarraíl real**) · `estado` (backlog/pendiente/en-curso/bloqueada/hecha/descartada
+— `backlog` es donde entra toda tarea nueva desde el panel v14 y **nunca se
+lanza sola**, ni en verde; sale a mano promovida a `pendiente` desde la vista
+Planificación) · `modelo` (haiku/sonnet/opus — se asigna al promover desde
+backlog, respétalo si puedes elegir) · `dependeDe` (id; bloquea mientras esa
+tarea no esté hecha ni descartada; solo mismo repo) · `necesitaRespuesta` (bool)
+· `sesion` (`{id, donde, desde}` o null) · `notas` (hilo de la tarea: `{quien,
+cuando, texto}`).
 
 Detalle completo de campos y trampas: `panel-tareas/README.md`.
 
