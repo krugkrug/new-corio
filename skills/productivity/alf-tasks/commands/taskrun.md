@@ -19,8 +19,9 @@ mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
 
 ## Pasos
 
-1. `git pull --rebase origin main` en `krugkrug/meta` y lee `tareas.json`. Es la
-   fuente de verdad (Paso 0 de `protocolo-cola.md`).
+1. `python3 panel-tareas/tarea.py listar` (backend Blob de claudedash,
+   `CLAUDEDASH_BYPASS_SECRET` en el entorno). Es la fuente de verdad (Paso 0
+   de `protocolo-cola.md`) — ya no es `tareas.json` en git.
 2. Sanea lo barato antes de decidir: `en-curso` sin `sesion` o con `sesion` sin
    actividad reciente (más de 15 min), `dependeDe` que ya apunta a una tarea
    hecha o descartada. Anota cualquier saneo en `notas` de esa tarea.
@@ -68,14 +69,14 @@ mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
 - Nunca marca `hecha` sin "CONFIRMADO EN MAIN" de esa sesión.
 - Cada agente trabaja **su** repo únicamente — no le pases tareas de otro repo,
   y no dejes que dos agentes toquen el mismo repo a la vez.
-- Escrituras a `tareas.json`: siempre con `panel-tareas/tarea.py` (nunca
-  reescribiendo el archivo a mano) — releé de disco y toca solo una tarea, así
-  que no pisa lo que otro grupo o el panel acaben de escribir. Ver
+- Escrituras a la cola: siempre con `panel-tareas/tarea.py` (nunca a mano
+  contra `/api/claudedash`) — relee fresco y toca solo una tarea, con `ifMatch`
+  para no pisar lo que otro grupo o el panel acaben de escribir. Ver
   `protocolo-cola.md`. **Incluye explícitamente esta instrucción en el prompt
-  de cada agente**: un agente que lea `tareas.json` al empezar y lo vuelva a
+  de cada agente**: un agente que lea el estado al empezar y lo vuelva a
   escribir entero al cerrar (en vez de usar `tarea.py`) puede pisar tareas
   dadas de alta por el panel mientras trabajaba — pasó el 16/09/2026 con la
-  tarea 14, que se llevó por delante las tareas 15 y 16.
+  tarea 14 (en la era git), que se llevó por delante las tareas 15 y 16.
 
 ## Uso
 

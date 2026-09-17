@@ -1,23 +1,24 @@
-# Sincronizar sesiones de Claude Code → tareas.json
+# Sincronizar sesiones de Claude Code → cola de tareas (claudedash)
 
 Cárgalo solo cuando el usuario pida `/tasks sync` o "importa las sesiones en
 curso". Objetivo: que ninguna sesión de Claude Code trabajando de verdad quede
 sin reflejo en el panel, y sin duplicar tareas que ya la tienen.
 
-**Por qué esto no puede ser un botón del panel:** el panel es un Artifact de
-claude.ai — solo puede declarar las capacidades `downloads` y `mcp` (conectores
-de claude.ai como GitHub). `mcp__ccd_session_mgmt__list_sessions` es una
-herramienta del *harness* de Claude Code, no un conector de claude.ai: el panel,
-corriendo en un iframe del navegador, no puede verla ni llamarla. Por eso este
-paso solo lo puede ejecutar una sesión de Claude Code (esta, o la routine).
+**Por qué esto no puede ser un botón del panel:** aunque desde el corte del
+16/09/2026 el panel ya no es un Artifact sino una webapp real
+(`home/claudedash`), sigue sin acceso a `mcp__ccd_session_mgmt__list_sessions`
+— es una herramienta del *harness* de Claude Code, no una API HTTP que una
+webapp en el navegador pueda llamar. Por eso este paso solo lo puede ejecutar
+una sesión de Claude Code (esta, o la routine).
 
-## Paso 0 — sincronizar el archivo
+## Paso 0 — leer el estado fresco
 
 ```bash
-git pull --rebase origin main
+python3 panel-tareas/tarea.py listar
 ```
 
-Lee `panel-tareas/tareas.json` tras el pull; es la verdad.
+Es la verdad (backend Blob de claudedash, no `tareas.json` en git — ese
+archivo quedó congelado como snapshot histórico del corte).
 
 ## Paso 1 — listar sesiones activas
 
@@ -34,7 +35,7 @@ que no estén en la respuesta.
 
 Para cada sesión activa:
 
-1. Busca en `tareas.json` una tarea con `estado: "en-curso"` y
+1. Busca en la cola una tarea con `estado: "en-curso"` y
    `sesion.id` igual al id de esa sesión. Si existe, **no la toques** — ya está
    reflejada.
 2. Si no existe, decide si la sesión corresponde a una tarea `pendiente` ya
@@ -58,8 +59,9 @@ Para una tarea nueva (mismos campos que cualquier alta, ver `SKILL.md` §2):
 `prio` y `semaforo` sin evidencia para decidirlos van a `media` / `amarillo` —
 que alguien los confirme, no se asumen verdes por defecto.
 
-Sigue la regla de escrituras concurrentes de `protocolo-cola.md`: pull
-inmediatamente antes de cada escritura, una tarea por commit, push inmediato.
+Sigue la regla de escrituras concurrentes de `protocolo-cola.md`: cada
+escritura la hace `tarea.py` (relee fresco y manda `ifMatch`), una tarea por
+llamada.
 
 ## Al terminar
 
