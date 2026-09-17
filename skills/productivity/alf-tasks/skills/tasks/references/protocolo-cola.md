@@ -1,19 +1,28 @@
 # Protocolo de ejecución de la cola
 
 Cárgalo solo cuando vayas a **ejecutar** tareas. Para abrir el panel y resumir no
-hace falta. El almacén es `panel-tareas/tareas.json` en `krugkrug/meta` (main).
+hace falta. El almacén es el backend Blob de claudedash
+(`home.sanchezbella.com/api/claudedash`) — desde el corte del 16/09/2026,
+`panel-tareas/tareas.json` en git quedó congelado como snapshot histórico, ya
+no es la fuente de verdad.
 
-## Toda escritura a tareas.json va por `panel-tareas/tarea.py`
+## Toda escritura va por `panel-tareas/tarea.py`
 
-**No edites `tareas.json` a mano (ni con Python/jq ad-hoc) en ningún paso de este
-documento.** Usa siempre:
+**No llames a `/api/claudedash` a mano (curl/Python ad-hoc) en ningún paso de
+este documento.** Usa siempre:
 
 ```bash
+python3 panel-tareas/tarea.py listar
 python3 panel-tareas/tarea.py get <id>
 python3 panel-tareas/tarea.py patch <id> --set '<json de campos a fusionar>' \
     [--nota "texto"] [--quien claude]
 python3 panel-tareas/tarea.py nueva --json '<json de la tarea, sin id>'
+python3 panel-tareas/tarea.py archivar [--estados hecha,descartada]
 ```
+
+Necesita `CLAUDEDASH_BYPASS_SECRET` en el entorno (SSO de Vercel en `home`) —
+si no está, el propio script lo dice con un 401 explícito en vez de fallar a
+ciegas.
 
 Por qué es obligatorio y no una sugerencia: el 16/09/2026 un agente cerró la
 tarea 14 volcando el array **entero** de `tareas.json` desde una copia que
@@ -21,32 +30,35 @@ llevaba 11 minutos sosteniendo en memoria (leída en el Paso 2.1, reescrita
 entera en el Paso 2.6) — mientras tanto el panel dio de alta las tareas 15 y
 16, que desaparecieron pisadas por ese commit. No fue un fallo de "faltó hacer
 `git pull`": fue serializar una copia vieja del array completo en vez de
-releer el archivo justo antes de escribir. `tarea.py` lo hace estructuralmente
-imposible: cada operación relee `tareas.json` del disco en el momento de
+releer el estado justo antes de escribir. `tarea.py` lo hace estructuralmente
+imposible: cada operación relee el documento del backend en el momento de
 escribir, toca solo la tarea indicada (o añade una sola tarea nueva y sube
-`siguienteId`), y comitea+empuja con reintento (`pull --rebase` + push, nunca
-`-f`) si otra sesión escribió entre medias. Detalle y garantías completas en
+`siguienteId`), y manda `ifMatch` con lo que acaba de leer — si otra sesión
+escribió entre medias, el backend responde 409 y el script relee y reaplica el
+mismo cambio (hasta 5 intentos), nunca fuerza. Detalle y garantías completas en
 la cabecera del propio script (`--help` o leer el docstring).
 
 Si por lo que sea `tarea.py` no está disponible en el checkout (repo viejo sin
-este archivo), cae al patrón manual de siempre — pull inmediato, edición que
-toque solo tu tarea, push inmediato — pero es el camino degradado, no el
-normal.
+este archivo), no hay camino degradado seguro: el backend no acepta reescrituras
+del array completo sin `ifMatch` calculado igual que hace el script. Actualiza
+el checkout (`git pull`) en vez de reinventar el patrón a mano.
 
 ---
 
-## Paso 0 — sincronizar y sanear
+## Paso 0 — leer el estado fresco y sanear
 
 ```bash
-git pull --rebase origin main
+python3 panel-tareas/tarea.py listar
 ```
 
-Lo que diga el archivo tras el pull es la verdad. Saneos baratos antes de decidir:
+Lo que devuelva es la verdad — no hace falta `git pull` para la cola (sí para
+el repo de la tarea, en el Paso 2). Saneos baratos antes de decidir:
 
 - **`en-curso` con `sesion` de otra sesión y sin actividad reciente** (mira
   `actualizada`; el umbral del panel es 15 min): sesión muerta. Antes de rehacer
-  nada, comprueba con `git log --oneline -20 origin/main` si el trabajo ya llegó;
-  si llegó, salta a la entrega; si no, retómala (pon tu `sesion`).
+  nada, comprueba con `git log --oneline -20 origin/main` **en el repo de la
+  tarea** si el trabajo ya llegó; si llegó, salta a la entrega; si no, retómala
+  (pon tu `sesion`).
 - **`en-curso` sin `sesion`**: tarjeta fantasma. Igual que la anterior.
 - **`dependeDe` apuntando a una tarea hecha o descartada**: ya no bloquea, se
   ejecuta con normalidad.
@@ -60,10 +72,11 @@ Antes de decidir por semáforo, procesa toda tarea con `estado: "backlog"`
 descripción, prioridad y dependencia — `backlog` sustituyó a `sin-refinar`
 desde el panel v14). Este paso reemplaza al humano eligiendo `modelo` a mano —
 lo decide quien va a ejecutar, con el trabajo delante — y es más completo que
-el botón "Promover a Pendiente" de la vista Planificación del panel: ese botón
-solo pide el modelo; esto además bloquea lo insuficiente y descompone en fases.
-Si Alfredo ya promovió una tarea a mano desde el panel, llega aquí como
-`pendiente` con modelo puesto y no pasa por este paso — no hay que repetirlo.
+promover una tarea desde su propia tarjeta en el panel (columna Backlog del
+Tablero desde v18): eso solo pide el modelo; esto además bloquea lo
+insuficiente y descompone en fases. Si Alfredo ya promovió una tarea a mano
+desde el panel, llega aquí como `pendiente` con modelo puesto y no pasa por
+este paso — no hay que repetirlo.
 
 1. **Si la descripción no basta** para ejecutarla sin supervisión (mismo
    criterio que el Paso 4 de `taskrun.md`): bloquéala igual que el Paso 1 de
@@ -161,20 +174,22 @@ También cuando el fallo es técnico (conflicto, push rechazado, test roto): sin
 
 ## Escrituras concurrentes
 
-El archivo lo escriben el panel, la routine y las sesiones de escritorio.
-`tarea.py` ya encapsula la regla (pull inmediato, escritura que toca solo una
-tarea, push inmediato con reintento) — es la razón de que exista. Si el rebase
-del reintento entra en conflicto real (dos escrituras a la misma tarea a la
-vez, rarísimo si cada operación toca solo su tarea), el script aborta el
-rebase, deja el working tree limpio y para con instrucciones; no lo fuerces
-con `-f`. Conserva el formato del JSON si alguna vez tocas el archivo a mano:
-2 espacios de indentación, UTF-8, salto final.
+El documento lo escriben el panel, la routine y las sesiones de escritorio.
+`tarea.py` ya encapsula la regla (relee fresco, escritura que toca solo una
+tarea, `ifMatch` con reintento) — es la razón de que exista. Si dos escrituras
+a la misma tarea chocan de verdad (rarísimo si cada operación toca solo su
+tarea), el script agota sus reintentos y para con instrucciones; no hay `-f`
+que forzar aquí — el backend seguirá rechazando con 409 mientras el
+`actualizado` que mandes no coincida con el real.
 
 ## Trampas heredadas (siguen vigentes)
 
-- El conector MCP de GitHub no escribe en `.github/workflows/` (403): por git local.
 - GitHub Actions como ejecutor está muerto: `tareas.yml` `disabled_manually`, y el
   `claude_code_oauth_token` se rechaza (2 tokens probados, con y sin `--model`,
-  muere a los 2 s). No reintentar sin nueva información.
-- Editar `panel-tareas/index.html` no actualiza el Artifact: republicar y subir
-  `PANEL_VERSION`.
+  muere a los 2 s). No reintentar sin nueva información. (Esto es sobre el repo
+  de la tarea, no sobre la cola — nada que ver con claudedash.)
+- `tarea.py` necesita `CLAUDEDASH_BYPASS_SECRET` en el entorno (SSO de Vercel
+  en `home`, ver `panel-tareas/README.md`) — sin él, 401 "Protected deployment".
+- Editar `home/claudedash/index.html` **sí** se despliega solo (Vercel
+  autodeploy tras el push a `main`); solo hace falta subir `PANEL_VERSION` en
+  el propio archivo para que el badge delate un deploy que aún no ha llegado.

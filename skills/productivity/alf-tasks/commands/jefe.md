@@ -15,9 +15,10 @@ ni escribe en él.
 
 ## Pasos
 
-1. `git pull --rebase origin main` en `krugkrug/meta` y lee `tareas.json`.
-   Aplica el saneo barato del Paso 0 de `protocolo-cola.md` (fantasmas,
-   dependencias ya resueltas) y commitea+push ese saneo si tocó algo.
+1. `python3 panel-tareas/tarea.py listar` (backend Blob de claudedash,
+   `CLAUDEDASH_BYPASS_SECRET` en el entorno). Aplica el saneo barato del Paso 0
+   de `protocolo-cola.md` (fantasmas, dependencias ya resueltas) con
+   `tarea.py patch` si tocó algo.
 2. Para cada uno de los 8 repos (`meta`, `alfbank`, `coriodash`, `prado`,
    `ratioc`, `gt`, `news`, `alfplan` — tabla de `PROCESO_DESARROLLO.md` §2):
    - último estado de CI en `main` (`mcp__github__list_commits` +
@@ -48,9 +49,9 @@ ni escribe en él.
    - `semaforo`: `verde` solo si es reversible y barata; si no, `amarillo`/
      `rojo` con la pregunta concreta ya puesta en `notas` y
      `necesitaRespuesta: true` — **nunca te autoapruebas** un amarillo o rojo.
-6. Escribe en `tareas.json` con la misma disciplina de escrituras concurrentes
-   de `protocolo-cola.md`: pull inmediatamente antes, una tarea por escritura
-   cuando sea posible, push inmediato.
+6. Escribe con `tarea.py` (misma disciplina de escrituras concurrentes de
+   `protocolo-cola.md`: relee fresco, una tarea por escritura, `ifMatch` con
+   reintento).
 7. Cierra con un resumen y notifica con la herramienta **PushNotification**
    (una línea, <200 caracteres): cuántas tareas nuevas, cuál es el cuello de
    botella de TOC, cuántas quedaron esperando respuesta tuya. La misma
