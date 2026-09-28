@@ -1,6 +1,6 @@
 # Alfredo Sánchez-Bella Solís — instrucciones personales
 
-> Versión operativa y resumida de `PRINCIPIOS_DE_TRABAJO.md` (contexto completo en `Meta/`). Este archivo se carga en cada sesión — se mantiene corto a propósito.
+> Versión operativa y resumida de `PRINCIPIOS_DE_TRABAJO.md` (contexto completo en `meta/`). Este archivo se carga en cada sesión — se mantiene corto a propósito.
 
 ## Contexto
 
@@ -41,7 +41,7 @@
 
 Sobre-ingeniería · preview sin boceto aprobado · desarrollo sin spec · números sin base · falsa precisión · suposiciones no declaradas · complacencia · reinventar lo que ya existe · trabajar fuera del cuello de botella (TOC) · construir sin hipótesis (Lean Startup) · terminar un ciclo por inercia cuando toca pivotar · referencias cruzadas desincronizadas entre documentos.
 
-## Documentos de referencia (en `Meta/`)
+## Documentos de referencia (en `meta/`)
 
 - `PRINCIPIOS_DE_TRABAJO.md` — versión completa de este documento, con razonamiento y contexto.
 - `PLANTILLA_PROYECTO.md` — molde para la ficha de cualquier proyecto nuevo; léela antes de tocar un proyecto.

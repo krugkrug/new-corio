@@ -20,11 +20,14 @@ mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
 ## Pasos
 
 1. `python3 panel-tareas/tarea.py listar` (backend Blob de claudedash,
-   `CLAUDEDASH_BYPASS_SECRET` en el entorno). Es la fuente de verdad (Paso 0
+   `CLAUDEDASH_PASSWORD` en el entorno). Es la fuente de verdad (Paso 0
    de `protocolo-cola.md`) — ya no es `tareas.json` en git.
 2. Sanea lo barato antes de decidir: `en-curso` sin `sesion` o con `sesion` sin
    actividad reciente (más de 15 min), `dependeDe` que ya apunta a una tarea
-   hecha o descartada. Anota cualquier saneo en `notas` de esa tarea.
+   hecha o descartada. Anota cualquier saneo en `notas` de esa tarea. Y **pasa la
+   reconciliación** (Paso 0.2 de `protocolo-cola.md`): las `en-curso` cuyo PR ya
+   se fusionó se cierran aquí — si no, se quedan ocupando su repo y bloqueando el
+   agente siguiente.
 3. Calcula las **lanzables**: `pendiente` + `semaforo:verde` + sin dependencia
    viva. Amarillo y rojo no se lanzan nunca por este camino — se bloquean con
    pregunta concreta, igual que en `/tasks lanza`.
@@ -41,7 +44,29 @@ mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
    tabla de mapeo. Si un repo ya tiene una tarea `en-curso` con sesión activa
    (no fantasma) de otra sesión, no le lances un agente duplicado: repórtalo y
    sigue con el resto de repos.
-6. Por cada grupo (repo, modelo) con lanzables, invoca la herramienta **Agent**
+
+   **La rama es de esta sesión, no de la tarea ni de esta ronda de `taskrun`**
+   (`PROCESO_DESARROLLO.md` §3, 23/09/2026(2)): antes de lanzar, por cada repo
+   comprueba `python3 panel-tareas/orquesta.py listar --repo <owner/repo>`
+   buscando una fila con `sesion.id` igual al de esta sesión. Si existe, esa es
+   la rama para **todos** los grupos de ese repo en esta ronda; si además esta
+   sesión ya lanzó otras rondas de `taskrun` antes (sobre este mismo repo, con
+   otros requerimientos), es la misma rama de aquella vez, no una nueva. Si no
+   existe ninguna, decide ahora el nombre (`<tipo>/<asunto>` de la lanzable de
+   mayor prioridad del grupo) — esa nace con la primera tarea y las siguientes,
+   de esta ronda o de una futura, la reutilizan.
+6. **Enseña el presupuesto y espera el OK.** Antes de lanzar nada, una tabla:
+   un grupo por fila con repo, modelo, cuántas tareas y sus ids. `/taskrun` puede
+   arrancar una docena de agentes de golpe y eso no es reversible ni barato —
+   por el semáforo de `CLAUDE.md` es 🟡, no 🟢. Ejemplo:
+
+   > 3 agentes · alfplan (opus, 2 tareas: #46, #47) · meta (haiku, 1: #51) ·
+   > coriodash (sonnet, 1: #52). ¿Lanzo?
+
+   Si Alfredo ya dijo «lanza todo» o equivalente en este turno, ese es el OK y no
+   se vuelve a preguntar. Con un solo grupo de modelo barato (`haiku`), tampoco:
+   avisa en una línea y sigue.
+7. Por cada grupo (repo, modelo) con lanzables, invoca la herramienta **Agent**
    (`subagent_type: claude`, `model: <el modelo del grupo>`, `isolation:
    worktree` — va a mutar archivos y hacer commits) con un prompt autocontenido
    que incluya:
@@ -50,25 +75,56 @@ mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
    - el protocolo de `protocolo-cola.md` completo o resumido con precisión —
      el agente no tiene el resto de esta conversación, e incluye el paso de
      QA con `code-review` antes de cerrar;
+   - la instrucción de **leer `meta/PROCESO_DESARROLLO.md` §3 y §7** en su repo
+     (está en todos, lo propaga `sync-a-repos.yml`): el flujo de entrega y los
+     cuatro estados de una rama. Si en ese repo no existe todavía, resúmeselos en
+     el prompt — un agente con el flujo de entrega equivocado empuja a `main`;
    - la instrucción explícita: marcar `en-curso` con `sesion` antes de tocar
-     nada, entregar trunk-based con push directo a `main`, verificar
-     "CONFIRMADO EN MAIN" antes de marcar nada `hecha`, y bloquear con pregunta
-     concreta si algo no cuadra (nunca forzar una suposición no declarada).
+     nada, entregar **en la rama de esta sesión para este repo** (la que le
+     pasas en el prompt — Paso 5: `git checkout <rama> 2>/dev/null || git
+     checkout -b <rama>`, nunca push a `main`, nunca una rama nueva si ya hay
+     una de esta sesión en este repo), registrarla **enlazada a su tarea** con
+     `orquesta.py autodetectar --repo . --tarea <id>`, **no abrir el PR** —lo pide
+     Alfredo, y abrirlo es fusionar—, dejar la tarea `en-curso` hasta que ese PR
+     se fusione, dejar el preview local levantado con su enlace
+     `http://localhost:<puerto>` (`PROCESO_DESARROLLO.md` §3) y reportarlo en su
+     cierre, cerrar con la nota de cierre estándar (qué se hizo · dónde está ·
+     qué dijo `code-review` · cómo verificarlo), y bloquear con pregunta concreta
+     si algo no cuadra (nunca forzar una suposición no declarada).
    Lanza en paralelo, en el mismo turno, todos los grupos de **repos
    distintos**. Si un mismo repo tiene lanzables con más de un `modelo`, esos
    grupos comparten repo y no se lanzan a la vez: van en serie (uno termina,
    entrega y libera el repo, antes de lanzar el siguiente grupo de ese mismo
    repo) para no duplicar trabajo sobre el mismo working tree/push a `main`.
-7. Cuando los agentes terminen, `git pull` y resume en la respuesta: qué quedó
-   `hecha`, qué se bloqueó y por qué, y qué no se tocó (repo ya ocupado, sin
-   lanzables, etc.).
+8. Cuando los agentes terminen, `git pull` y resume en la respuesta: por cada
+   repo tocado, **una fila con su rama de sesión** (no una por tarea — si el
+   repo resolvió varias lanzables, todas están en la misma rama) y **su enlace
+   local** `http://localhost:<puerto>` de preview — nunca cierres el resumen sin
+   ese enlace, es lo que sustituye a revisar el PR (`PROCESO_DESARROLLO.md` §3).
+   Añade qué se bloqueó y por qué, y qué no se tocó (repo ya ocupado, sin
+   lanzables, etc.). **Ninguna tarea queda `hecha` por este comando**: quedan
+   `en-curso` con su rama, y se cierran en el Paso 0.2 (reconciliación) cuando
+   Alfredo pida el PR y este se fusione. Dilo explícito en el resumen, con los
+   PR que faltan por pedir.
 
 ## Guardarraíles (no negociables)
 
+- **Nunca lanza sin enseñar antes el presupuesto** (Paso 6) — salvo un único
+  grupo con modelo barato, o un «lanza todo» ya dicho en este turno.
 - Nunca lanza amarillo/rojo sin respuesta de Alfredo ya registrada en `notas`.
-- Nunca marca `hecha` sin "CONFIRMADO EN MAIN" de esa sesión.
+- Nunca marca `hecha` con el trabajo solo en la rama: `hecha` es cuando el PR se
+  ha fusionado a `main`. Mientras tanto, `en-curso`.
 - Cada agente trabaja **su** repo únicamente — no le pases tareas de otro repo,
-  y no dejes que dos agentes toquen el mismo repo a la vez.
+  y no dejes que dos agentes toquen el mismo repo a la vez. Con `isolation:
+  worktree` cada uno tiene su working directory; la rama es de la sesión (no
+  del agente ni de la tarea) y se ve en Orquesta.
+- **Nunca crea una rama nueva por repo si esta sesión ya tiene una viva ahí**
+  — ni por tarea, ni por ronda de `taskrun`: se reutiliza, aunque cambie el
+  requerimiento o hayan pasado varias llamadas a este comando. Comprobarlo es
+  el primer paso del Paso 5, no una opción.
+- Nunca cierra el resumen final sin el enlace local (`http://localhost:<puerto>`)
+  de cada repo tocado — sin eso no hay con qué revisar en local, y revisar en
+  local es lo único que sustituye al PR mientras la rama de sesión no se pide.
 - Escrituras a la cola: siempre con `panel-tareas/tarea.py` (nunca a mano
   contra `/api/claudedash`) — relee fresco y toca solo una tarea, con `ifMatch`
   para no pisar lo que otro grupo o el panel acaben de escribir. Ver

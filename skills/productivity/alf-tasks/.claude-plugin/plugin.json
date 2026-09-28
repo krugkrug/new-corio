@@ -1,7 +1,7 @@
 {
   "name": "alf-tasks",
-  "version": "1.0.0",
-  "description": "Panel de tareas de Alfredo: abre el tablero y ejecuta la cola de tareas (GitHub Issues con etiquetas prio/semaforo/estado) de krugkrug/meta y krugkrug/ratioc.",
+  "version": "3.2.0",
+  "description": "Panel de tareas de Alfredo: abre el tablero (home.sanchezbella.com/claudedash), ejecuta la cola del backend Blob de claudedash —uno o varios agentes en paralelo— sobre los 8 repos, guarda el plan de sesión en claudeblmds/, y crea/itera bocetos visuales (meta/boceto-*.html del repo activo) que cierran dando de alta una tarea en la cola.",
   "author": {
     "name": "Alfredo Sánchez Bella"
   }

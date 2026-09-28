@@ -5,7 +5,12 @@ description: Abre el panel de tareas de Alfredo y ejecuta su cola. Las tareas vi
 
 # Panel de tareas — abrir y ejecutar la cola
 
-**Versión:** v3.0 · **Fecha:** 16/09/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
+**Versión:** v3.1 · **Fecha:** 23/09/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
+> v3.1: la rama es de la sesión, no del requerimiento — una sesión reutiliza su
+> misma rama por repo en todas las tareas que resuelva ahí, aunque vengan de
+> varias rondas de `/tasks taskrun` (`PROCESO_DESARROLLO.md` §3, `taskrun.md`,
+> `references/protocolo-cola.md`). El resumen final de `taskrun` siempre lleva
+> el enlace local (`http://localhost:<puerto>`) de cada repo tocado.
 > v3.0: corte de git/Artifact a claudedash. El almacén pasa de
 > `panel-tareas/tareas.json` (git) a un backend Blob propio servido en
 > `home.sanchezbella.com/api/claudedash`; el panel deja de ser un Artifact de
@@ -38,8 +43,8 @@ bloqueadas esperando respuesta, y en-curso — señalando cualquier tarea en cur
 diferencia de la era Artifact, un `git push` a `main` lo despliega solo (Vercel
 autodeploy) — no hace falta "republicar" nada. Al tocar el archivo sube
 `PANEL_VERSION` — el badge junto al título delata un deploy que aún no ha
-llegado. El panel vive detrás de SSO de Vercel: un navegador con sesión pasa
-sin más, un script necesita el bypass de automatización (ver §2).
+llegado. El panel exige la sesión de `home` (cookie firmada, ya sin SSO de Vercel): un navegador
+entra con su candado, un script con `CLAUDEDASH_PASSWORD` (ver §2).
 
 ---
 
@@ -53,11 +58,11 @@ una sesión de Claude Code se lee y **se edita solo con `panel-tareas/tarea.py`*
 optimista (`ifMatch` sobre `actualizado`; 409 si otra escritura ganó la
 carrera, reintenta solo). El panel usa el mismo backend con `fetch()` directo.
 
-**`tarea.py` necesita `CLAUDEDASH_BYPASS_SECRET` en el entorno** (variable de
-shell — p. ej. `~/.zshenv` — nunca en el repo ni pegada en el chat): el secreto
-de "Protection Bypass for Automation" de Vercel (proyecto `home` → Settings →
-Deployment Protection), sin el cual el script recibe 401 "Protected
-deployment". Si falta, el propio script lo dice con un mensaje explícito.
+**`tarea.py` necesita `CLAUDEDASH_PASSWORD` en el entorno** (variable de
+shell — p. ej. `~/.zshenv` — nunca en el repo ni pegada en el chat): la contraseña
+de `home` (`HOME_PASSWORD` en el proyecto `home` de Vercel). El script hace login,
+cachea la cookie de sesión y la renueva solo. Si falta, lo dice con un mensaje
+explícito. `CLAUDEDASH_BYPASS_SECRET` (SSO) ya no sirve.
 
 Campos: `prio` (alta/media/baja) · `semaforo` (verde/amarillo/rojo — **el
 guardarraíl real**) · `estado` (backlog/pendiente/en-curso/bloqueada/hecha/descartada
@@ -72,6 +77,20 @@ cuando, texto}`).
 Detalle completo de campos y trampas: `panel-tareas/README.md`.
 
 ---
+
+## 2.5 Cuando algo no cuadra: `doctor.py`
+
+```bash
+python3 panel-tareas/doctor.py            # las cuatro secciones
+python3 panel-tareas/doctor.py --json     # para consumirlo desde una skill
+```
+
+Existe porque **casi nada de lo que ha ido mal aquí dio un error**: el plugin
+instalado dos versiones por detrás siguió funcionando con el protocolo viejo;
+`tareas.json` quedó congelado tras el corte y una sesión lo leyó creyéndolo
+vigente; el panel enseñó ramas ya borradas. Todo devolvía datos plausibles y
+equivocados. `doctor.py` compara instalado ↔ fuente, desplegado ↔ repo, cola ↔
+ramas y documentos ↔ proceso, y lo canta con el comando que lo arregla.
 
 ## 3. Sincronizar sesiones activas
 
@@ -91,9 +110,14 @@ Cuando el usuario diga "lanza las tareas" o similar, carga
 2. Solo se ejecutan las `pendiente` + `semaforo:verde` + sin dependencia viva.
    Amarillo/rojo: pregunta y bloquea, sin tocar nada.
 3. Al empezar una tarea, **rellena `sesion`** y pon `en-curso` — sin eso el panel
-   enseña una tarjeta fantasma.
-4. Entrega trunk-based en el repo de la tarea: push directo a `main`,
-   verificado, y solo entonces `hecha` en la cola.
+   enseña una tarjeta fantasma. Y al crear la rama, enlázala:
+   `orquesta.py autodetectar --repo . --tarea <id>`, para que la tarjeta enseñe su
+   rama y la reconciliación pueda cerrarla sola cuando el PR se fusione.
+4. Entrega **en rama** en el repo de la tarea, y **el PR lo pide Alfredo**
+   (`PROCESO_DESARROLLO.md` §3): abrir el PR es fusionar, porque `auto-merge.yml`
+   lo cierra con el CI en verde. La tarea solo pasa a `hecha` cuando el trabajo
+   está en `main`; hasta entonces sigue `en-curso`, con su rama visible en la
+   vista **Orquesta** del panel (`panel-tareas/orquesta.py autodetectar`).
 5. Todo cambio de estado se anota en `notas` — es parte del registro de
    auditoría, junto con `claudedash-audit.ndjson` (qué ids cambiaron y cuándo).
 
@@ -116,7 +140,7 @@ sí solo**: alguien tiene que leer la cola.
   en la era git (ver `references/protocolo-cola.md`). `tarea.py` relee fresco
   y manda `ifMatch`; hacerlo a mano en una sesión larga es justo el fallo que
   existe para evitar.
-- Invocar `tarea.py` sin `CLAUDEDASH_BYPASS_SECRET` en el entorno — falla con
-  401 "Protected deployment" (SSO de Vercel en `home`).
+- Invocar `tarea.py` sin `CLAUDEDASH_PASSWORD` en el entorno — no puede entrar en
+  `home` (401 "No autorizado").
 - Volver a preguntar lo que ya está contestado en `notas`.
 - Usar los GitHub Issues como cola: eso murió el 29/07/2026.
