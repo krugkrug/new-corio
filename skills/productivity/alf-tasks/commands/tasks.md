@@ -7,9 +7,12 @@ Carga la skill `tasks` y ejecútala.
 1. Abre el panel (webapp real en `https://home.sanchezbella.com/claudedash`,
    ya no un Artifact) en el navegador integrado.
 2. Lee la cola con `python3 panel-tareas/tarea.py listar` (backend Blob,
-   `CLAUDEDASH_BYPASS_SECRET` tiene que estar en el entorno). Resume:
-   pendientes por prioridad, bloqueadas esperando respuesta, y en-curso —
-   marcando las que no tienen `sesion` (fantasmas).
+   `CLAUDEDASH_PASSWORD` tiene que estar en el entorno) y pasa la
+   **reconciliación** (Paso 0.2 de `protocolo-cola.md`): toda `en-curso` cuyo PR
+   ya esté fusionado se cierra ahí mismo. Con la entrega por rama, es lo único
+   que impide que la cola se llene de tareas eternamente en curso. Resume:
+   pendientes por prioridad, bloqueadas esperando respuesta, en-curso con su rama
+   y el estado de su PR, y **ramas huérfanas** del panel de Orquesta.
 3. El resumen va en la misma respuesta; no te quedes en "panel abierto".
 
 Según `$ARGUMENTS`:
@@ -35,8 +38,20 @@ Según `$ARGUMENTS`:
   no puede ser un botón del panel.
 - `taskrun` → como `lanza`, pero un agente por repositorio en paralelo en vez de
   tarea a tarea en esta sesión. Ver `taskrun.md`.
-- `jefe` → agente jefe: revisa el backlog y los 8 repos, prioriza con TOC y
-  propone hasta 5 tareas nuevas con modelo y semáforo ya asignados. No ejecuta
-  nada. Manual, on-demand por ahora (sin Routine). Ver `jefe.md`.
+- `doctor` → diagnóstico: `python3 panel-tareas/doctor.py`. Busca
+  **desincronizaciones silenciosas** —las que no dan error y devuelven datos
+  plausibles y equivocados— en cuatro frentes: plugin instalado ↔ fuente, panel
+  desplegado ↔ repo, cola ↔ ramas, y documentos ↔ proceso vigente. No arregla
+  nada: cada hallazgo trae el comando que lo arregla. Pásalo **antes de una tanda
+  grande** o cuando algo no cuadre y no sepas por qué. Sale con código 1 si hay
+  algún ✗. La sección `documentos` es heurística (compara prosa): sus hallazgos
+  son avisos que se comprueban a mano, no órdenes.
+- `orquesta` → orquestador: revisa el backlog, **las ramas** y los 8 repos,
+  prioriza con TOC y propone hasta 5 tareas nuevas con modelo y semáforo ya
+  asignados. No ejecuta nada. Manual, on-demand por ahora (sin Routine). Ver
+  `orquesta.md`. (Antes `jefe`.)
+- `orquesta-repo <repo>` → mismo orquestador, acotado a un solo repo (el que
+  le pases, o el del directorio actual si no pasas nada) en vez de la ronda
+  de los 8. Ver `orquesta-repo.md`.
 - un `owner/repo` → limita todo lo anterior a las tareas de ese repo.
 - un número → abre esa tarea: descripción, notas completas, estado y qué falta.

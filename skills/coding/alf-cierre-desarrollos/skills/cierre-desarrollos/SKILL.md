@@ -5,11 +5,15 @@ description: Revisa todos tus repositorios locales (Documents/GitHub), detecta r
 
 # Cierre de desarrollos — rutina de higiene de ramas
 
-**Versión:** v1.0 · **Responsable:** Alfredo Sánchez-Bella Solís
-**Modelo:** trabajo en SOLO — trunk-based, push directo a `main`, sin PR (ver
-`WEBAPP_GUARDRAILS_DEVOPS.md` v1.3 y `CLAUDE.md`: "no busques plantilla de PR,
-suelo trabajar solo"). Esta rutina hace en local + `main` lo que en un equipo
-haría un PR: revisar, integrar, publicar, limpiar.
+**Versión:** v1.1 (23/09/2026) · **Responsable:** Alfredo Sánchez-Bella Solís
+**Modelo:** trabajo en solo, pero **todo entra por PR**: `main` no se toca a mano y
+`auto-merge.yml` fusiona el PR en cuanto el CI se pone verde (ver
+`PROCESO_DESARROLLO.md` §3 y §7). Esta rutina **clasifica y limpia**: ordena las
+ramas en los cuatro estados (viva · fusionada · huérfana · sucia), borra las
+fusionadas, y deja a Alfredo lo que hay que decidir. El estado vivo se ve en la
+vista **Orquesta** del panel (`panel-tareas/orquesta.py autodetectar`).
+> v1.0 decía «trunk-based, push directo a `main`, sin PR». Era falso desde hacía
+> meses: los últimos 30 merges de `meta` y todos los de `alfplan` son PR.
 
 **Semáforo de control** (de `CLAUDE.md`): fetch/listar es 🟢 (hazlo sin
 preguntar). Mergear, publicar y borrar rama es 🟡 (ambiguo/caro si algo no
@@ -22,9 +26,11 @@ equivalente. Nunca fuerces un merge con conflictos ni un push --force: eso es
 
 ## 0. Alcance
 
-Repos: todos los subdirectorios con `.git` bajo `C:\Users\alfre\Documents\GitHub\`
-(hoy: alfbank, alfplan, coriodash, evolog, gt, meta, new-corio, news, ratioc —
-pero descúbrelos dinámicamente, no hardcodees la lista, van a cambiar).
+Repos: todos los subdirectorios con `.git` bajo `~/Documents/GitHub/` (los 8 de
+`PROCESO_DESARROLLO.md` §2 — descúbrelos dinámicamente, no hardcodees la lista).
+**Ojo con los worktrees**: `~/Documents/GitHub/<repo>-wt-<asunto>` es un working
+directory más del mismo repo, no un repo aparte; `git worktree list` los enumera
+sin duplicar el análisis.
 
 Para cada repo:
 
@@ -57,50 +63,53 @@ preguntas, no a la de ejecución automática.
 
 ## 2. Construye el plan y muéstralo
 
-Antes de tocar nada, resume por repo:
+Antes de tocar nada, resume por repo, con los cuatro estados de
+`PROCESO_DESARROLLO.md` §7.1:
 
-- ramas a **fusionar + publicar + borrar** (terminadas, claras)
-- ramas a **borrar sin merge** (ya integradas o vacías)
-- ramas **dudosas** (working tree sucio, o abandono probable) → pregunta
-  concreta por cada una, no un genérico "¿qué hago con esto?"
+- **fusionadas** (0 commits fuera de `origin/main`) → borrar, local y remota. Es
+  lo único que esta rutina hace sola.
+- **vivas** con PR abierto → se dejan; solo se reportan si llevan más de una semana.
+- **huérfanas** (commits propios y ningún PR) → **pregunta concreta por cada una**:
+  ¿abrir PR o borrar? Nunca se borra trabajo sin PR sin respuesta explícita.
+- **sucias** (working tree con cambios) → no se tocan; se reportan.
 
-Pide **un solo OK** para el conjunto del plan (o confirmaciones puntuales para
-las dudosas). No ejecutes fusiones/push/borrados sin ese OK.
+Pide **un solo OK** para el conjunto (o confirmaciones puntuales para huérfanas y
+sucias). No ejecutes borrados sin ese OK.
 
 ## 3. Ejecuta, repo a repo
 
-Por cada rama aprobada para fusionar:
+**Esta rutina no fusiona nada.** `main` no se toca a mano: lo que entra, entra por
+PR, y `auto-merge.yml` lo cierra con el CI en verde (`PROCESO_DESARROLLO.md` §3).
+Por eso **abrir el PR es fusionar** — y por eso solo se abre con el OK de Alfredo
+para esa rama en concreto:
 
 ```bash
-git -C <repo> checkout main
-git -C <repo> pull --rebase origin main
-git -C <repo> merge --no-ff <rama> -m "merge: <rama>"
+git -C <repo> push -u origin <rama>
+gh pr create --repo <owner/repo> --base main --head <rama>
 ```
 
-- **Conflicto** → aborta el merge (`git merge --abort`), repórtalo con el
-  archivo/hunk en conflicto, no lo resuelvas a ciegas. Queda 🔴: se para y se
-  pregunta.
 - Si hay hooks pre-commit locales (prettier/eslint/gitleaks, per
   `WEBAPP_GUARDRAILS_DEVOPS.md` §0.1 nota v1.3), déjalos correr — no uses
-  `--no-verify`. Si el merge commit dispara el hook y falla, no lo saltes:
-  corrige y vuelve a intentar.
+  `--no-verify`.
+- Si el CI del PR se pone rojo, el PR se queda abierto y la rama sigue **viva**:
+  se reporta, no se fuerza.
 
-Publica:
-
-```bash
-git -C <repo> push origin main
-```
-
-Borra la rama, local y remota, **solo tras confirmar que el push a main tuvo
-éxito**:
+Borra la rama —local y remota— cuando esté **fusionada de verdad** (su PR en
+estado `MERGED`, o 0 commits fuera de `origin/main`), nunca antes:
 
 ```bash
-git -C <repo> branch -d <rama>
+git -C <repo> branch -d <rama>          # -d, nunca -D: se niega si queda algo sin fusionar
 git -C <repo> push origin --delete <rama>
+git -C <repo> worktree remove <ruta>    # si esa rama tenía worktree propio
 ```
 
-Para las ramas "borrar sin merge" (ya integradas / vacías), salta el merge y
-ve directo al borrado local + remoto.
+Publica el estado resultante en el panel para que se vea desde cualquier sesión, y
+**purga lo que acabas de borrar** — si no, el panel sigue enseñando ramas muertas:
+
+```bash
+python3 panel-tareas/orquesta.py autodetectar --repo <ruta>   # las que siguen vivas
+python3 panel-tareas/orquesta.py purgar --repo <ruta>          # quita las que ya no están
+```
 
 ## 4. Resumen final
 
@@ -112,10 +121,11 @@ tareas bloqueadas.
 
 ## Guardarraíles (no negociables)
 
-- Nunca merges/borras una rama con working tree sucio sin que el usuario lo
-  confirme antes.
-- Nunca `--force` en push ni `--no-verify` en commits/hooks.
-- Nunca borras una rama antes de confirmar que el merge llegó a `origin/main`
-  (push exitoso).
-- Nunca resuelves un conflicto de merge por tu cuenta — se para y se pregunta.
+- Nunca borras una rama con working tree sucio sin que el usuario lo confirme antes.
+- Nunca `--force` en push, `--no-verify` en hooks, ni `branch -D`.
+- Nunca borras una rama antes de confirmar que su trabajo está en `origin/main`.
+- **Nunca borras una rama huérfana** (con commits y sin PR) sin respuesta explícita:
+  es trabajo que se pierde.
+- **Nunca abres un PR por tu cuenta** — abrirlo es fusionar. Lo pide Alfredo, rama
+  a rama.
 - Ramas `claude/*` inactivas: se preguntan, no se asumen terminadas.
