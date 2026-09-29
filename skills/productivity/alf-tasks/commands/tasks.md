@@ -55,3 +55,15 @@ Según `$ARGUMENTS`:
   de los 8. Ver `orquesta-repo.md`.
 - un `owner/repo` → limita todo lo anterior a las tareas de ese repo.
 - un número → abre esa tarea: descripción, notas completas, estado y qué falta.
+
+**Pipeline de idea a tarea** (4 niveles de profundidad — cuál toca en cada
+caso: `../skills/tasks/references/niveles-y-triaje.md`):
+
+- `/divergencia` → genera alternativas (NGT) antes de decidir. Ver
+  `divergencia.md`.
+- `/convergencia` → prioriza las alternativas con tu feedback (NGT + ICE).
+  Ver `convergencia.md`.
+- `/refinar` → desarrolla los requerimientos (INVEST) hasta criterio de
+  éxito verificable. Ver `refinar.md`.
+- `/backlog` → da de alta la tarea ya refinada en claudedash, `estado:
+  "backlog"`. Ver `backlog.md`.
