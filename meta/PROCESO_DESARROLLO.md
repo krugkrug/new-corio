@@ -281,6 +281,7 @@ hay que sincronizarlo antes de lanzar la cola.
 
 - `.github/workflows/auto-merge.yml` — CI + merge (los 8 repos)
 - `.github/workflows/limpiar-ramas.yml` — limpieza de ramas (los 8 repos)
+- `.github/pull_request_template.md` — plantilla de PR corta, para trabajo en solitario (los 8 repos)
 - `meta/.github/workflows/sync-a-repos.yml` — propagación del set compartido
   por la rama `meta-sync` (ver §2: autor del commit y `vercel.json`)
 - `plantillas/SETUP-completo.md` / `plantillas/SETUP-simplificado.md` — fuente
