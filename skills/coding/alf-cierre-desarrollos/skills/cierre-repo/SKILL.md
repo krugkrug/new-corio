@@ -5,7 +5,7 @@ description: Igual que "cierre-desarrollos" pero acotado al repositorio actual (
 
 # Cierre de repo — higiene de ramas de un solo repositorio
 
-**Versión:** v1.0 (23/09/2026) · **Responsable:** Alfredo Sánchez-Bella Solís
+**Versión:** v1.1 (29/09/2026) · **Responsable:** Alfredo Sánchez-Bella Solís
 
 Esta skill es **la misma rutina que `cierre-desarrollos`** (mismo modelo,
 mismo semáforo, mismos guardarraíles: ver esa skill para el detalle completo
@@ -87,6 +87,17 @@ python3 panel-tareas/orquesta.py purgar --repo <ruta-de-este-repo>
 Qué se fusionó/publicó, qué rama se borró, qué queda pendiente en **este
 repo** y por qué. No lo cierres como "hecho" si queda algo bloqueado.
 
+## 5. Aprendizaje continuo — qué te llevas de esta pasada
+
+Mismo paso que el §5 de `cierre-desarrollos` (ver ahí el detalle completo),
+acotado a lo que viste en **este repo**: revisa los pasos 1-3 en busca de
+fricción real y concreta (ramas que cambiaron solas, commits duplicados por
+`cherry-pick`, pasos que tuviste que resolver a mano porque un script no los
+cubría bien) — no genéricos. Si algo se repite o costó tiempo de verdad, da
+de alta una tarea en `backlog` con `tarea.py nueva`. Si la pasada fue limpia,
+dilo en una frase y sigue: no inventes aprendizajes por rellenar el paso, y
+no bloquea el cierre.
+
 ## Guardarraíles (no negociables)
 
 Los mismos que `cierre-desarrollos`:
@@ -97,3 +108,4 @@ Los mismos que `cierre-desarrollos`:
 - Nunca borras una rama huérfana (commits sin PR) sin respuesta explícita.
 - Nunca abres un PR por tu cuenta — lo pide Alfredo, rama a rama.
 - Ramas `claude/*` inactivas: se preguntan, no se asumen terminadas.
+- El paso 5 no inventa aprendizajes genéricos ni abre una tarea por cada nota.

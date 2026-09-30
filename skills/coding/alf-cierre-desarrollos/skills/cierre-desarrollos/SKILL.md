@@ -5,7 +5,7 @@ description: Revisa todos tus repositorios locales (Documents/GitHub), detecta r
 
 # Cierre de desarrollos — rutina de higiene de ramas
 
-**Versión:** v1.1 (23/09/2026) · **Responsable:** Alfredo Sánchez-Bella Solís
+**Versión:** v1.2 (29/09/2026) · **Responsable:** Alfredo Sánchez-Bella Solís
 **Modelo:** trabajo en solo, pero **todo entra por PR**: `main` no se toca a mano y
 `auto-merge.yml` fusiona el PR en cuanto el CI se pone verde (ver
 `PROCESO_DESARROLLO.md` §3 y §7). Esta rutina **clasifica y limpia**: ordena las
@@ -119,6 +119,39 @@ No cierres la rutina como "hecho" si queda algo bloqueado — repórtalo
 explícitamente, igual que hace `protocolo-cola.md` en `alf-tasks` con las
 tareas bloqueadas.
 
+## 5. Aprendizaje continuo — qué te llevas de esta pasada
+
+Antes de dar la rutina por cerrada, una pausa breve para convertir fricción
+real en mejora de proceso — no es una retro obligatoria de diez puntos, es
+capturar lo que de verdad habría ahorrado tiempo si ya estuviera resuelto.
+
+1. **Revisa con ojo crítico lo que acabas de ver en los pasos 1-3**, buscando
+   señales concretas, no genéricas:
+   - Ramas que cambiaron solas, o commits que aterrizaron en la rama
+     equivocada sin que nadie lo pidiera — señal de que falta un
+     guardarraíl explícito de "comprobar `git branch --show-current` antes
+     de cada commit" en la skill que estabas usando en ese momento.
+   - Commits duplicados por `cherry-pick` (mismo `patch-id`, SHA distinto)
+     — normalmente es el síntoma del punto anterior, no un caso aislado.
+   - Ramas huérfanas o `claude/*` abandonadas que se repiten en el mismo
+     repo — puede ser un patrón de proceso, no mala suerte puntual.
+   - Cualquier paso que tuviste que resolver "a mano" porque un script o
+     skill no lo cubría bien (interfaz inconsistente entre comandos,
+     flag que espera una cosa en un sitio y otra en otro, mensaje de error
+     que no decía lo que de verdad pasaba).
+2. **Si algo se repite o costó tiempo de verdad**, no te lo guardes: da de
+   alta una tarea en `backlog` con `panel-tareas/tarea.py nueva` — mismo
+   criterio INVEST que `refinar.md`: título claro, descripción con el
+   problema concreto observado (no una queja genérica), repo, semáforo.
+3. **No inventes aprendizajes por rellenar el paso.** Si la pasada fue
+   limpia y sin fricción real, dilo en una frase ("sin aprendizajes nuevos
+   esta vez") y sigue — mismo espíritu que el guardarraíl de
+   `/divergencia` contra forzar variedad donde no la hay.
+4. Menciona en el resumen final (paso 4) qué tarea(s), si las hay, se
+   dieron de alta por este paso — o que no hizo falta ninguna.
+
+Este paso **no bloquea el cierre**: es el último, no una condición previa.
+
 ## Guardarraíles (no negociables)
 
 - Nunca borras una rama con working tree sucio sin que el usuario lo confirme antes.
@@ -129,3 +162,5 @@ tareas bloqueadas.
 - **Nunca abres un PR por tu cuenta** — abrirlo es fusionar. Lo pide Alfredo, rama
   a rama.
 - Ramas `claude/*` inactivas: se preguntan, no se asumen terminadas.
+- El paso 5 no inventa aprendizajes genéricos ni abre una tarea por cada nota —
+  solo lo que se repite o costó tiempo real, y solo si hay algo que decir.

@@ -1,6 +1,6 @@
 # Seguimiento de síntomas activos
 
-**v1 · 2026-08-08** · Alfredo Sánchez-Bella de Solís
+**v2 · 2026-09-30** · Alfredo Sánchez-Bella de Solís
 
 Registro vivo de síntomas en curso: hipótesis diagnósticas, literatura recopilada y planes de actuación. Cada input nuevo (síntoma, prueba, estudio, respuesta a tratamiento) se añade en la sección correspondiente con fecha.
 
@@ -20,6 +20,8 @@ Registro vivo de síntomas en curso: hipótesis diagnósticas, literatura recopi
 | 4 | Nuca — grano recurrente | Sin datos suficientes | Aportar frecuencia, aspecto, si deja cicatriz |
 | 5 | Ojo — molestia/sequedad tras lesión corneal | Sin datos suficientes | Aportar ojo afectado, frecuencia, desencadenantes |
 | 6 | Heces — aceite naranja | Hipótesis funcional, en observación 3-4 días | Confirmar si desaparece con ajuste dietético |
+| 7 | Brazos — hormigueo/adormecimiento nocturno | Frecuente, sin caracterizar | Aportar lado, dedos afectados, postura, frecuencia |
+| 8 | Lipomas — propensión (2 extirpados, 2 activos) | Antecedente + 2 lesiones palpables | Ecografía/valoración si crecen; aportar tamaño y localización exacta |
 
 **Antecedente transversal:** tratamiento con **Avidart (dutasterida)** por alopecia androgénica; receta previa de minoxidil (2024-07-10). Relevante como posible factor de sequedad si el vehículo tópico lleva alcohol. Ver [medical.md](medical.md) para el detalle de medicación.
 
@@ -223,12 +225,82 @@ Los síntomas oculares recurrentes tras una lesión corneal (dolor súbito, sens
 
 ---
 
+# 7. Brazos — hormigueo/adormecimiento nocturno
+
+## Contexto / síntomas
+- Se le **duermen los brazos por la noche** con bastante frecuencia (apunte 2026-09-30).
+- Pendiente: qué brazo (uno, otro o ambos); qué dedos o zonas (pulgar–índice–corazón vs. anular–meñique vs. todo el brazo); desde cuándo; cuántas noches por semana; si le despierta; si mejora al mover o sacudir la mano; postura al dormir (brazos bajo la almohada o sobre la cabeza); dolor de cuello; debilidad o torpeza durante el día; relación con deporte (running, windsurf) o trabajo con teclado.
+
+## Hipótesis a explorar
+*Especulativas, a partir de conocimiento general, sin fuente verificada todavía.*
+- **Compresión postural transitoria** (brazos bajo la cabeza o almohada, codo flexionado): la causa más frecuente y benigna del adormecimiento nocturno.
+- **Síndrome del túnel carpiano** (nervio mediano en la muñeca): típico adormecimiento nocturno de pulgar, índice y corazón que despierta y mejora al sacudir la mano.
+- **Compresión del nervio cubital en el codo** (por flexión mantenida durante el sueño): afecta a anular y meñique.
+- **Radiculopatía cervical** (origen en el cuello): más probable si hay dolor cervical o si afecta a un brazo entero.
+- **Síndrome del desfiladero torácico** (compresión en la zona del hombro/clavícula): menos frecuente, posible con posturas de brazo elevado.
+- Causas sistémicas (déficit de B12, alteración de glucosa, tiroides): baja probabilidad inicial; se descartan con analítica sencilla si persiste o es bilateral y constante.
+- Posible relación con los **lipomas de los brazos** (caso 8): solo si alguno está cerca de un trayecto nervioso. Hipótesis de baja probabilidad, pendiente de localizar las lesiones.
+
+## Señales de alarma (derivar a médico)
+- Debilidad real (se le cae lo que sujeta, pérdida de fuerza de pinza), atrofia muscular.
+- Adormecimiento que aparece también de día o es constante.
+- Dolor de cuello intenso con irradiación al brazo, o síntomas en ambas manos que progresan.
+- Mareo, dificultad para hablar o visión alterada en el mismo episodio (urgencia).
+
+## Estudios y fuentes
+*(vacío)*
+
+| Fecha | Fuente | Hallazgo clave | Confianza |
+|---|---|---|---|
+
+## Próximos pasos
+- Aportar detalle: lado, dedos, frecuencia, postura, síntomas diurnos.
+- Ajuste de postura 2 semanas (evitar brazos bajo la cabeza y codos muy flexionados) como test de bajo coste.
+- Si no mejora: valoración médica (exploración neurológica; electromiograma si sugiere túnel carpiano o cubital) y analítica básica (B12, glucosa, TSH).
+- Buscar guías sobre diagnóstico diferencial de parestesias nocturnas en brazos.
+
+---
+
+# 8. Lipomas — propensión (2 extirpados, 2 activos)
+
+## Contexto / síntomas
+- **Propensión a desarrollar lipomas** (apunte 2026-09-30).
+- Historial: **2 extirpados**; **2 más palpables** actualmente.
+- Localización: sobre todo en los **brazos**; uno **entre las costillas** (zona intercostal, lado por precisar).
+- Pendiente: fecha y sitio de las extirpaciones y si se confirmó lipoma por anatomía patológica; tamaño y evolución de los dos actuales; si duelen, si están fijos o móviles, consistencia; si hay más de cuatro en total; antecedentes familiares de lipomas.
+
+## Hipótesis a explorar
+*Especulativas, a partir de conocimiento general, sin fuente verificada todavía.*
+- **Lipomas simples múltiples**: tumores benignos de grasa, blandos y móviles. Lo más probable dado el historial y la localización.
+- **Lipomatosis múltiple familiar**: si hay antecedentes en la familia o el número aumenta con el tiempo.
+- Diagnóstico diferencial que conviene descartar en lesiones nuevas o cambiantes: quiste epidérmico, neurofibroma y, muy raramente, liposarcoma bien diferenciado.
+
+## Señales de alarma (valoración médica sin esperar)
+- Crecimiento rápido, tamaño >5 cm, consistencia dura, fijación a planos profundos, dolor o cambios en la piel.
+- Localización profunda (bajo el músculo): una imagen no sustituye a la valoración clínica.
+- El lipoma intercostal merece una ecografía si crece o duele.
+
+## Estudios y fuentes
+*(vacío)*
+
+| Fecha | Fuente | Hallazgo clave | Confianza |
+|---|---|---|---|
+
+## Próximos pasos
+- Aportar tamaño aproximado y localización exacta de los dos actuales.
+- Ecografía de partes blandas si alguno crece, duele o cambia de consistencia; el cirujano decide si extirpar.
+- Cuando se confirme el historial (fechas, anatomía patológica), pasar el antecedente a [medical.md](medical.md) y dejar aquí solo las lesiones activas.
+- Buscar guías sobre lipomatosis múltiple y criterios de extirpación.
+
+---
+
 # Notas cronológicas
 - **2026-08-06**: creación de los seguimientos de pelo, dedo y cuello (ficheros sueltos en Drive `2. Salud`).
 - **2026-08-06**: caso 1 — matiz "es más escamación"; perfil de síntomas completo; tabla de diagnósticos alternativos; 5 fuentes; plan de diagnóstico escalonado.
 - **2026-08-08**: añadidos casos 4 (grano nuca) y 5 (ojo/córnea).
 - **2026-08-08**: merge de los cinco casos en un documento único y promoción a `alfssist/references/`.
 - **2026-09-02**: añadido caso 6 (heces — aceite naranja); hipótesis funcional (alcohol + estrés + running), plan de observación 3-4 días.
+- **2026-09-30**: v2 — añadido caso 7 (adormecimiento nocturno de brazos, frecuente) y caso 8 (propensión a lipomas: 2 extirpados, 2 activos en brazos y espacio intercostal).
 
 # Convenciones de mantenimiento
 - Toda afirmación clínica relevante lleva **fuente con link** y **nivel de confianza**.
