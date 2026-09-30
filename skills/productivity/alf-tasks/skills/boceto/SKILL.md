@@ -43,10 +43,17 @@ el mismo archivo:
 1. Escribe o edita `meta/boceto-<slug>.html`.
 2. Enséñalo — Artifact, o `preview_start` abriendo el archivo directo, o el
    enlace de localhost si el boceto reutiliza el servidor del repo.
-3. Commit **directo a `main`** del repo activo, sin rama ni PR — semáforo
+3. Antes de commitear, comprueba `git branch --show-current`. Si no
+   devuelve `main`, **detente y avisa** — no commitees a ciegas. Este
+   checkout puede estar compartido con otra sesión (otra pestaña de Claude
+   Code, Cowork, o Alfredo en terminal) que haya cambiado de rama entre tu
+   última lectura y este commit; ver incidente del 29/09/2026 en la tarea
+   #134 de `panel-tareas`, donde dos commits de boceto aterrizaron en
+   `docs/plantilla-pr` y `chore/sync-plantilla-pr` por esta misma causa.
+4. Commit **directo a `main`** del repo activo, sin rama ni PR — semáforo
    🟢, es la excepción explícita de `PRINCIPIOS_DE_TRABAJO.md` §4. Mensaje:
    `docs(boceto): <qué cambió>`. Hazlo y avisa después.
-4. Repite mientras Alfredo pida cambios sobre el enfoque visual.
+5. Repite mientras Alfredo pida cambios sobre el enfoque visual.
 
 **Anti-patrón a evitar** (visto en los bocetos existentes de `alfplan`):
 no dejes que el archivo derive en desarrollo real dentro del mismo commit —

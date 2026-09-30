@@ -11,6 +11,11 @@ ideas —y más variadas— que discutir en abierto desde el principio. Evaluar
 mientras se genera es lo que más reduce la divergencia: aquí no se valora
 nada todavía, eso es `/convergencia`.
 
+Además de las ideas propias, la divergencia incluye **benchmarking**: mirar
+cómo lo han resuelto otros (competidores, productos análogos, herramientas ya
+existentes, otros sectores). Es una fuente de ideas, no una evaluación — y
+evita el anti-patrón de reinventar lo que ya existe.
+
 Si no has pasado por el triaje, carga primero
 `../skills/tasks/references/niveles-y-triaje.md` — este comando es nivel 3
 (hay más de una forma razonable de resolver el problema). Si la solución ya
@@ -26,14 +31,22 @@ está decidida, no uses este comando: ve directo a `/refinar` o `/backlog`.
    ideas, cada una en una frase (qué es, no cómo se construye) — variedad
    antes que profundidad; incluye al menos una opción "barata/simple" y una
    "ambiciosa" para abrir el rango. No las evalúo ni las ordeno aquí.
-3. **Te las enseño y te pido las tuyas**, generadas independientemente
+3. **Benchmarking**: busco (web, repos propios, herramientas ya instaladas)
+   cómo resuelven este mismo problema u otro análogo — 3 a 6 referentes,
+   incluyendo al menos uno de *fuera* del sector obvio para abrir el rango.
+   De cada uno extraigo ideas concretas (qué hace, en una frase) y las
+   añado a la lista marcadas como `benchmark`, con **fuente o enlace** y
+   nivel de confianza (alta/media/baja) si no he podido verificarlo. Si no
+   encuentro referentes útiles, lo digo en vez de forzarlos. No comparo ni
+   puntúo referentes entre sí: eso es `/convergencia`.
+4. **Te las enseño y te pido las tuyas**, generadas independientemente
    (aunque las escribas después de ver las mías, dilo si alguna es reacción
    directa a una de las mías vs. una idea propia — importa para no duplicar
    en el siguiente paso).
-4. **Junto ambas listas** en una sola, fusionando duplicados y marcando de
-   quién salió cada una (tú / yo / las dos) — sin descartar nada todavía, ni
+5. **Junto todas las listas** en una sola, fusionando duplicados y marcando de
+   quién salió cada una (tú / yo / benchmark / varias) — sin descartar nada todavía, ni
    por "parece mala idea". Eso es selección, no generación.
-5. Cierro con la lista fusionada y pregunto: "¿pasamos a `/convergencia`?"
+6. Cierro con la lista fusionada y pregunto: "¿pasamos a `/convergencia`?"
    — este comando no prioriza.
 
 ## Guardarraíles
@@ -43,6 +56,9 @@ está decidida, no uses este comando: ve directo a `/refinar` o `/backlog`.
   poco obvias por juicio prematuro.
 - No inventes el objetivo si no lo has preguntado — sin objetivo no hay
   criterio para saber si una idea es relevante.
+- Todo referente del benchmarking lleva fuente; sin fuente, no entra (o
+  entra marcado como confianza baja). Nada de "otros lo hacen así" sin
+  decir quién.
 - Si en el paso 2 no salen variantes genuinamente distintas (todas son la
   misma idea con matices), dilo en vez de rellenar hasta 5 por cumplir
   número — variedad es el objetivo de NGT, no cantidad forzada.
