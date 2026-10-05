@@ -1,46 +1,69 @@
 ---
-description: Prioriza y valora las alternativas de /divergencia (NGT + puntuación ICE) — cada idea se puntúa por separado antes de discutir, para no anclar al primer criterio dicho en voz alta.
+description: Prioriza las alternativas de /divergencia con poco esfuerzo — Claude agrupa y puntúa de forma provisional, Alfredo revisa en un formulario precargado y decide el destino de cada idea (ahora / otra ola / rechazar) en un segundo formulario; todo queda registrado con su razón.
 ---
 
-# Convergencia — priorizar con tu feedback
+# Convergencia — priorizar y decidir con poco esfuerzo
 
-Segunda mitad de NGT: la fase de voto. Puntuación independiente antes de
-discusión — la misma evidencia sobre anclaje y presión de grupo que
-justifica la generación silenciosa de `/divergencia` dice que decidir juntos
-desde la primera opinión sesga hacia quien habla primero. Aquí puntuamos por
-separado y solo discutimos donde no coincidimos.
+Segunda mitad del pipeline: de la lista fusionada de `/divergencia` a una
+decisión registrada. El objetivo es que Alfredo **revise, no puntúe desde cero**:
+Claude hace el trabajo pesado y Alfredo corrige solo lo que no le cuadre.
+
+> **Cambio respecto a la versión NGT original (2026-10-02):** votar N ideas ×
+> 3 criterios en ciego resultó "súper pesado" con 26 ideas. Se acepta
+> conscientemente el sesgo de anclaje (Alfredo ve primero la puntuación de
+> Claude) a cambio de ligereza. Lo compensan el marcado de lo que hay que revisar
+> y la posibilidad de editar cualquier cosa.
 
 Necesita la lista fusionada de `/divergencia` (de esta conversación, o
 pégamela si viene de otra sesión).
 
 ## Pasos
 
-1. Para cada idea, puntúo (1-5) tres criterios — **Impacto** (qué tan cerca
-   deja del objetivo), **Coste** (tiempo/dinero/reversibilidad — semáforo de
-   `CLAUDE.md` como referencia), **Confianza** (qué tan seguro estoy de que
-   funcionará) — sin ver todavía tu puntuación. Es ICE, no RICE: con dos
-   evaluadores y sin métrica de alcance real, "Reach" no aporta nada que ICE
-   no dé ya.
-2. Te pido las tuyas, independientes de las mías.
-3. Junto ambas en una tabla: idea, mis 3 números, tus 3 números, diferencia.
-   Ordeno por impacto/coste combinado (impacto alto + coste bajo arriba).
-4. **Solo discutimos donde la diferencia es grande** (2+ puntos en
-   cualquier criterio) — ahí sí es conversación normal, no puntuación ciega;
-   el resto se acepta tal cual sale del promedio.
-5. Cierro con la idea (o top 2-3) mejor situada, y **tu decisión explícita**
-   de con cuál seguimos — este comando no elige por ti, ordena para que
-   decidas rápido.
-6. Pregunto: "¿pasamos a `/refinar`?" con la idea ganadora.
+1. **Agrupa.** Con más de unas 8 ideas, júntalas en bloques. Distingue las
+   **piezas compatibles** (se pueden hacer todas) de las **alternativas que
+   compiten** (hay que elegir una): solo estas últimas son decisiones reales.
+2. **Revisa lo que ya existe** (código, repo, producto) antes de puntuar. Lo
+   existente cambia el coste y el impacto; no puntúes ideas como si partieran de
+   cero.
+3. **Cribado de Claude.** Puntuación provisional de cada idea o grupo en tres
+   criterios, de 1 a 5, con **una razón en un bullet**:
+   - **Impacto:** 5 = deja justo en el objetivo.
+   - **Coste:** **mayor número = más caro** (5 = caro y difícil de revertir;
+     semáforo de `CLAUDE.md` como referencia).
+   - **Confianza:** 5 = seguro de que funciona.
+
+   Marca como **"revisar"** solo las pocas partes que dependen de tu criterio o
+   donde dudo; el resto va como "OK".
+4. **Formulario 1 — puntuación.** Inline (`show_widget`), precargado con mi
+   puntuación y la razón de cada una. Debe permitir **dar OK a todo sin tocar
+   nada** o editar cualquier celda. Las partes "revisar" van destacadas. La escala
+   (con "coste: mayor = más caro") se ve en el propio formulario.
+5. **Propuesta de destino.** Para cada idea o grupo: **desarrollar ahora**,
+   **posponer** (otra ola o backlog) o **rechazar**, con su razón en bullets
+   sintéticos, a partir de la puntuación final y las dependencias.
+6. **Formulario 2 — destino.** Igual que el primero: precargado con mi
+   propuesta, con el motivo editable y un OK global. Solo se discuten en
+   conversación las bifurcaciones reales.
+7. **Registro.** Todas las decisiones de divergencia y convergencia quedan en un
+   cuaderno de requisitos `notas/<tema>-requisitos.md` (ejemplo:
+   `notas/cuaderno-de-notas-requisitos.md`), con esta plantilla: objetivo y
+   cuello de botella · hipótesis · lo que ya existe · decisiones tomadas ·
+   requisitos priorizados por olas · pospuestos · descartados · pendientes de
+   decidir · coste. Cada decisión con su razón. Abre un PR de docs con él.
+8. Pregunto: "¿pasamos a `/refinar`?" con lo de la ola 1.
 
 ## Guardarraíles
 
-- Nunca puntúes viendo mi puntuación primero, ni al revés — si ya la viste,
-  dilo y descarta esa puntuación tuya, repítela sin mirar.
-- No conviertas el paso 4 en una discusión de todas las ideas — solo las de
-  diferencia grande; el resto ya está resuelto por el promedio.
-- No elijas tú la ganadora en el paso 5 — la ordenas, la decisión es de
-  Alfredo (discrepancia explícita si crees que la mejor puntuada no es la
-  mejor opción real: dilo antes de cerrar, no lo calles).
+- **Los formularios nunca obligan a rellenar todo ni rechazan filas
+  parciales.** Una celda en blanco significa "acepto la tuya".
+- **Cada decisión lleva su razón**, en bullets y muy sintética; una puntuación
+  sola no basta.
+- **La decisión de destino es de Alfredo.** Claude propone y, si cree que la
+  mejor puntuada no es la mejor opción real, lo dice antes de cerrar.
+- No conviertas la conversación en una discusión de todas las ideas — solo de las
+  bifurcaciones reales y de las marcadas "revisar".
+- Si la lista es corta (hasta unas 5 ideas) y la decisión es 🔴 irreversible,
+  puedes volver a pedir la puntuación en ciego para evitar el anclaje.
 
 ## Uso
 

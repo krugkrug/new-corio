@@ -2,6 +2,10 @@
 description: Orquestador — revisa backlog, ramas y los 8 repos, prioriza (TOC) y propone hasta 5 tareas nuevas. Manual, on-demand.
 ---
 
+> **Desde la v3.9.0 el comando principal es `/cos`** (ver `cos.md`), que absorbe
+> a este. `/orquesta` sigue funcionando como alias; lo que sigue es el protocolo
+> de tablero que `/cos` ejecuta en su función 1. No lo copies en otro sitio.
+
 > Antes se llamaba `/jefe`. El nombre nuevo es el de lo que gestiona: la vista
 > **Orquesta** del panel (tareas + ramas + orquestaciones), no un cargo.
 
@@ -71,6 +75,10 @@ ni escribe en él.
      `taskrun.md` Paso 4).
    - `modelo`: `haiku` si es mecánica y bien acotada, `sonnet` por defecto,
      `opus` solo si es arquitectura/ambigüedad real.
+   - `cauce`: propuesta de cómo se ejecutará, con la tabla del Paso 1 de
+     `delega.md` (`sesion` · `subagente` · `worktree` · `remota`). Es una
+     propuesta, no una orden: `/delega` o `/taskrun` la respetan salvo que el
+     alcance haya cambiado. `orquesta` no ejecuta nada ni lanza `/delega`.
    - `semaforo`: `verde` solo si es reversible y barata; si no, `amarillo`/
      `rojo` con la pregunta concreta ya puesta en `notas` y
      `necesitaRespuesta: true` — **nunca te autoapruebas** un amarillo o rojo.

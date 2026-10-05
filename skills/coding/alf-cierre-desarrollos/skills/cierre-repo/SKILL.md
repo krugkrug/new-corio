@@ -78,8 +78,8 @@ git worktree remove <ruta>    # si tenía worktree propio
 Publica y purga el estado de **este repo** en el panel:
 
 ```bash
-python3 panel-tareas/orquesta.py autodetectar --repo <ruta-de-este-repo>
-python3 panel-tareas/orquesta.py purgar --repo <ruta-de-este-repo>
+python3 ~/Documents/GitHub/meta/panel-tareas/orquesta.py autodetectar --repo <ruta-de-este-repo>
+python3 ~/Documents/GitHub/meta/panel-tareas/orquesta.py purgar --repo <ruta-de-este-repo>
 ```
 
 ## 4. Resumen final
@@ -94,7 +94,7 @@ acotado a lo que viste en **este repo**: revisa los pasos 1-3 en busca de
 fricción real y concreta (ramas que cambiaron solas, commits duplicados por
 `cherry-pick`, pasos que tuviste que resolver a mano porque un script no los
 cubría bien) — no genéricos. Si algo se repite o costó tiempo de verdad, da
-de alta una tarea en `backlog` con `tarea.py nueva`. Si la pasada fue limpia,
+de alta una tarea en `backlog` con `python3 ~/Documents/GitHub/meta/panel-tareas/tarea.py nueva`. Si la pasada fue limpia,
 dilo en una frase y sigue: no inventes aprendizajes por rellenar el paso, y
 no bloquea el cierre.
 

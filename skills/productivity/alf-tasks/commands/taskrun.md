@@ -38,7 +38,16 @@ mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
    con la pregunta concreta (Paso 1 de `protocolo-cola.md`). No inventes spec
    donde no la hay ni la fuerces a un agente que no puede pedir aclaración a
    mitad de tarea.
-5. Agrupa las lanzables ya refinadas por `repo` y, dentro de cada repo, por
+4.5. **Clasifica con `/delega`** (Paso 1 de `delega.md`, tabla de 4 cauces) cada
+   lanzable ya refinada. Solo las de cauce **C · worktree** (y **D · remota** si
+   Alfredo la acepta) siguen por los Pasos 5-8 como agentes por repo/modelo. Las
+   de cauce **A · sesión** y **B · subagente** las ejecuta `/delega` por su
+   cuenta (Pasos 3-4 de `delega.md`) en vez de montar un worktree para algo
+   trivial o de solo lectura. Si la tarea ya trae `cauce`, respétalo. El
+   presupuesto del Paso 6 es **uno solo** y lista todos los cauces, no uno por
+   comando. Este comando sigue siendo la definición de cómo se lanza un C
+   (Paso 7): `/delega` remite aquí, no lo duplica.
+5. Agrupa las lanzables de cauce C ya refinadas por `repo` y, dentro de cada repo, por
    `modelo` (`haiku` / `sonnet` / `opus`) — el campo `modelo` de la tarea se
    traduce **literalmente** al parámetro `model` de la herramienta Agent, sin
    tabla de mapeo. Si un repo ya tiene una tarea `en-curso` con sesión activa
@@ -91,6 +100,14 @@ mecánico, `sonnet` por defecto, `opus` solo para lo complejo o ya aprobado).
      cierre, cerrar con la nota de cierre estándar (qué se hizo · dónde está ·
      qué dijo `code-review` · cómo verificarlo), y bloquear con pregunta concreta
      si algo no cuadra (nunca forzar una suposición no declarada).
+   **Excepción: tarea de un repo distinto al de esta sesión.** `isolation: worktree`
+   crea el worktree sobre el repo del directorio de trabajo de la sesión, no sobre
+   el del grupo. Si el repo de la tarea es otro, crea tú el worktree
+   (`git -C <repo> fetch && git -C <repo> worktree add -b <rama> <ruta> origin/main`,
+   ruta fuera de `Documents/GitHub` para que `/cierre` no la confunda con un repo),
+   lanza el `Agent` **sin** `isolation` y dile en el prompt que trabaje solo en esa
+   ruta y compruebe antes `git log` y `git status` (probado con la #196 de
+   ratioc, 3-oct-2026).
    Lanza en paralelo, en el mismo turno, todos los grupos de **repos
    distintos**. Si un mismo repo tiene lanzables con más de un `modelo`, esos
    grupos comparten repo y no se lanzan a la vez: van en serie (uno termina,

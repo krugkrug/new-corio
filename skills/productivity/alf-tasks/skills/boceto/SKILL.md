@@ -1,18 +1,22 @@
 ---
 name: boceto
-description: Crea o itera un boceto visual — un HTML estático y autocontenido en meta/boceto-<slug>.html del repo activo, sin build, sin datos reales, sin tocar código de producto — para validar el enfoque de una pantalla o interacción antes de comprometer desarrollo. Úsala cuando Alfredo diga "haz un boceto de X", "boceta esto", "maqueta de la pantalla X", "quiero ver cómo quedaría X" o pida una idea visual antes de programarla. Cuando lo apruebe, el cierre de esta skill es dar de alta una tarea en claudedash que documenta qué construir y referencia el boceto — nunca abrir rama directamente. No confundir con `guardar-plan`, que archiva el plan textual de una sesión en krugkrug/meta: esta skill trabaja siempre en el repo del producto y produce un archivo HTML de maqueta, no una nota de plan.
+description: Crea o itera un boceto visual — un HTML estático y autocontenido en meta/boceto-<slug>.html del repo activo, sin build, sin datos reales, sin tocar código de producto — para validar el enfoque de una pantalla o interacción antes de comprometer desarrollo. Úsala cuando Alfredo diga "haz un boceto de X", "boceta esto", "maqueta de la pantalla X", "quiero ver cómo quedaría X" o pida una idea visual antes de programarla. Cuando lo apruebe, el cierre de esta skill es dar de alta una tarea en claudedash que documenta qué construir y referencia el boceto — nunca abrir rama de desarrollo. El boceto en sí va en una rama corta de docs y su PR se abre al aprobarlo. No confundir con `guardar-plan`, que archiva el plan textual de una sesión en krugkrug/meta: esta skill trabaja siempre en el repo del producto y produce un archivo HTML de maqueta, no una nota de plan.
 ---
 
-# Boceto — maqueta visual, sin rama, hasta que se convierte en tarea
+# Boceto — maqueta visual en rama corta de docs, hasta que se convierte en tarea
 
-**Versión:** v1.0 · **Fecha:** 23/09/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
+**Versión:** v1.1 · **Fecha:** 01/10/2026 · **Responsable:** Alfredo Sánchez-Bella Solís
 
-Un boceto valida el **enfoque visual** antes de que exista una rama, un
-worktree o una sesión de Orquesta. Vive fuera del ciclo normal de desarrollo
-a propósito: es la forma más barata de equivocarse. Referencia completa del
-porqué: `PRINCIPIOS_DE_TRABAJO.md` §4 (semáforo, excepción "boceto sin
-rama") del repo donde se trabaja — no todos los repos la tienen escrita
-todavía; si falta, aplícala igual y ofrécete a documentarla ahí.
+Un boceto valida el **enfoque visual** antes de que exista una rama de
+desarrollo, un worktree o una sesión de Orquesta. Vive fuera del ciclo normal
+de desarrollo a propósito: es la forma más barata de equivocarse. Solo el
+archivo del boceto va en una rama corta de docs (`docs/boceto-<slug>`); el
+PR no se abre hasta que Alfredo aprueba.
+
+**Por qué rama y no `main`:** hay repos (coriodash) cuyo hook
+`.husky/pre-push` rechaza todo push a `main` (suple la protección de
+rama que GitHub Free no da en repos privados), así que commitear el boceto en
+`main` es imposible de cumplir. La regla vale igual en todos los repos.
 
 ## Qué es / qué no es
 
@@ -32,27 +36,32 @@ Siempre en el repo del producto donde se está pensando la pantalla —
 meta/boceto-<slug>.html
 ```
 
-`slug` en kebab-case, corto (máx. ~5 palabras), describe el asunto — dará
-nombre después al `<tipo>/<asunto>` de la rama si el boceto se aprueba.
+`slug` en kebab-case, corto (máx. ~5 palabras), describe el asunto — da
+nombre a la rama `docs/boceto-<slug>` del boceto.
 
 ## Ciclo de iteración
 
 Mientras Alfredo pide ajustes sobre el mismo boceto, se sigue reescribiendo
 el mismo archivo:
 
+0. Primera vez: crea la rama corta `docs/boceto-<slug>` desde `main`
+   actualizado (en repos con el helper, `git start docs/boceto-<slug>`; si
+   no, `git fetch origin` + `git switch -c docs/boceto-<slug> origin/main`).
 1. Escribe o edita `meta/boceto-<slug>.html`.
 2. Enséñalo — Artifact, o `preview_start` abriendo el archivo directo, o el
    enlace de localhost si el boceto reutiliza el servidor del repo.
 3. Antes de commitear, comprueba `git branch --show-current`. Si no
-   devuelve `main`, **detente y avisa** — no commitees a ciegas. Este
-   checkout puede estar compartido con otra sesión (otra pestaña de Claude
-   Code, Cowork, o Alfredo en terminal) que haya cambiado de rama entre tu
-   última lectura y este commit; ver incidente del 29/09/2026 en la tarea
-   #134 de `panel-tareas`, donde dos commits de boceto aterrizaron en
-   `docs/plantilla-pr` y `chore/sync-plantilla-pr` por esta misma causa.
-4. Commit **directo a `main`** del repo activo, sin rama ni PR — semáforo
-   🟢, es la excepción explícita de `PRINCIPIOS_DE_TRABAJO.md` §4. Mensaje:
-   `docs(boceto): <qué cambió>`. Hazlo y avisa después.
+   devuelve `docs/boceto-<slug>`, **detente y avisa** — no commitees a
+   ciegas. Este checkout puede estar compartido con otra sesión (otra
+   pestaña de Claude Code, Cowork, o Alfredo en terminal) que haya cambiado
+   de rama entre tu última lectura y este commit; ver incidente del
+   29/09/2026 en la tarea #134 de `panel-tareas`, donde dos commits de
+   boceto aterrizaron en `docs/plantilla-pr` y `chore/sync-plantilla-pr`
+   por esta misma causa.
+4. Commit en esa rama y `git push` **de esa rama** (permitido; nunca a
+   `main`). **Sin PR mientras se itera:** abrir el PR equivale a fusionar
+   (`auto-merge.yml` fusiona en cuanto el CI se pone verde). Semáforo 🟢.
+   Mensaje: `docs(boceto): <qué cambió>`. Hazlo y avisa después.
 5. Repite mientras Alfredo pida cambios sobre el enfoque visual.
 
 **Anti-patrón a evitar** (visto en los bocetos existentes de `alfplan`):
@@ -63,12 +72,15 @@ siguiente), no seguir iterando el archivo.
 
 ## Cierre — cuando Alfredo lo aprueba
 
-No se abre rama, worktree ni sesión de Orquesta desde esta skill. El
-resultado de un boceto aprobado es **una tarea en claudedash** que
-documenta el trabajo real y referencia el boceto — la ejecuta más tarde la
-cola normal (`tasks`/`taskrun`), que sí abrirá su propia rama cuando toque
-(`PROCESO_DESARROLLO.md` §3).
+No se abre rama de desarrollo, worktree ni sesión de Orquesta desde esta
+skill. El resultado de un boceto aprobado es **una tarea en claudedash**
+que documenta el trabajo real y referencia el boceto — la ejecuta más
+tarde la cola normal (`tasks`/`taskrun`), que sí abrirá su propia rama
+cuando toque (`PROCESO_DESARROLLO.md` §3).
 
+0. **Al aprobar Alfredo**, abre el PR de la rama del boceto:
+   `gh pr create --base main --body-file <fichero>` (cuerpo con Write, sin
+   heredoc). Es el momento de fusionar; antes, no.
 1. Necesitas `CLAUDEDASH_PASSWORD` en el entorno (ver skill `tasks`
    §2) — si falta, dilo explícito en vez de intentarlo a ciegas.
 2. Da de alta la tarea desde `krugkrug/meta`:
@@ -76,7 +88,7 @@ cola normal (`tasks`/`taskrun`), que sí abrirá su propia rama cuando toque
 ```bash
 python3 panel-tareas/tarea.py nueva --json '{
   "titulo": "<qué construir, en una frase>",
-  "descripcion": "Boceto aprobado en meta/boceto-<slug>.html (commit <sha o enlace GitHub>). <qué hay que construir, con el detalle suficiente para que quien lo ejecute no tenga que releer esta conversación: qué queda dentro, qué queda fuera, cualquier decisión ya tomada en el boceto>",
+  "descripcion": "Boceto aprobado en meta/boceto-<slug>.html (enlace a `main` ya fusionado; si aún no, el commit de la rama docs/boceto-<slug>). <qué hay que construir, con el detalle suficiente para que quien lo ejecute no tenga que releer esta conversación: qué queda dentro, qué queda fuera, cualquier decisión ya tomada en el boceto>",
   "repo": "krugkrug/<repo>",
   "prio": "media",
   "semaforo": "verde",
@@ -104,8 +116,12 @@ python3 panel-tareas/tarea.py nueva --json '{
 ## Anti-patrones
 
 - Poner código de producto o datos reales dentro de `meta/boceto-*.html`.
-- Abrir rama, worktree o PR desde esta skill — el boceto se commitea
-  directo a `main`; la tarea nace en `backlog`, no en una rama.
+- Abrir rama o worktree de **desarrollo de producto**, lanzar sesión de
+  Orquesta, o abrir el PR del boceto antes de que Alfredo lo apruebe. La
+  rama corta `docs/boceto-<slug>` del propio boceto SÍ es correcta; la
+  tarea nace en `backlog`, no en una rama de desarrollo.
+- Commit o push del boceto a `main` (el guard de coriodash lo
+  bloquea y la regla es la misma en todos los repos).
 - Crear la tarea con `estado` distinto de `backlog`, o sin `descripcion`
   que referencie el boceto y documente el trabajo.
 - Confundir esta skill con `guardar-plan` (esa es un plan textual en

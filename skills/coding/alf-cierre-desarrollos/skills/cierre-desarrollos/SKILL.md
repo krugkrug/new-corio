@@ -70,7 +70,8 @@ Antes de tocar nada, resume por repo, con los cuatro estados de
   lo único que esta rutina hace sola.
 - **vivas** con PR abierto → se dejan; solo se reportan si llevan más de una semana.
 - **huérfanas** (commits propios y ningún PR) → **pregunta concreta por cada una**:
-  ¿abrir PR o borrar? Nunca se borra trabajo sin PR sin respuesta explícita.
+  ¿abrir PR, archivar con tag o descartar (§7.1)? Nunca se borra trabajo sin PR sin
+  respuesta explícita.
 - **sucias** (working tree con cambios) → no se tocan; se reportan.
 
 Pide **un solo OK** para el conjunto (o confirmaciones puntuales para huérfanas y
@@ -107,8 +108,8 @@ Publica el estado resultante en el panel para que se vea desde cualquier sesión
 **purga lo que acabas de borrar** — si no, el panel sigue enseñando ramas muertas:
 
 ```bash
-python3 panel-tareas/orquesta.py autodetectar --repo <ruta>   # las que siguen vivas
-python3 panel-tareas/orquesta.py purgar --repo <ruta>          # quita las que ya no están
+python3 ~/Documents/GitHub/meta/panel-tareas/orquesta.py autodetectar --repo <ruta>   # las que siguen vivas
+python3 ~/Documents/GitHub/meta/panel-tareas/orquesta.py purgar --repo <ruta>          # quita las que ya no están
 ```
 
 ## 4. Resumen final
@@ -140,7 +141,7 @@ capturar lo que de verdad habría ahorrado tiempo si ya estuviera resuelto.
      flag que espera una cosa en un sitio y otra en otro, mensaje de error
      que no decía lo que de verdad pasaba).
 2. **Si algo se repite o costó tiempo de verdad**, no te lo guardes: da de
-   alta una tarea en `backlog` con `panel-tareas/tarea.py nueva` — mismo
+   alta una tarea en `backlog` con `python3 ~/Documents/GitHub/meta/panel-tareas/tarea.py nueva` — mismo
    criterio INVEST que `refinar.md`: título claro, descripción con el
    problema concreto observado (no una queja genérica), repo, semáforo.
 3. **No inventes aprendizajes por rellenar el paso.** Si la pasada fue

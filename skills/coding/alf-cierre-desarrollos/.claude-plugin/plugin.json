@@ -1,6 +1,6 @@
 {
   "name": "alf-cierre-desarrollos",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rutina de cierre de desarrollos: revisa las ramas, reconcilia (vía PR) lo que esté terminado, publica y borra las ramas ya integradas. Incluye /cierre (todos los repos de Documents/GitHub) y /cierrerepo (solo el repo actual).",
   "author": {
     "name": "Alfredo Sánchez Bella"
