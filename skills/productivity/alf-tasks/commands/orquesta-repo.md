@@ -82,6 +82,10 @@ ni escribe en él.
      `taskrun.md` Paso 4).
    - `modelo`: `haiku` si es mecánica y bien acotada, `sonnet` por defecto,
      `opus` solo si es arquitectura/ambigüedad real.
+   - `cauce`: propuesta de cómo se ejecutará, con la tabla del Paso 1 de
+     `delega.md` (`sesion` · `subagente` · `worktree` · `remota`). Es una
+     propuesta, no una orden: `/delega` o `/taskrun` la respetan salvo que el
+     alcance haya cambiado. `orquesta` no ejecuta nada ni lanza `/delega`.
    - `semaforo`: `verde` solo si es reversible y barata; si no, `amarillo`/
      `rojo` con la pregunta concreta ya puesta en `notas` y
      `necesitaRespuesta: true` — **nunca te autoapruebas** un amarillo o rojo.

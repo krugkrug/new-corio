@@ -30,14 +30,14 @@ rama claude/*  ──PR──►  auto-merge.yml ──────────�
 
 | Repo | Tipo | Producción | Auth |
 |---|---|---|---|
-| `meta` (carpeta `home/`) | estático | home.sanchezbella.com | **SSO de Vercel** (Deployment Protection, todos los despliegues); candado cliente desactivado |
+| `meta` (carpeta `home/`) | estático + API | home.sanchezbella.com | **servidor**: `HOME_PASSWORD` env + cookie HMAC (`HOME_SESSION_SECRET`, 7 días). SSO de Vercel solo en previews y `*.vercel.app` (`all_except_custom_domains`, para poder instalar la PWA en Android). Excepción: `api/widget*.ts` sin sesión, a propósito |
 | `alfbank` | Node (Vite+Express) | alfbank.sanchezbella.com | **servidor**: `APP_PASSWORD` env + cookie HMAC + rate-limit |
 | `coriodash` | Node (Vite+Express) | coriodash.sanchezbella.com | **servidor**: mismo patrón que alfbank |
 | `prado` | Node (Vite, estático) | prado.sanchezbella.com | candado cliente (`VITE_APP_PASSWORD` env de build) |
 | `ratioc` | estático | ratioc.sanchezbella.com | sin candado (mockup) |
 | `gt` | estático (+ API blob) | gtdash.sanchezbella.com | candado cliente (hash SHA-256) |
 | `news` | Python + estático | news.sanchezbella.com | `EDIT_SECRET` env para guardar |
-| `alfplan` | estático + Apps Script | alfplan.sanchezbella.com | candado cliente (hash SHA-256) |
+| `alfplan` | estático + API (Vercel Blob) | alfplan.sanchezbella.com | **SSO de Vercel** en todos los despliegues, incluido el dominio de producción y `/api/*` (comprobado en Vercel el 30/09/2026). Sin candado cliente (`ALFPLAN_AUTH_SECRET` vacío) ni auth de servidor: una sola capa. Pendiente de decidir pasar a contraseña de servidor como `home` |
 
 El repo `home` original está **anulado** (fusionado en `meta/home/`; su README
 redirige allí).
@@ -148,7 +148,7 @@ el merge saltado.
 - **Regla**: ninguna credencial en el código. Env vars en Vercel
   (`APP_PASSWORD`, `SESSION_SECRET`, `EDIT_SECRET`, `VITE_APP_PASSWORD`…) y
   secrets de Actions para los backups.
-- **Candados de cliente** (home, alfplan, gt): son un *disuasorio*, no
+- **Candados de cliente** (gt; en alfplan el código existe pero está vacío): son un *disuasorio*, no
   seguridad de servidor. El valor en el código es el **hash SHA-256** de la
   contraseña, nunca el texto plano (el código acepta ambos; se usa siempre el
   hash). Para calcularlo:
@@ -158,7 +158,7 @@ el merge saltado.
 - **`.gitleaks.toml`** (solo en `gt`, `alfplan`, `meta`): allowlist de esos
   hashes públicos de cliente para que gitleaks no bloquee los PRs que tocan
   esas líneas. Cualquier otro hallazgo bloquea.
-- **Datos sensibles de verdad** (alfbank, coriodash): auth de servidor —
+- **Datos sensibles de verdad** (alfbank, coriodash, home): auth de servidor —
   contraseña solo en env, cookie firmada HMAC-SHA256, comparación de tiempo
   constante, rate-limit de login, y en producción sin `APP_PASSWORD` la API
   se bloquea entera en vez de quedar abierta.
@@ -225,7 +225,7 @@ que pinta la vista **Orquesta** del panel, con el color diciendo qué hacer:
 |---|---|---|
 | **Viva** | PR abierto, o commits recientes y working tree limpio | Se deja. Si pasa de una semana, se revisa. |
 | **Fusionada** | `git rev-list --count origin/main..<rama>` = 0 | Borrar ya, local y remota. |
-| **Huérfana** | Commits propios y **ningún PR** | Decidir: abrir PR o borrarla. Es el único estado que no se resuelve solo y el único que pierde trabajo. |
+| **Huérfana** | Commits propios y **ningún PR** | Decidir **con OK de Alfredo**: abrir PR, archivarla (`git tag archivo/<rama> <rama>` y luego borrar la rama: el trabajo queda guardado y sale de la lista) o descartarla (borrar). Nunca se borra sin esa respuesta explícita. Es el único estado que no se resuelve solo y el único que pierde trabajo. |
 | **Sucia** | Working tree con cambios sin commitear | No se toca hasta que su dueño decida. |
 
 Diagnóstico de un repo en un comando:
@@ -270,7 +270,8 @@ hay que sincronizarlo antes de lanzar la cola.
    antigua tampoco es backup**: al migrar de base de datos, el backup se
    migra en el mismo PR (§6).
 6. **Ramas cortas, y borradas al fusionar** — activar auto-delete (§7). Una rama con
-   trabajo y sin PR no se borra nunca sin preguntar.
+   trabajo y sin PR no se borra nunca sin preguntar (§7.1: se abre PR, se archiva con tag o se
+   descarta, siempre con OK).
 8. **El PR lo pide Alfredo, no la sesión** — abrir el PR es fusionar (§3, §4). Lo que la
    sesión entrega es la rama commiteada y el enlace del preview local.
 7. **Indicador de versión obligatorio** — todo doc de control y todo header

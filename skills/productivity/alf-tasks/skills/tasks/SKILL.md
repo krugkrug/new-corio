@@ -69,7 +69,7 @@ guardarraíl real**) · `estado` (backlog/pendiente/en-curso/bloqueada/hecha/des
 — `backlog` es donde entra toda tarea nueva desde el panel v14 y **nunca se
 lanza sola**, ni en verde; sale a mano promovida a `pendiente` desde la vista
 Planificación) · `modelo` (haiku/sonnet/opus — se asigna al promover desde
-backlog, respétalo si puedes elegir) · `dependeDe` (id; bloquea mientras esa
+backlog, respétalo si puedes elegir) · `cauce` (sesion/subagente/worktree/remota o ausente — lo fija `/delega`; si viene puesto, respétalo) · `dependeDe` (id; bloquea mientras esa
 tarea no esté hecha ni descartada; solo mismo repo) · `necesitaRespuesta` (bool)
 · `sesion` (`{id, donde, desde}` o null) · `notas` (hilo de la tarea: `{quien,
 cuando, texto}`).

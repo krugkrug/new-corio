@@ -1,7 +1,7 @@
 {
   "name": "alf-tasks",
-  "version": "3.3.0",
-  "description": "Panel de tareas de Alfredo: abre el tablero (home.sanchezbella.com/claudedash), ejecuta la cola del backend Blob de claudedash —uno o varios agentes en paralelo— sobre los 8 repos, guarda el plan de sesión en claudeblmds/, y crea/itera bocetos visuales (meta/boceto-*.html del repo activo) que cierran dando de alta una tarea en la cola.",
+  "version": "3.9.4",
+  "description": "Panel de tareas de Alfredo: abre el tablero (home.sanchezbella.com/claudedash), ejecuta la cola del backend Blob de claudedash —uno o varios agentes en paralelo— sobre los 8 repos, guarda el plan de sesión en claudeblmds/, y crea/itera bocetos visuales (meta/boceto-*.html del repo activo) que cierran dando de alta una tarea en la cola, reparte trabajo con /delega (sesión, subagente o worktree según el caso), y conduce las sesiones guiadas del ciclo de alfplan tema a tema: /fix (fijar objetivos), /plan (planificar tareas), /rev (medir resultados) y /reflex (reflexionar y decidir seguir/pivotar/abandonar). Ninguna escribe en producción: devuelven tablas listas para pegar en «Aplicar lote…» de la app (formato en alfplan/meta/EDICION_EN_LOTE.md) o para teclear.",
   "author": {
     "name": "Alfredo Sánchez Bella"
   }

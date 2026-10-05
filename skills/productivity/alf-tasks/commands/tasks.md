@@ -53,6 +53,9 @@ Según `$ARGUMENTS`:
 - `orquesta-repo <repo>` → mismo orquestador, acotado a un solo repo (el que
   le pases, o el del directorio actual si no pasas nada) en vez de la ronda
   de los 8. Ver `orquesta-repo.md`.
+- `delega <texto|ids>` → decide si el trabajo se hace seguido en la sesión,
+  con subagente(s) o en worktree aislado, enseña el presupuesto y lo lanza.
+  Ver `delega.md`.
 - un `owner/repo` → limita todo lo anterior a las tareas de ese repo.
 - un número → abre esa tarea: descripción, notas completas, estado y qué falta.
 
