@@ -1,0 +1,8 @@
+{
+  "name": "alf-accionista",
+  "version": "0.1.0",
+  "description": "Redacta borradores de respuesta a accionistas de Grand Tibidabo, S.A. en liquidación desde liquidadores@grandtibidabo.com, con el criterio y el estado actual de la liquidación. Solo crea borradores; nunca envía.",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}

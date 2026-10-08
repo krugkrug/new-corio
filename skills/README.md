@@ -9,7 +9,9 @@ por dominio:
 - `writing/` — voz de escritura.
 - `productivity/` — asistente familiar (`alfssist`), triaje de email
   (`alfmail`), triaje de WhatsApp (`alf-whatsapp-mcp-server`) y utilidades
-  transversales (`handoff`).
+  transversales (`handoff`), y `alf-notas` (skill `/nota`: leer y escribir
+  en el cuaderno de notas desde cualquier repo con una clave de API; skill `/diario`: entrada del día
+  y recap de un sitio, con tu OK antes de guardar).
 - `corio/` — Coriolis Capital (search fund); tiene su propia subcarpeta
   `skills/` interna con varias skills del embudo de originación.
 

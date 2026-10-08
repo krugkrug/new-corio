@@ -1,0 +1,8 @@
+{
+  "name": "alf-notas",
+  "version": "1.1.0",
+  "description": "Lee y escribe en el cuaderno de notas de Alfredo desde cualquier repo o sesión de Claude, con una clave de API. Skills /nota (apuntes sueltos) y /diario (entrada del día + recap de un sitio).",
+  "author": {
+    "name": "Alfredo Sánchez Bella"
+  }
+}

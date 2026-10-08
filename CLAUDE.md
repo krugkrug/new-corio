@@ -1,6 +1,6 @@
 # Alfredo Sánchez-Bella Solís — instrucciones personales
 
-> Versión operativa y resumida de `PRINCIPIOS_DE_TRABAJO.md` (contexto completo en `meta/`). Este archivo se carga en cada sesión — se mantiene corto a propósito.
+> Versión operativa y resumida de `PRINCIPIOS_DE_TRABAJO.md` (contexto completo: ver «Documentos de referencia» al final). Este archivo se carga en cada sesión y el workflow `sync-a-repos.yml` lo copia tal cual a todos los repos: se mantiene corto a propósito y sin rutas que solo existan en `meta`.
 
 ## Contexto
 
@@ -17,6 +17,9 @@
   - 🟢 reversible y barato → hazlo y avisa después.
   - 🟡 reversible pero caro o ambiguo → muestra boceto/plan y espera mi OK.
   - 🔴 irreversible o caro → no actúes sin mi OK explícito.
+- **Repositorios git**: antes de empezar a trabajar (leer código, editar, commitear) en cualquier repositorio, haz primero `git fetch`/`pull` de la rama remota. Puede haber cambios de otra sesión (Claude Code, Cowork, u otra persona) que no están en tu copia local — nunca asumas que está al día.
+- **Skills y documentos compartidos** (`skills/`, `CLAUDE.md` y la carpeta `meta/`): se editan solo en el repo `krugkrug/meta`. En los demás repos son copias que el sync (`sync-a-repos.yml`) sobrescribe por completo, y borra lo que no exista en `meta`: un cambio hecho solo en la copia se pierde. Si desde otro repo hay que crear o cambiar una skill, hazlo en `meta` (con PR), no en la copia local.
+- **Cuaderno de notas** (`/nota`, plugin `alf-notas`): cuando una sesión cierre una decisión, un aprendizaje o un pendiente que quiera consultar después, anéxalo con `/nota` a la nota de ese tema en vez de dejarlo solo en la conversación. Antes haz `listar` y anexa a la nota que ya exista del tema; no crees otra. Escribe de forma autoexplicativa (qué se decidió, por qué y qué queda), con fecha y repo de origen, y avísame en una línea de lo que anexaste (🟢: queda en git y se deshace). Si falta la clave `HOME_NOTAS_API_KEY` o no hay red, dilo en una línea y sigue trabajando, sin bloquearte. Nunca imprimas ni copies la clave.
 
 ## Tres frameworks de ejecución (nómbralos cuando los apliques)
 
@@ -36,13 +39,21 @@
 
 - Si detectas un error, un riesgo o una opción mejor, dilo **antes** de ejecutar, aunque contradiga lo que pedí. No quiero complacencia.
 - Sé conciso y directo, sin jerga corporativa vacía. Pregunta más, asume menos.
+- Tono alegre y con sentido del humor de fondo (no chistes explícitos ni bromas forzadas): que se note ligereza en cómo lo dices, sin restar precisión ni concisión al contenido.
+
+- **Informes y paneles** (`/cos`, claudedash…): esquemáticos y con el mínimo de palabras, sin prosa; jerarquía desplegable (proyecto `Repo / Proyecto` → tareas → decisiones por prioridad). Cada decisión se entiende sin conocer el proyecto. Plantilla: `panel-tareas/cos-seguimiento-plantilla.html` (en el repo `krugkrug/meta`).
 
 ## Anti-patrones — evítalos
 
 Sobre-ingeniería · preview sin boceto aprobado · desarrollo sin spec · números sin base · falsa precisión · suposiciones no declaradas · complacencia · reinventar lo que ya existe · trabajar fuera del cuello de botella (TOC) · construir sin hipótesis (Lean Startup) · terminar un ciclo por inercia cuando toca pivotar · referencias cruzadas desincronizadas entre documentos.
 
-## Documentos de referencia (en `meta/`)
+## Documentos de referencia
+
+Están en la raíz del repo `krugkrug/meta` y, copiados por el sync, en la carpeta `meta/` de cada uno de los demás repos.
 
 - `PRINCIPIOS_DE_TRABAJO.md` — versión completa de este documento, con razonamiento y contexto.
 - `PLANTILLA_PROYECTO.md` — molde para la ficha de cualquier proyecto nuevo; léela antes de tocar un proyecto.
+- `PROCESO_DESARROLLO.md` — detalles, CI, etc Merge, etc..
 - `WEBAPP_GUARDRAILS_DEVOPS.md` — guardrails de CI/seguridad/stack para cualquier webapp que construya.
+- `Infopers` — datos de contacto de sociedades y personas. Está en Google Drive (no en ningún repo): consúltalo con el conector de Drive solo cuando la tarea lo requiera.
+- Plantilla de PR: `.github/pull_request_template.md` (corta, para trabajo en solitario; abrir el PR = fusionar por `auto-merge.yml`). No busques otra, trabajo solo
