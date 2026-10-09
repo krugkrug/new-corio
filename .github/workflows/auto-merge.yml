@@ -64,6 +64,28 @@ jobs:
           npm run test --if-present
           npm run build --if-present
 
+      # Solo existe en `meta` (único repo con catálogo de plugins): en los demás
+      # el fichero no existe y el paso se salta. Evita que el catálogo diga una
+      # versión distinta a la del plugin, caso en que no se ofrece la actualización.
+      - name: Versiones del catálogo de plugins = versiones de cada plugin
+        if: ${{ hashFiles('.claude-plugin/marketplace.json') != '' }}
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          raiz = pathlib.Path(".")
+          cat = json.loads((raiz / ".claude-plugin/marketplace.json").read_text(encoding="utf8"))
+          fallos = []
+          for p in cat["plugins"]:
+              f = raiz / p["source"] / ".claude-plugin/plugin.json"
+              v = json.loads(f.read_text(encoding="utf8")).get("version") if f.exists() else None
+              if v != p.get("version"):
+                  fallos.append(f"{p['name']}: plugin {v} != catálogo {p.get('version')}")
+          if fallos:
+              print("::error::Versiones desalineadas, corrige marketplace.json:\n" + "\n".join(fallos))
+              sys.exit(1)
+          print(f"OK: {len(cat['plugins'])} plugins con versión alineada.")
+          PY
+
       - name: Escaneo de secretos (gitleaks) sobre los commits del PR
         env:
           BASE: ${{ github.event.pull_request.base.sha }}

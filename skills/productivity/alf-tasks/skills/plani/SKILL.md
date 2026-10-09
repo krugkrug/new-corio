@@ -5,6 +5,8 @@ description: Planifica con Alfredo las tareas de un periodo, objetivo a objetivo
 
 # /plani — fijar las tareas del periodo, tema a tema
 
+> **Dónde están las plantillas y los documentos de formato.** Viven en el repo `krugkrug/alfplan`, en su carpeta `meta/` (las rutas `meta/…` de esta skill son relativas a la raíz de ese repo, no a este). **Sesión local:** `C:\Users\alfre\Documents\GitHub\alfplan` (haz antes `git pull`, por si otra sesión subió cambios). **Sesión en la nube:** añade el repo con `add_repo` (`krugkrug/alfplan`) y clónalo; si no, no encontrarás las plantillas.
+
 Método: momento 5 de `CICLO_GUIA_MOMENTOS` en `script/ciclo.js` (y Guía en Configuración). **Léelo primero**; este skill solo dice cómo conducir la sesión.
 
 ## Cómo conducir la sesión (feedback de Alfredo, 2-oct-2026; **manda sobre el resto**)
@@ -20,17 +22,46 @@ Alfredo probó el proceso entero y lo encontró largo, complejo y poco visual. L
 7. Los pasos 1 y 2 de abajo (ruta crítica, opciones) se hacen **por dentro**: a Alfredo solo se le muestra el resultado y la fecha de alarma, no el razonamiento.
 8. **Cierre de cada bloque:** lista breve de lo decidido hasta ahora y una sola pregunta de siguiente paso (tabla de lote o siguiente bloque).
 
+9. **Un área cada vez** (feedback de Alfredo, 2-oct-2026: «sino me vuelvo loco»). Nunca vuelques todas las áreas; si no nombra una, pregunta cuál.
+10. **Panorama de objetivos primero**, antes de las tareas: el **árbol completo del área en formato visual** (`show_widget`: sangría por padre, etiqueta de periodo en cada nodo, fecha y prioridad a la derecha), con el recuento por horizonte y periodo. **Nunca tabla en markdown** para esto. Se revisa **de mayor a menor horizonte** (anual → trimestral → mensual → semanal → diario), con el árbol delante y el horizonte revisado resaltado.
+11. **Marca de saturación: más de 3 objetivos por proyecto (tema) en un mismo horizonte** (regla blanda, se revisa siempre; ver `/fix` 0c); solo se marca eso.
+12. **Cada decisión se contrasta** con lo que hay: duplicados, huecos (sin fecha, sin cifra, `[N]`, sin padre) y arrastres de semanas pasadas.
+13. **Cifras recontadas** desde los datos antes de enseñarlas.
+14. **Pregunta sin respuesta = pendiente**: si Alfredo cambia de tema o dice «ok» a secas, se anota en la lista acumulada y no se repite cada turno.
+
+15. **Lo primero que se enseña, siempre: el árbol acotado al proyecto y al periodo que se planifica** (feedback de Alfredo, 2-oct-2026), en formato visual (`show_widget`). Contenido: la cadena de ascendientes (anual → trimestral → mensual) en gris; los objetivos del periodo resaltados; **debajo de cada objetivo, las tareas que ya existen** (fecha, prioridad y estado; marca las vencidas, las que caen después de la fecha límite del objetivo y los objetivos sin tarea); y aparte, las tareas del proyecto que no cuelgan de ningún objetivo. Si los datos no enlazan tarea con objetivo, ligarlas por el texto y decirlo. Solo después, la primera pregunta (horizonte, bloqueos o la decisión que toque). Si el periodo no está claro, propón uno por defecto y enseña el árbol con él.
+
 ## Modo diario guiado (`/plani <tema> diario`, p. ej. `corio diario`; feedback de Alfredo, 5-oct-2026)
 
-Para el horizonte **diario** el chat no basta: se conduce con un **asistente guiado** (artifact) y el resultado son **eventos en el calendario**. La plantilla vive en el repo alfplan: `meta/plantilla-plani/` (README dentro). Si la sesión no tiene alfplan, añádelo (`add_repo`) antes.
+Para el horizonte **diario** el chat no basta: se conduce con un **asistente guiado** (artifact) y el resultado son **eventos en el calendario**. Plantilla: `meta/plantilla-plani/` (README dentro).
 
-1. **Datos (solo lectura):** producción (§0.2) y los eventos de hoy de Google Calendar (`list_events`, zona del calendario). Di la hora de lectura de ambos. Pregunta antes qué no puede mover hoy (§0.3).
-2. **Prepara `dia.json`** (copia `meta/plantilla-plani/dia.corio-2026-10-05.json`): objetivos del día con su cadena y su padre semanal, tareas con estimación y tipo, los eventos fijos y los **huecos libres** (el calendario menos lo fijo). Solo las tareas del tema pedido; lo ajeno, fuera.
+> **Por defecto: la plantilla «pantalla única»** (feedback de Alfredo, 8-oct-2026; cuando él no pida otra cosa). Todo el día en una sola pantalla, no objetivo a objetivo. El asistente guiado de abajo (pasos 1-8) queda como alternativa si lo pide.
+
+### Pantalla única (plantilla `meta/plantilla-plani/pantalla.html`)
+
+Qué ve y hace Alfredo (ya validado con él; no lo rediseñes sin pedírselo):
+- **Arriba, la tarea crítica del día** (comunicación u organización que desbloquea a terceros, antes que el trabajo a solas). Se elige con el check de la lista de la derecha (solo una); el calendario la coloca primero.
+- **Calendario del día** (izquierda) con lo fijo de todos los calendarios y los bloques de tareas, comida, cena y ejercicio. Los bloques se **arrastran** (de 15 en 15 min; también con flechas) y llevan un **check**: desmarcado queda **atenuado en su sitio** y no sale en la petición de eventos.
+- **Comida, cena y ejercicio** se eligen con un **desplegable dentro de su bloque** (platos: sin horas ni historias; ejercicio: correr o gym). La hora, arrastrando.
+- **Abajo, las dos tablas semanales** (comidas y ejercicio, semana anterior y actual).
+- **Petición de eventos** para copiar: cada línea con su calendario de destino.
+
+Cómo se prepara (🟢 solo lectura; nada se crea sin su OK):
+1. **Datos:** producción (§0.2: tareas diarias del día de los proyectos del tema, `comidas`, `entrenos`, `dietas`, `niveles`, `ajustes`, `recetas`) y **todos los calendarios** (`list_calendars` y `list_events` de Main, CORIO, GT, Schedule y `* Orchestrate`) del día. Di la hora de lectura.
+2. **Rellena `dia.json`** copiando `meta/plantilla-plani/pantalla.dia.2026-10-08.json` (el README explica cada campo): `fijos` (todo evento existente, con `mitad`/`carril` si se solapa con la reunión larga), `tareas` con minutos, tipo y motivo, `critica` por defecto, `comidas` y `cenas` (6 de cada, ordenadas por la nota de equilibrio de la app; si `recetas` viene vacía, sus listas pegadas en la app) y `semanal` (modo y nivel heredados como en `script/motor-semana.js`).
+3. **Genera y publica** con versión visible: `node meta/plantilla-plani/generar.cjs --pantalla --dia dia.json --salida plani-hoy.html`. Para republicar el mismo día, la misma ruta (misma URL).
+4. **Avisa de los choques reales** (p. ej. un evento que impide que una tarea larga quepa seguida) y deja que decida él.
+5. **Resultado: eventos en el calendario.** Cuando pegue la petición, 🟡 muéstrale la lista y, con su OK, créalos con `create_event` **con `calendarId`**: las tareas de **Corio → calendario CORIO** (`alfredo@corioliscap.com`); **el resto → `* Orchestrate`** (`sanchezbella.com_ckse0a7qqk63pkni108hs8uqfg@group.calendar.google.com`). Hora de Madrid, sin tocar eventos existentes. Verifica con `list_events` y di cuántos se crearon. No dupliques si ya existe uno igual.
+6. Los objetivos del día nuevos van a alfplan por tabla de lote; **las tareas no se crean en alfplan**.
+
+
+1. **Datos (solo lectura):** producción (§0.2) y los eventos de hoy de Google Calendar (`list_events`, zona del calendario). Di la hora de lectura de ambos.
+2. **Prepara `dia.json`** (copia `meta/plantilla-plani/dia.corio-2026-10-05.json`): objetivos del día con su cadena y su padre semanal, tareas con estimación y tipo, y los **huecos libres** (el calendario menos lo fijo). Solo las tareas del tema pedido; lo ajeno, fuera.
 3. **Genera y publica el artifact** con versión visible: `node meta/plantilla-plani/generar.cjs --dia dia.json --salida plani-hoy.html`. Para republicar el mismo día, usa la misma ruta (misma URL).
-4. **El asistente va objetivo a objetivo con el calendario del día a la vista:** los objetivos ya están decididos (solo lectura); se trabajan las tareas con píldoras de la app, acciones propuestas («＋ Crear evento»), el objetivo en foco resaltado en el calendario y el resto atenuado; al final, resumen con la tabla de eventos y la petición lista para copiar.
+4. ***El asistente va objetivo a objetivo con el calendario del día a la vista:** los objetivos ya están decididos (solo lectura); píldoras de objetivo y tarea de la app, acciones propuestas («＋ Crear evento»), el objetivo en foco resaltado en el calendario y el resto atenuado; al final, resumen con la tabla de eventos y la petición lista para copiar.
 5. **Arriba, siempre,** el recordatorio «Prioriza organización y comunicación» y 💪🩸🤠🃏. Prioriza antes las tareas de comunicación (pedir, avisar, enviar) y de organización que desbloquean a terceros.
-6. **Los objetivos del día que no existan van a alfplan** (tabla de lote, cada uno colgado de su objetivo semanal). **Las tareas no se crean en alfplan**: viven en el asistente y en el calendario, salvo que él pida otra cosa.
-7. **Resultado: eventos en el calendario.** Cuando Alfredo pegue la petición del asistente, 🟡 muéstrale la lista y, con su OK explícito, créalos con `create_event` en el calendario *Main* (título `[Corio] …`, hora de Madrid, sin tocar eventos existentes). Verifica con `list_events` y di cuántos se crearon. No dupliques si ya existe un evento igual.
+6. **Los objetivos del día van a alfplan** (tabla de lote, cada uno colgado de su objetivo semanal). **Las tareas no se crean en alfplan**: viven en el asistente y en el calendario, salvo que él pida otra cosa.
+7. **Resultado: eventos en el calendario.** Cuando Alfredo pegue la petición del paso 3 del asistente, 🟡 muéstrale la lista y, con su OK, créalos con `create_event` en el calendario *Main* (título `[Corio] …`, hora de Madrid, sin tocar eventos existentes). Verifica con `list_events` y di cuántos se crearon. No dupliques si ya existe un evento igual.
 8. Respeta el tope: **compromiso ≤ 60 %** de las 7 h; el asistente lo marca. Una sola pregunta por turno en el chat.
 
 ## 0. Arranque
