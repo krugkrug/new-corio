@@ -265,6 +265,10 @@ hay que sincronizarlo antes de lanzar la cola.
    `md5sum`. Al 10/09/2026, `@v6` — GitHub deprecó las que corrían sobre
    Node 20 (`@v4`), y el aviso salía en cada run sin romper nada, que es
    justo como se acumula esta deuda hasta que un día deja de arrancar.
+   Ese mismo archivo trae un paso que solo actúa en `meta` (donde existe
+   `.claude-plugin/marketplace.json`): falla el PR si la versión de un plugin en
+   el catálogo no coincide con la de su `plugin.json`, porque entonces los
+   equipos no reciben la actualización. En los demás repos se salta solo.
 5. **Backup que no se restaura no es backup** — la restauración está
    documentada y los backups rotan solos. Y **un backup apuntando a la fuente
    antigua tampoco es backup**: al migrar de base de datos, el backup se
